@@ -1,16 +1,6 @@
 $scale-factor: 1.015; // Factor by which the element grows on hover
 $transition-duration: 0.1s; // Duration of the transition effect
 
-* {
-  &:not(.container, .col) {
-    transition: transform $transition-duration ease-in-out;
-
-    &:hover {
-      transform: scale($scale-factor);
-    }
-  }
-}
-
 .container {
   display: flex;
   flex-wrap: wrap;
@@ -39,6 +29,13 @@ $transition-duration: 0.1s; // Duration of the transition effect
     justify-content: center;
   }
 
+  * {
+    transition: none;
+
+    &:hover {
+      transform: none;
+    }
+  }
 }
 
 /* Adjustments for large devices */
@@ -49,6 +46,16 @@ $transition-duration: 0.1s; // Duration of the transition effect
 
   .container {
     justify-content: space-between;
+  }
+
+  * {
+    &:not(.container, .col) {
+      transition: transform $transition-duration ease-in-out;
+
+      &:hover {
+        transform: scale($scale-factor);
+      }
+    }
   }
 }
 
@@ -64,6 +71,16 @@ $transition-duration: 0.1s; // Duration of the transition effect
 
   .container {
     justify-content: space-between;
+  }
+
+  * {
+    &:not(.container, .col) {
+      transition: transform $transition-duration ease-in-out;
+
+      &:hover {
+        transform: scale($scale-factor);
+      }
+    }
   }
 }
 

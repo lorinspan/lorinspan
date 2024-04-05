@@ -5,16 +5,6 @@ $transition-duration: 0.2s; // Duration of the transition effect
   margin-top: 15%;
 }
 
-* {
-  &:not(.container, .menu, .links) {
-    transition: transform $transition-duration ease-in-out;
-
-    &:hover {
-      transform: scale($scale-factor);
-    }
-  }
-}
-
 .logo {
   cursor: pointer;
 }
@@ -60,6 +50,14 @@ $transition-duration: 0.2s; // Duration of the transition effect
     margin-top: 15%;
     margin-bottom: 10%;
   }
+
+  * {
+    transition: none;
+
+    &:hover {
+      transform: none;
+    }
+  }
 }
 
 /* Large devices (desktops, 992px and below) */
@@ -73,6 +71,16 @@ $transition-duration: 0.2s; // Duration of the transition effect
 
   .links {
     margin-top: 35%;
+  }
+
+  * {
+    &:not(.container, .menu, .links) {
+      transition: transform $transition-duration ease-in-out;
+
+      &:hover {
+        transform: scale($scale-factor);
+      }
+    }
   }
 }
 
@@ -88,5 +96,15 @@ $transition-duration: 0.2s; // Duration of the transition effect
 
   .links {
     margin-top: 35%;
+  }
+
+  * {
+    &:not(.container, .menu, .links) {
+      transition: transform $transition-duration ease-in-out;
+
+      &:hover {
+        transform: scale($scale-factor);
+      }
+    }
   }
 }
