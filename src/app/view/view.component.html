@@ -1,0 +1,9 @@
+<div class="container">
+  <ng-container *ngFor="let column of columns">
+    <div class="col">
+      <div *ngFor="let picture of column">
+        <img [src]="picture" alt="" class="picture">
+      </div>
+    </div>
+  </ng-container>
+</div>
