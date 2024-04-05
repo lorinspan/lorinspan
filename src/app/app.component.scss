@@ -12,10 +12,28 @@ view {
 
 }
 
+.picture {
+  height: 100%;
+  width: 75%;
+}
+
+.scroll-to-top-btn {
+  position: fixed;
+  display: none;
+  cursor: pointer;
+  z-index: 99;
+}
+
 /* Medium/Small devices (tablets/phones, 768px and below) */
 @media (max-width: 768px) {
   .container {
     display: grid;
+  }
+
+  .scroll-to-top-btn {
+    bottom: 0.1%;
+    right: 0.1%;
+    width: 15.5%;
   }
 }
 
@@ -28,8 +46,15 @@ view {
   navigation {
     width: 18.5%;
   }
+
   view {
     width: 80%;
+  }
+
+  .scroll-to-top-btn {
+    bottom: 1%;
+    right: 0.5%;
+    width: 5%;
   }
 }
 
@@ -38,10 +63,18 @@ view {
   .container {
     display: flex;
   }
+
   navigation {
     width: 13.5%;
   }
+
   view {
     width: 85%;
+  }
+
+  .scroll-to-top-btn {
+    bottom: 1%;
+    right: 1%;
+    width: 3.5%;
   }
 }
