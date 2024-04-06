@@ -1,0 +1,18 @@
+<div class="container" *ngIf="picture">
+  <div class="picture-wrapper" [ngClass]="{'zoomed': isZoomed}" (click)="toggleZoom()" [style.cursor]="getCursorType()">
+    <img [src]="picture.src" [alt]="picture.alt" class="picture">
+  </div>
+  <div class="picture-menu">
+    <div class="buttons">
+      <!-- Previous button -->
+      <img [src]="leftImageSrc" *ngIf="hasPrevious()" class="navigation-button left" (click)="navigateToPrevious()" (mouseenter)="onLeftButtonHover(true)" (mouseleave)="onLeftButtonHover(false)">
+      <img [src]="leftImageSrc" *ngIf="!hasPrevious()" class="navigation-button left hidden" (mouseenter)="onLeftButtonHover(true)" (mouseleave)="onLeftButtonHover(false)">
+      <!-- Next button with conditional rendering and hiding -->
+      <img [src]="rightImageSrc" *ngIf="hasNext()" class="navigation-button right" (click)="navigateToNext()" (mouseenter)="onRightButtonHover(true)" (mouseleave)="onRightButtonHover(false)">
+      <img [src]="rightImageSrc" *ngIf="!hasNext()" class="navigation-button right hidden" (mouseenter)="onRightButtonHover(true)" (mouseleave)="onRightButtonHover(false)">
+      <!-- Exit button -->
+      <img [src]="exitImageSrc" class="navigation-button exit" (click)="navigateToPhotography()" (mouseenter)="onExitButtonHover(true)" (mouseleave)="onExitButtonHover(false)">
+    </div>
+    <p class="description">{{ picture.description }}</p>
+  </div>
+</div>

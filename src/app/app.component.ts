@@ -1,4 +1,5 @@
 import { Component, OnInit, HostListener } from '@angular/core';
+import { Router, NavigationEnd } from '@angular/router';
 
 @Component({
   selector: 'app-root',
@@ -8,10 +9,25 @@ import { Component, OnInit, HostListener } from '@angular/core';
 export class AppComponent implements OnInit {
   isPageScrolled: boolean = false;
   hovering: boolean = false; // Property to track hover state
+  hideScrollToTopBtn: boolean = false; // Flag to hide scroll-to-top button
+
+  constructor(private router: Router) {}
 
   ngOnInit() {
     window.addEventListener('scroll', this.scrollHandler, true);
     this.scrollHandler(); // Initial check on page load
+
+    // Subscribe to route changes
+    this.router.events.subscribe(event => {
+      if (event instanceof NavigationEnd) {
+        // Check if the current route matches the pattern for /photo/{any id}
+        if (this.router.url.startsWith('/photo/')) {
+          this.hideScrollToTopBtn = true; // Hide the scroll-to-top button
+        } else {
+          this.hideScrollToTopBtn = false; // Show the scroll-to-top button for other routes
+        }
+      }
+    });
   }
 
   ngOnDestroy() {

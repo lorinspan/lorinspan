@@ -16,8 +16,13 @@ $transition-duration: 0.1s; // Duration of the transition effect
 }
 
 .menu-item {
-
 }
+
+.picture {
+  width: 100%;
+  height: auto;
+}
+
 
 /* Adjustments for medium devices */
 @media (max-width: 768px) {
@@ -82,9 +87,4 @@ $transition-duration: 0.1s; // Duration of the transition effect
       }
     }
   }
-}
-
-.picture {
-  width: 100%; /* Make images fill their containers */
-  height: auto; /* Maintain aspect ratio */
 }

@@ -2,7 +2,7 @@
   <ng-container *ngFor="let column of columns">
     <div class="col">
       <div *ngFor="let picture of column">
-        <img [src]="picture" alt="" class="picture">
+        <img [src]="picture.src" [alt]="picture.alt" class="picture" (click)="navigateToPicture(picture.id)">
       </div>
     </div>
   </ng-container>

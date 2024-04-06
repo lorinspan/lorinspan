@@ -3,14 +3,22 @@ import { BrowserModule } from '@angular/platform-browser';
 
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
-import { ViewComponent } from './view/view.component';
-import { NavComponent } from './navigation/nav.component';
+import {NavComponent} from "./navigation/nav.component";
+import {PhotographyComponent} from "./view/photography/photography.component";
+import {DevelopmentComponent} from "./view/development/development.component";
+import { AboutMeComponent } from './view/about-me/about-me.component';
+import { ContactComponent } from './view/contact/contact.component';
+import { PhotoComponent } from './view/photography/photo/photo.component';
 
 @NgModule({
   declarations: [
     AppComponent,
-    ViewComponent,
     NavComponent,
+    PhotographyComponent,
+    DevelopmentComponent,
+    AboutMeComponent,
+    ContactComponent,
+    PhotoComponent,
   ],
   imports: [
     BrowserModule,

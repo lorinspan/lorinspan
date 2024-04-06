@@ -17,6 +17,8 @@ $transition-duration: 0.2s; // Duration of the transition effect
 
 .logo {
   cursor: pointer;
+  width: 100%;
+
 }
 
 .menu-item {
@@ -40,10 +42,6 @@ $transition-duration: 0.2s; // Duration of the transition effect
 
 .links-icon {
   width: 50%;
-}
-
-.logo {
-  width: 100%;
 }
 
 /* Medium devices (tablets, 768px and below) */
