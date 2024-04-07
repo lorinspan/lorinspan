@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, HostListener, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { Picture } from "../../../model/picture";
 import { PicturesService } from "../../../services/pictures-service";
@@ -9,13 +9,13 @@ import { PicturesService } from "../../../services/pictures-service";
   styleUrls: ['./photo.component.scss']
 })
 export class PhotoComponent implements OnInit {
-  picture: Picture | null = null; // Initialize picture as null
-  pictureNotFound: boolean = false; // Flag to indicate if picture is not found
-  pictures: Picture[] = []; // Store all pictures
-  currentPictureIndex: number = -1; // Index of the current picture
-  leftImageSrc: string = "assets/icons/arrow-left.png"; // Source of the left image
-  rightImageSrc: string = "assets/icons/arrow-right.png"; // Source of the right image
-  exitImageSrc: string = "assets/icons/exit.png"; // Source of the left image
+  picture: Picture | null = null;
+  pictureNotFound: boolean = false;
+  pictures: Picture[] = [];
+  currentPictureIndex: number = -1;
+  leftImageSrc: string = "assets/icons/arrow-left.png";
+  rightImageSrc: string = "assets/icons/arrow-right.png";
+  exitImageSrc: string = "assets/icons/exit.png";
   isZoomed = false;
 
   constructor(
@@ -28,14 +28,14 @@ export class PhotoComponent implements OnInit {
     this.picturesService.getPictures().subscribe(pictures => {
       this.pictures = pictures;
       this.route.paramMap.subscribe(params => {
-        const pictureId = Number(params.get('id')); // Convert id to number
+        const pictureId = Number(params.get('id'));
         const index = this.pictures.findIndex(p => p.id === pictureId);
         if (index !== -1) {
           this.currentPictureIndex = index;
           this.picture = this.pictures[this.currentPictureIndex];
-          this.pictureNotFound = false; // Picture found, reset flag
+          this.pictureNotFound = false;
         } else {
-          this.pictureNotFound = true; // Picture not found, set flag
+          this.pictureNotFound = true;
         }
       });
     });
@@ -63,20 +63,23 @@ export class PhotoComponent implements OnInit {
     }
   }
 
-  onLeftButtonHover(isHovering: boolean): void {
-    if (isHovering) {
-      this.leftImageSrc = "assets/icons/arrow-left-hover.png";
-    } else {
-      this.leftImageSrc = "assets/icons/arrow-left.png";
+  @HostListener('document:keydown', ['$event'])
+  handleKeyboardEvent(event: KeyboardEvent) {
+    if (event.key === 'ArrowLeft') {
+      this.navigateToPrevious();
+    } else if (event.key === 'ArrowRight') {
+      this.navigateToNext();
+    } else if (event.key === 'Escape') {
+      this.navigateToPhotography();
     }
   }
 
+  onLeftButtonHover(isHovering: boolean): void {
+    this.leftImageSrc = isHovering ? "assets/icons/arrow-left-hover.png" : "assets/icons/arrow-left.png";
+  }
+
   onRightButtonHover(isHovering: boolean): void {
-    if (isHovering) {
-      this.rightImageSrc = "assets/icons/arrow-right-hover.png";
-    } else {
-      this.rightImageSrc = "assets/icons/arrow-right.png";
-    }
+    this.rightImageSrc = isHovering ? "assets/icons/arrow-right-hover.png" : "assets/icons/arrow-right.png";
   }
 
   toggleZoom(): void {
@@ -84,24 +87,14 @@ export class PhotoComponent implements OnInit {
   }
 
   getCursorType(): string {
-    if (window.innerWidth <= 768) {
-      return 'default';
-    } else {
-      return this.isZoomed ? 'zoom-out' : 'zoom-in';
-    }
+    return window.innerWidth <= 768 ? 'default' : this.isZoomed ? 'zoom-out' : 'zoom-in';
   }
-
 
   navigateToPhotography(): void {
     this.router.navigate(['/photography']);
   }
 
   onExitButtonHover(isHovering: boolean): void {
-    if (isHovering) {
-      this.exitImageSrc = "assets/icons/exit-hover.png"; // Change to the hover image source
-    } else {
-      this.exitImageSrc = "assets/icons/exit.png"; // Change to the normal image source
-    }
+    this.exitImageSrc = isHovering ? "assets/icons/exit-hover.png" : "assets/icons/exit.png";
   }
-
 }
