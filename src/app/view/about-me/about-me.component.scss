@@ -1,0 +1,172 @@
+$scale-factor: 1.025; // Factor by which the element grows on hover
+$transition-duration: 0.2s; // Duration of the transition effect
+
+.container {
+  display: grid;
+  font-family: "Century Gothic", sans-serif;
+}
+
+.description {
+  padding: 2.5% 5% 5% 5%;
+}
+
+.title {
+  display: flex;
+}
+
+.resume {
+  display: flex;
+}
+
+.about {
+  display: flex;
+}
+
+/* Medium/Small devices (tablets/phones, 768px and below) */
+@media (max-width: 768px) {
+
+  .title {
+    font-size: 40px;
+  }
+
+  .resume {
+    padding-top: 5%;
+    font-size: 25px;
+  }
+
+  .about {
+    padding-top: 5%;
+    font-size: 16px;
+    align-items: flex-start; /* Align items to the top of the flex container */
+    display: grid;
+    flex-direction: column;
+  }
+
+  .description {
+    order: 2; /* Change order to display description below */
+  }
+
+  .picture {
+    width: 100%;
+    object-fit: contain; /* This property ensures the image maintains its aspect ratio */
+    align-items: flex-start; /* Align items to the top of the flex container */
+
+  }
+
+  .picture-2 {
+    width: 100%;
+    object-fit: contain; /* This property ensures the image maintains its aspect ratio */
+    align-items: flex-start; /* Align items to the top of the flex container */
+    order: 3;
+
+  }
+}
+
+/* Large devices (desktops, 992px and below) */
+@media (min-width: 769px) and (max-width: 992px) {
+  .summary {
+    display: flex;
+    align-items: flex-start; /* Align items to the top of the flex container */
+
+  }
+
+
+
+  .picture {
+    width: auto;
+    max-width: 50%;
+    max-height: 40vh;
+    transition: transform $transition-duration ease-in-out;
+    object-fit: contain; /* This property ensures the image maintains its aspect ratio */
+    align-items: flex-start; /* Align items to the top of the flex container */
+
+    &:hover {
+      transform: scale($scale-factor);
+    }
+  }
+
+  .picture-2 {
+    max-height: 71vh;
+    width: auto;
+    max-width: 50%;
+    margin-left: 5%;
+    object-fit: contain; /* This property ensures the image maintains its aspect ratio */
+    transition: transform $transition-duration ease-in-out;
+    align-items: flex-start; /* Align items to the top of the flex container */
+
+    &:hover {
+      transform: scale($scale-factor);
+    }
+  }
+
+  .title {
+    font-size: 40px;
+  }
+
+  .resume {
+    padding-top: 5%;
+    font-size: 25px;
+  }
+
+  .about {
+    padding-top: 5%;
+    font-size: 16px;
+    align-items: flex-start; /* Align items to the top of the flex container */
+    display: flex;
+  }
+
+}
+
+/* Extra large devices (large desktops, 993px and above) */
+@media (min-width: 993px) {
+  .summary {
+    display: flex;
+    align-items: flex-start; /* Align items to the top of the flex container */
+
+  }
+
+  .picture {
+    max-height: 71vh;
+    width: auto;
+    max-width: 40%;
+    margin-right: 10%;
+    object-fit: contain; /* This property ensures the image maintains its aspect ratio */
+    transition: transform $transition-duration ease-in-out;
+    align-items: flex-start; /* Align items to the top of the flex container */
+
+    &:hover {
+      transform: scale($scale-factor);
+    }
+  }
+
+  .picture-2 {
+    max-height: 71vh;
+    width: auto;
+    max-width: 40%;
+    margin-left: 5%;
+    object-fit: contain; /* This property ensures the image maintains its aspect ratio */
+    transition: transform $transition-duration ease-in-out;
+    align-items: flex-start; /* Align items to the top of the flex container */
+
+    &:hover {
+      transform: scale($scale-factor);
+    }
+  }
+
+
+  .title {
+    font-size: 65px;
+  }
+
+  .resume {
+    padding-top: 5%;
+    font-size: 30px;
+  }
+
+  .about {
+    padding-top: 5%;
+    font-size: 16px;
+    align-items: flex-start; /* Align items to the top of the flex container */
+    display: flex;
+  }
+}

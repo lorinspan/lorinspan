@@ -97,4 +97,10 @@ export class PhotoComponent implements OnInit {
   onExitButtonHover(isHovering: boolean): void {
     this.exitImageSrc = isHovering ? "assets/icons/exit-hover.png" : "assets/icons/exit.png";
   }
+
+  navigateTo(href: string | null): void {
+    if(href) {
+      window.location.href = href;
+    }
+  }
 }

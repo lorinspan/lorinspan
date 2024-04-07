@@ -7,7 +7,6 @@ import {NavComponent} from "./navigation/nav.component";
 import {PhotographyComponent} from "./view/photography/photography.component";
 import {DevelopmentComponent} from "./view/development/development.component";
 import { AboutMeComponent } from './view/about-me/about-me.component';
-import { ContactComponent } from './view/contact/contact.component';
 import { PhotoComponent } from './view/photography/photo/photo.component';
 
 @NgModule({
@@ -17,7 +16,6 @@ import { PhotoComponent } from './view/photography/photo/photo.component';
     PhotographyComponent,
     DevelopmentComponent,
     AboutMeComponent,
-    ContactComponent,
     PhotoComponent,
   ],
   imports: [

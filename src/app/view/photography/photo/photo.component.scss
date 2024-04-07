@@ -26,7 +26,16 @@
   //background-color: yellow;
 }
 
-.description {
+.clickable {
+  cursor: pointer;
+  text-decoration: underline;
+
+  &:hover {
+    font-weight: bold;
+  }
+}
+
+.about {
   font-family: "Century Gothic", sans-serif;
   text-align: center;
 }
@@ -112,7 +121,7 @@
     transform: scale(1.5); /* Adjust scale factor as needed */
   }
 
-  .description {
+  .about {
     margin-top: 35%;
   }
 }
@@ -166,7 +175,7 @@
     //background-color: yellow;
   }
 
-  .description {
+  .about {
     margin-top: 35%;
   }
 }
