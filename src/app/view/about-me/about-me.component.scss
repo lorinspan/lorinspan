@@ -22,6 +22,24 @@ $transition-duration: 0.2s; // Duration of the transition effect
   display: flex;
 }
 
+.sub-title {
+  display: flex;
+  font-weight: bold;
+}
+
+.button {
+  font-family: "Century Gothic", sans-serif;
+  background-color: transparent;
+  border: solid 1px black;
+  font-size: 17px;
+  font-weight: bold;
+  cursor: pointer;
+}
+
+.sub-title-description {
+  display: grid;
+}
+
 /* Medium/Small devices (tablets/phones, 768px and below) */
 @media (max-width: 768px) {
 
@@ -37,6 +55,12 @@ $transition-duration: 0.2s; // Duration of the transition effect
   .about {
     padding-top: 5%;
     font-size: 16px;
+    align-items: flex-start; /* Align items to the top of the flex container */
+    display: grid;
+    flex-direction: column;
+  }
+
+  .about-section {
     align-items: flex-start; /* Align items to the top of the flex container */
     display: grid;
     flex-direction: column;
@@ -58,7 +82,29 @@ $transition-duration: 0.2s; // Duration of the transition effect
     object-fit: contain; /* This property ensures the image maintains its aspect ratio */
     align-items: flex-start; /* Align items to the top of the flex container */
     order: 3;
+  }
 
+  .button {
+    padding: 2.5%;
+    margin-top: 3.5%;
+  }
+
+  .sub-title-description {
+    padding-top: 2%;
+  }
+
+  .sub-title {
+    font-size: 17px;
+    margin-top: 6.5%;
+  }
+
+  .sub-title-button {
+    padding: 2%;
+    margin-top: 2.5%;
+  }
+
+  .first-paragraph {
+    margin-top: 3.5%;
   }
 }
 
@@ -69,8 +115,6 @@ $transition-duration: 0.2s; // Duration of the transition effect
     align-items: flex-start; /* Align items to the top of the flex container */
 
   }
-
-
 
   .picture {
     width: auto;
@@ -103,6 +147,17 @@ $transition-duration: 0.2s; // Duration of the transition effect
     font-size: 40px;
   }
 
+  .button {
+    padding: 5%;
+    margin-top: 7%;
+
+    &:hover {
+      background-color: gray;
+      color: white;
+      border: solid 1px gray;
+    }
+  }
+
   .resume {
     padding-top: 5%;
     font-size: 25px;
@@ -111,8 +166,33 @@ $transition-duration: 0.2s; // Duration of the transition effect
   .about {
     padding-top: 5%;
     font-size: 16px;
+  }
+
+  .sub-title-description {
+    padding-top: 3.5%;
+  }
+
+  .sub-title {
+    font-size: 17px;
+    padding-top: 10%;
+  }
+
+  .sub-title-button {
+    padding: 4%;
+    margin-top: 3%;
+  }
+
+  .about-section {
     align-items: flex-start; /* Align items to the top of the flex container */
     display: flex;
+  }
+
+  .first-paragraph {
+    margin-top: 7.5%;
+  }
+
+  .second-paragraph {
+    margin-top: 3%;
   }
 
 }
@@ -153,6 +233,16 @@ $transition-duration: 0.2s; // Duration of the transition effect
     }
   }
 
+  .button {
+    padding: 2.1%;
+    margin-top: 4%;
+
+    &:hover {
+      background-color: gray;
+      color: white;
+      border: solid 1px gray;
+    }
+  }
 
   .title {
     font-size: 65px;
@@ -160,13 +250,34 @@ $transition-duration: 0.2s; // Duration of the transition effect
 
   .resume {
     padding-top: 5%;
-    font-size: 30px;
+    font-size: 25px;
   }
 
   .about {
     padding-top: 5%;
     font-size: 16px;
+  }
+
+  .sub-title-description {
+    padding-top: 2%;
+  }
+
+  .sub-title {
+    font-size: 17px;
+    padding-top: 7.5%;
+  }
+
+  .sub-title-button {
+    padding: 1.5%;
+    margin-top: 2%;
+  }
+
+  .about-section {
     align-items: flex-start; /* Align items to the top of the flex container */
     display: flex;
+  }
+
+  .first-paragraph {
+    margin-top: 7.5%;
   }
 }
