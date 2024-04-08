@@ -20,9 +20,9 @@ export class WebsitesService {
 
 export const websites: Website[] = [
   new Website(1,
-    'assets/websites/businesscert/thumbnail.png',
-    'Business Cert',
-    'Businesscert is a meticulously crafted web platform built with Angular, designed to meet the proprietor\'s requirements for promoting their range of ISO certifications tailored for businesses seeking ISO accreditation. The platform showcases certification options, pricing details, and hosts a robust contact page facilitating seamless communication, ensuring inquiries are promptly directed to the business owner\'s inbox.',
+    'businesscert/thumbnail',
+    'BusinessCert',
+    'BusinessCert is a meticulously crafted web platform built with Angular, designed to meet the proprietor\'s requirements for promoting their range of ISO certifications tailored for businesses seeking ISO accreditation. The platform showcases certification options, pricing details, and hosts a robust contact page facilitating seamless communication, ensuring inquiries are promptly directed to the business owner\'s inbox.',
     new Presentation(1,
       '',
       'Home Page',
@@ -50,13 +50,13 @@ export const websites: Website[] = [
     )
   ),
   new Website(2,
-    'assets/websites/meconomy/thumbnail.png',
+    'meconomy/thumbnail',
     'MEconomy',
     'MEconomy was conceptualized as the culmination of my engineering degree thesis, encompassing the development of a sophisticated web application using Angular, complemented by an Android application coded in Java. The project represents a multifaceted savings platform distinguished by intricate mathematical algorithms addressing variables such as available budget, expenditure tracking on both monthly and daily scales, transaction management, categorization of items, and comprehensive statistical analyses including frequented transaction locations, preferred payment methods, specific item purchases, and recurring payments. Additionally, MEconomy features a personalized user profile experience and an integrated messaging system.',
     new Presentation(1,
-      'assets/websites/meconomy/gif-login-register.gif',
+      'meconomy/gif-login-register',
       'Login & Register',
-      'Page for login and register.'
+      'This webpage includes a comprehensive authentication system encompassing login and registration functionalities, accompanied by email confirmation and password retrieval capabilities. Moreover, it integrates authentication mechanisms through prominent platforms such as Google, Facebook, GitHub, Twitter, and Microsoft. Additionally, the page provides a succinct overview of the site\'s purpose and functionality.'
     ),
     new Presentation(2,
       '',
@@ -89,11 +89,4 @@ export const websites: Website[] = [
       ''
     )
   ),
-  new Website(0, null, null, null),
-  new Website(0, null, null, null),
-  new Website(0, null, null, null),
-  new Website(0, null, null, null),
-  new Website(0, null, null, null),
-  new Website(0, null, null, null),
-  new Website(0, null, null, null)
 ];

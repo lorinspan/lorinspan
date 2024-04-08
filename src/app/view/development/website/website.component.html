@@ -1,1 +1,20 @@
-<p>website works!</p>
+<div class="container" *ngIf="presentation">
+  <div class="picture-wrapper" [ngClass]="{'zoomed': isZoomed}" (click)="toggleZoom()" [style.cursor]="getCursorType()">
+    <img [src]="presentation.src" [alt]="presentation.alt" class="picture">
+  </div>
+  <div class="picture-menu">
+    <div class="buttons">
+      <img [src]="leftImageSrc" *ngIf="hasPrevious()" class="navigation-button left" (click)="navigateToPrevious()" (mouseenter)="onLeftButtonHover(true)" (mouseleave)="onLeftButtonHover(false)">
+      <img [src]="leftImageSrc" *ngIf="!hasPrevious()" class="navigation-button left hidden" (mouseenter)="onLeftButtonHover(true)" (mouseleave)="onLeftButtonHover(false)">
+      <img [src]="rightImageSrc" *ngIf="hasNext()" class="navigation-button right" (click)="navigateToNext()" (mouseenter)="onRightButtonHover(true)" (mouseleave)="onRightButtonHover(false)">
+      <img [src]="rightImageSrc" *ngIf="!hasNext()" class="navigation-button right hidden" (mouseenter)="onRightButtonHover(true)" (mouseleave)="onRightButtonHover(false)">
+      <img [src]="exitImageSrc" class="navigation-button exit" (click)="navigateToPhotography()" (mouseenter)="onExitButtonHover(true)" (mouseleave)="onExitButtonHover(false)">
+    </div>
+    <div class="about">
+      <div class="presentation-details" *ngIf="presentation">
+        <h2>{{ presentation.title }}</h2>
+        <p>{{ presentation.description }}</p>
+      </div>
+    </div>
+  </div>
+</div>

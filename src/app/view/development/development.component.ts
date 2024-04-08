@@ -18,9 +18,9 @@ export class DevelopmentComponent implements OnInit {
     this.columns = [];
   }
 
-  navigateToWebsite(websiteId: number) {
+  navigateToWebsite(websiteId: number, presentationId: number) {
     if (websiteId !== 0 && websiteId) {
-      this.router.navigate(['/website', websiteId]);
+      this.router.navigate(['/website', websiteId, 'presentation', presentationId]);
     }
   }
 

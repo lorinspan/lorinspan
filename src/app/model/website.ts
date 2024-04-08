@@ -7,7 +7,7 @@ export class Website {
 
   constructor(id: number, thumbnail: string | null, name: string | null, description: string | null, ...presentations: Presentation[]) {
     this.id = id;
-    this.thumbnail = thumbnail;
+    this.thumbnail = 'assets/websites/' + thumbnail + ".png"
     this.name = name;
     this.description = description;
     this.presentations = [];
@@ -21,13 +21,15 @@ export class Website {
 
 export class Presentation {
   id: number;
-  gif: string;
+  src: string;
+  alt: string;
   title: string;
   description: string;
 
-  constructor(id: number, gif: string, title: string, description: string) {
+  constructor(id: number, alt: string, title: string, description: string) {
     this.id = id;
-    this.gif = gif;
+    this.src = 'assets/websites/' + alt + ".gif";
+    this.alt = alt;
     this.title = title;
     this.description = description;
   }

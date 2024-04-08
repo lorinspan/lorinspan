@@ -30,7 +30,7 @@ $transition-duration: 0.2s; // Duration of the transition effect
 }
 
 .links {
-  display: flex;
+  display: flex !important;
 }
 
 .links-item {
