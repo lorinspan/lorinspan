@@ -151,11 +151,12 @@ $transition-duration: 0.2s; // Duration of the transition effect
   .button {
     padding: 5%;
     margin-top: 7%;
+    transition: all 0.15s ease-in-out; /* Added transition property */
 
     &:hover {
-      background-color: gray;
-      color: white;
-      border: solid 1px gray;
+      background-color: gray !important;
+      color: white !important;
+      border: solid 1px gray !important;
     }
   }
 
@@ -237,11 +238,12 @@ $transition-duration: 0.2s; // Duration of the transition effect
   .button {
     padding: 2.1%;
     margin-top: 4%;
+    transition: all 0.15s ease-in-out; /* Added transition property */
 
     &:hover {
-      background-color: gray;
-      color: white;
-      border: solid 1px gray;
+      background-color: gray !important;
+      color: white !important;
+      border: solid 1px gray !important;
     }
   }
 
