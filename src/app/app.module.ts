@@ -8,6 +8,7 @@ import {PhotographyComponent} from "./view/photography/photography.component";
 import {DevelopmentComponent} from "./view/development/development.component";
 import { AboutMeComponent } from './view/about-me/about-me.component';
 import { PhotoComponent } from './view/photography/photo/photo.component';
+import { WebsiteComponent } from './view/development/website/website.component';
 
 @NgModule({
   declarations: [
@@ -17,6 +18,7 @@ import { PhotoComponent } from './view/photography/photo/photo.component';
     DevelopmentComponent,
     AboutMeComponent,
     PhotoComponent,
+    WebsiteComponent,
   ],
   imports: [
     BrowserModule,

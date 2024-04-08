@@ -1,2 +1,172 @@
 .container {
+  display: grid;
+}
+
+.website {
+}
+
+.picture {
+  border: 1px solid black;
+  height: auto;
+  object-fit: contain; /* This property ensures the image maintains its aspect ratio */
+}
+
+.details {
+  font-family: "Century Gothic", sans-serif;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.name {
+  display: flex;
+  justify-content: center;
+}
+
+.description {
+  font-size: 16px;
+  text-align: center;
+}
+
+.button {
+  font-family: "Century Gothic", sans-serif;
+  background-color: transparent;
+  border: solid 1px black !important;
+  font-size: 17px;
+  font-weight: bold;
+  cursor: pointer;
+  color: black !important;
+}
+
+/* Adjustments for medium devices */
+@media (max-width: 768px) {
+  .website {
+    display: grid;
+  }
+
+  .container {
+  }
+
+  .name {
+    font-size: 40px;
+    text-align: center;
+    margin-top: 3.5%;
+    margin-bottom: 3.5%;
+  }
+
+  .details {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    align-content: center;
+    align-self: center;
+  }
+
+  .picture {
+    width: 100%;
+  }
+
+  .website {
+    margin-left: 1.5%;
+    margin-bottom: 1%;
+  }
+
+  .button {
+    padding: 2.5%;
+    margin-top: 3.5%;
+    margin-bottom: 5%;
+  }
+}
+
+/* Adjustments for large devices */
+@media (min-width: 769px) and (max-width: 992px) {
+  .website {
+    display: grid;
+  }
+
+  .container {
+  }
+
+  .name {
+    font-size: 40px;
+    text-align: center;
+    margin-top: 3.5%;
+    margin-bottom: 3.5%;
+  }
+
+  .details {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    align-content: center;
+    align-self: center;
+  }
+
+  .picture {
+    width: 100%;
+  }
+
+  .website {
+    margin-left: 1.5%;
+    margin-bottom: 1%;
+  }
+
+  .button {
+    padding: 2.5%;
+    margin-top: 3.5%;
+    margin-bottom: 5%;
+    transition: all 0.15s ease-in-out; /* Added transition property */
+
+    &:hover {
+      background-color: gray !important;
+      color: white !important;
+      border: solid 1px gray !important;
+    }
+  }
+}
+
+/* Adjustments for extra large devices */
+@media (min-width: 993px) {
+  .website {
+    display: flex;
+  }
+
+  .container {
+  }
+
+  .name {
+    font-size: 40px;
+    margin-top: 5%;
+    margin-bottom: 10%;
+  }
+
+  .details {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    align-content: center;
+    align-self: center;
+  }
+
+  .picture {
+    width: 75%;
+    margin-right: 1.5%;
+  }
+
+  .website {
+    margin-left: 1.5%;
+    margin-bottom: 1%;
+  }
+
+  .button {
+    padding: 2.5%;
+    margin-top: 10%;
+    transition: all 0.15s ease-in-out; /* Added transition property */
+
+    &:hover {
+      background-color: gray !important;
+      color: white !important;
+      border: solid 1px gray !important;
+    }
+  }
 }
