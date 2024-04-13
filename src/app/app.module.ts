@@ -26,8 +26,8 @@ import {NgOptimizedImage} from "@angular/common";
   imports: [
     BrowserModule,
     AppRoutingModule,
-    MatProgressBarModule,
     NgOptimizedImage,
+    MatProgressBarModule,
   ],
   providers: [],
   bootstrap: [AppComponent]

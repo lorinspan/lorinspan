@@ -27,39 +27,33 @@ export class PhotographyComponent implements OnInit {
     this.calculateColumns();
     this.picturesService.getPictures().subscribe(pictures => {
       this.pictures = pictures;
+      this.loadingService.setLoading(true);
       this.generatePictures();
     });
   }
 
   @HostListener('window:resize', ['$event'])
   onResize(event: any) {
+    let lastNumberOfColumns = this.numberOfColumns;
     this.calculateColumns();
-    // this.generatePictures();
+    if(lastNumberOfColumns !== this.numberOfColumns) {
+      this.generatePictures();
+    } else {
+      this.loadingService.setLoading(false);
+    }
   }
-
-  lastNumberOfColumns: number = this.numberOfColumns;
 
   calculateColumns() {
     if (window.matchMedia('(min-width: 993px)').matches) {
       this.numberOfColumns = 5;
-      if(this.lastNumberOfColumns !== this.numberOfColumns || !this.columns.length) {
-        this.generatePictures();
-      }
     } else if (window.matchMedia('(min-width: 769px) and (max-width: 992px)').matches) {
       this.numberOfColumns = 3;
-      if(this.lastNumberOfColumns !== this.numberOfColumns || !this.columns.length) {
-        this.generatePictures();
-      }
     } else {
       this.numberOfColumns = 1;
-      if(this.lastNumberOfColumns !== this.numberOfColumns || !this.columns.length) {
-        this.generatePictures();
-      }
     }
   }
 
   generatePictures() {
-    this.loadingService.setLoading(true);
     const numPictures = this.pictures.length;
     const numColumns = this.numberOfColumns;
 
