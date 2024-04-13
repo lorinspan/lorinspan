@@ -1,4 +1,4 @@
-import { Component, HostListener, OnInit } from '@angular/core';
+import { AfterViewInit, Component, ElementRef, HostListener, OnInit, QueryList, Renderer2, ViewChild, ViewChildren } from '@angular/core';
 import { Picture } from "../../model/picture";
 import { PicturesService } from "../../services/pictures-service";
 import { Router } from "@angular/router";
@@ -8,12 +8,17 @@ import { Router } from "@angular/router";
   templateUrl: './photography.component.html',
   styleUrls: ['./photography.component.scss']
 })
-export class PhotographyComponent implements OnInit {
+export class PhotographyComponent implements OnInit, AfterViewInit {
   numberOfColumns: number = 1;
   pictures: Picture[];
   columns: Picture[][];
 
-  constructor(private readonly picturesService: PicturesService, private router: Router) {
+  @ViewChild('container') container!: ElementRef;
+  @ViewChildren('imageContainer') imageContainers!: QueryList<ElementRef>;
+
+  private observer: IntersectionObserver | undefined;
+
+  constructor(private readonly picturesService: PicturesService, private router: Router, private renderer: Renderer2) {
     this.columns = [];
     this.pictures = [];
   }
@@ -28,6 +33,29 @@ export class PhotographyComponent implements OnInit {
       this.pictures = pictures;
       this.preloadImages(this.pictures);
       this.generatePictures();
+    });
+  }
+
+  ngAfterViewInit(): void {
+    // Set up Intersection Observer
+    this.observer = new IntersectionObserver((entries, observer) => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting) {
+          const image = entry.target.querySelector('.picture') as HTMLImageElement;
+          if (image && !image.src) {
+            const src = image.getAttribute('data-src');
+            if (src) {
+              image.src = src;
+            }
+          }
+          observer.unobserve(entry.target);
+        }
+      });
+    });
+
+    // Start observing image containers
+    this.imageContainers.forEach(container => {
+      this.observer?.observe(container.nativeElement);
     });
   }
 
