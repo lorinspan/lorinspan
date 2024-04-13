@@ -9,6 +9,7 @@ import {DevelopmentComponent} from "./view/development/development.component";
 import { AboutMeComponent } from './view/about-me/about-me.component';
 import { PhotoComponent } from './view/photography/photo/photo.component';
 import { WebsiteComponent } from './view/development/website/website.component';
+import {NgOptimizedImage} from "@angular/common";
 
 @NgModule({
   declarations: [
@@ -23,6 +24,7 @@ import { WebsiteComponent } from './view/development/website/website.component';
   imports: [
     BrowserModule,
     AppRoutingModule,
+    NgOptimizedImage,
   ],
   providers: [],
   bootstrap: [AppComponent]
