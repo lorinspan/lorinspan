@@ -10,6 +10,7 @@ import { AboutMeComponent } from './view/about-me/about-me.component';
 import { PhotoComponent } from './view/photography/photo/photo.component';
 import { WebsiteComponent } from './view/development/website/website.component';
 import { MatProgressBarModule } from "@angular/material/progress-bar";
+import {NgOptimizedImage} from "@angular/common";
 
 
 @NgModule({
@@ -26,6 +27,7 @@ import { MatProgressBarModule } from "@angular/material/progress-bar";
     BrowserModule,
     AppRoutingModule,
     MatProgressBarModule,
+    NgOptimizedImage,
   ],
   providers: [],
   bootstrap: [AppComponent]

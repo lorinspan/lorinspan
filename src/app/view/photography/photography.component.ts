@@ -27,7 +27,6 @@ export class PhotographyComponent implements OnInit {
     this.calculateColumns();
     this.picturesService.getPictures().subscribe(pictures => {
       this.pictures = pictures;
-      this.preloadImages(this.pictures);
       this.generatePictures();
     });
   }
@@ -46,13 +45,6 @@ export class PhotographyComponent implements OnInit {
     } else {
       this.numberOfColumns = 1;
     }
-  }
-
-  preloadImages(pictures: Picture[]) {
-    pictures.forEach(picture => {
-      const img = new Image();
-      img.src = picture.src;
-    });
   }
 
   generatePictures() {
