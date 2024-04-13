@@ -19,7 +19,7 @@ $transition-duration: 0.1s; // Duration of the transition effect
 
 .fade-in-picture {
   opacity: 0;
-  animation: fadeIn 0.85s ease-in forwards;
+  animation: fadeIn 1s ease-in forwards;
 }
 
 @keyframes fadeIn {
