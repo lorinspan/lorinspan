@@ -10,6 +10,7 @@ import { AboutMeComponent } from './view/about-me/about-me.component';
 import { PhotoComponent } from './view/photography/photo/photo.component';
 import { WebsiteComponent } from './view/development/website/website.component';
 import {NgOptimizedImage} from "@angular/common";
+import {LazyLoadImageModule} from "ng-lazyload-image";
 
 @NgModule({
   declarations: [
@@ -25,6 +26,7 @@ import {NgOptimizedImage} from "@angular/common";
     BrowserModule,
     AppRoutingModule,
     NgOptimizedImage,
+    LazyLoadImageModule
   ],
   providers: [],
   bootstrap: [AppComponent]

@@ -58,22 +58,42 @@ export class PhotographyComponent implements OnInit {
     const numPictures = this.pictures.length;
     const numColumns = this.numberOfColumns;
 
-    const picturesPerColumn = Math.floor(numPictures / numColumns);
-    const columnsWithExtra = numPictures % numColumns;
+    // Create a promise array to track image loading
+    const loadingPromises: Promise<void>[] = [];
 
-    let pictureIndex = 0;
+    // Reset columns
     this.columns = [];
 
-    for (let colIndex = 0; colIndex < numColumns; colIndex++) {
-      let columnPictures = picturesPerColumn;
-      if (colIndex < columnsWithExtra) {
-        columnPictures++;
+    // Iterate over pictures to preload images and track loading
+    this.pictures.forEach((picture, index) => {
+      const img = new Image();
+      const promise = new Promise<void>((resolve) => {
+        img.onload = () => {
+          resolve();
+        };
+      });
+      img.src = picture.src;
+      loadingPromises.push(promise);
+    });
+
+    // Once all images are loaded, generate columns
+    Promise.all(loadingPromises).then(() => {
+      const picturesPerColumn = Math.floor(numPictures / numColumns);
+      const columnsWithExtra = numPictures % numColumns;
+      let pictureIndex = 0;
+
+      for (let colIndex = 0; colIndex < numColumns; colIndex++) {
+        let columnPictures = picturesPerColumn;
+        if (colIndex < columnsWithExtra) {
+          columnPictures++;
+        }
+        this.columns[colIndex] = [];
+        for (let j = 0; j < columnPictures; j++) {
+          this.columns[colIndex].push(this.pictures[pictureIndex]);
+          pictureIndex++;
+        }
       }
-      this.columns[colIndex] = [];
-      for (let j = 0; j < columnPictures; j++) {
-        this.columns[colIndex].push(this.pictures[pictureIndex]);
-        pictureIndex++;
-      }
-    }
+    });
   }
+
 }
