@@ -9,9 +9,7 @@ import {DevelopmentComponent} from "./view/development/development.component";
 import { AboutMeComponent } from './view/about-me/about-me.component';
 import { PhotoComponent } from './view/photography/photo/photo.component';
 import { WebsiteComponent } from './view/development/website/website.component';
-import {NgOptimizedImage} from "@angular/common";
-import {LazyLoadImageModule} from "ng-lazyload-image";
-import {MatProgressBarModule} from "@angular/material/progress-bar";
+import { MatProgressBarModule } from "@angular/material/progress-bar";
 
 
 @NgModule({
@@ -27,9 +25,7 @@ import {MatProgressBarModule} from "@angular/material/progress-bar";
   imports: [
     BrowserModule,
     AppRoutingModule,
-    NgOptimizedImage,
     MatProgressBarModule,
-    LazyLoadImageModule
   ],
   providers: [],
   bootstrap: [AppComponent]
