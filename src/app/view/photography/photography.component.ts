@@ -2,6 +2,7 @@ import { Component, HostListener, OnInit } from '@angular/core';
 import { Picture } from "../../model/picture";
 import { PicturesService } from "../../services/pictures-service";
 import { Router } from "@angular/router";
+import {LoadingService} from "../../services/loading-service";
 
 @Component({
   selector: 'app-photography',
@@ -13,7 +14,7 @@ export class PhotographyComponent implements OnInit {
   pictures: Picture[];
   columns: Picture[][];
 
-  constructor(private readonly picturesService: PicturesService, private router: Router) {
+  constructor(private readonly picturesService: PicturesService, private router: Router, public loadingService: LoadingService) {
     this.columns = [];
     this.pictures = [];
   }
@@ -55,6 +56,7 @@ export class PhotographyComponent implements OnInit {
   }
 
   generatePictures() {
+    this.loadingService.setLoading(true);
     const numPictures = this.pictures.length;
     const numColumns = this.numberOfColumns;
 
@@ -93,6 +95,7 @@ export class PhotographyComponent implements OnInit {
           pictureIndex++;
         }
       }
+      this.loadingService.setLoading(false);
     });
   }
 

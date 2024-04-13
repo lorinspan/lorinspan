@@ -1,4 +1,5 @@
 import { Component } from '@angular/core';
+import {LoadingService} from "../services/loading-service";
 
 @Component({
   selector: 'navigation',
@@ -24,5 +25,8 @@ export class NavComponent {
         return;
     }
     window.location.href = href;
+  }
+
+  constructor(public loadingService: LoadingService) {
   }
 }

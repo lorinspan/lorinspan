@@ -26,5 +26,6 @@
         <img src="../../../assets/icons/mail.png" alt="mail" class="links-icon" (click)="navigateTo('mail')">
       </div>
     </div>
+    <mat-progress-bar mode="indeterminate" *ngIf="loadingService.getLoading()"></mat-progress-bar>
   </div>
 </div>

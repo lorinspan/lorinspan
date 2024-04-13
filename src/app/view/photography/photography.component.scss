@@ -11,6 +11,10 @@ $transition-duration: 0.1s; // Duration of the transition effect
   max-width: calc(25% - 10px); /* Set maximum width for each column */
 }
 
+mat-progress-bar {
+  width: 50vw;
+}
+
 .picture {
   position: relative !important;
   cursor: pointer;
