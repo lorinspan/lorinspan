@@ -92,40 +92,20 @@ export const websites: Website[] = [
   new Website(3,
     'webscraper/thumbnail',
     'Web Scraper',
-    'WebScraper is a meticulously designed tool developed using Angular, Java, and Spring, aimed at efficiently extracting company details from Excel sheets or single website URLs. Leveraging optimized thread management, it swiftly retrieves essential information such as legal names, aliases, contact details including addresses, phone numbers, and social media links. Its advanced matching algorithm, incorporating Levenshtein distance with weighted analysis, ensures precise and accurate results for diverse data sets. Notably, it compares matches to the highly accurate Algolia search engine, achieving consistency up to 99% of the time.',
+    'WebScraper is a meticulously designed tool developed using Angular, Selenium, Java and Spring, aimed at efficiently extracting company details from Excel sheets or single website URLs. Leveraging optimized thread management, it swiftly retrieves essential information such as legal names, aliases, contact details including addresses, phone numbers, and social media links. Its advanced matching algorithm, incorporating Levenshtein distance with weighted analysis, ensures precise and accurate results for diverse data sets. Notably, it compares matches to the highly accurate Algolia search engine, achieving consistency up to 99% of the time.',
     new Presentation(1,
       '',
-      '',
+      'Company Search',
       ''
     ),
     new Presentation(2,
       '',
-      'Dashboard',
+      'Crawl',
       'Aaa'
     ),
     new Presentation(3,
       '',
-      'Transactions',
-      ''
-    ),
-    new Presentation(4,
-      '',
-      'Statistics',
-      ''
-    ),
-    new Presentation(5,
-      '',
-      'Messages',
-      ''
-    ),
-    new Presentation(6,
-      '',
-      'Profile',
-      ''
-    ),
-    new Presentation(7,
-      '',
-      'Android',
+      'Merge CSV',
       ''
     )
   ),
