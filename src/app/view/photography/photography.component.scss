@@ -19,6 +19,7 @@ $transition-duration: 0.1s; // Duration of the transition effect
 }
 
 .picture {
+  position: relative !important;
   width: 100%;
   height: auto;
 }

@@ -1,11 +1,11 @@
 export class Website {
   id: number;
-  thumbnail: string | null;
+  thumbnail: string;
   name: string | null;
   description: string | null;
   presentations: Presentation[];
 
-  constructor(id: number, thumbnail: string | null, name: string | null, description: string | null, ...presentations: Presentation[]) {
+  constructor(id: number, thumbnail: string, name: string | null, description: string | null, ...presentations: Presentation[]) {
     this.id = id;
     this.thumbnail = 'assets/websites/' + thumbnail + ".png"
     this.name = name;
