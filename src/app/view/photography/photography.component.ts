@@ -35,61 +35,71 @@ export class PhotographyComponent implements OnInit {
   @HostListener('window:resize', ['$event'])
   onResize(event: any) {
     this.calculateColumns();
-    this.generatePictures();
+    // this.generatePictures();
   }
+
+  lastNumberOfColumns: number = this.numberOfColumns;
 
   calculateColumns() {
     if (window.matchMedia('(min-width: 993px)').matches) {
       this.numberOfColumns = 5;
+      if(this.lastNumberOfColumns !== this.numberOfColumns) {
+        this.generatePictures();
+      }
     } else if (window.matchMedia('(min-width: 769px) and (max-width: 992px)').matches) {
       this.numberOfColumns = 3;
+      if(this.lastNumberOfColumns !== this.numberOfColumns) {
+        this.generatePictures();
+      }
     } else {
       this.numberOfColumns = 1;
+      if(this.lastNumberOfColumns !== this.numberOfColumns) {
+        this.generatePictures();
+      }
     }
   }
 
   generatePictures() {
-    if (!this.columns.length) {
-      const numPictures = this.pictures.length;
-      const numColumns = this.numberOfColumns;
+    const numPictures = this.pictures.length;
+    const numColumns = this.numberOfColumns;
 
-      // Create a promise array to track image loading
-      const loadingPromises: Promise<void>[] = [];
+    // Create a promise array to track image loading
+    const loadingPromises: Promise<void>[] = [];
 
-      // Reset columns
-      this.columns = [];
+    // Reset columns
+    this.columns = [];
 
-      // Iterate over pictures to preload images and track loading
-      this.pictures.forEach((picture, index) => {
-        const img = new Image();
-        const promise = new Promise<void>((resolve) => {
-          img.onload = () => {
-            resolve();
-          };
-        });
-        img.src = picture.src;
-        loadingPromises.push(promise);
+    // Iterate over pictures to preload images and track loading
+    this.pictures.forEach((picture, index) => {
+      const img = new Image();
+      const promise = new Promise<void>((resolve) => {
+        img.onload = () => {
+          resolve();
+        };
       });
+      img.src = picture.src;
+      loadingPromises.push(promise);
+    });
 
-      // Once all images are loaded, generate columns
-      Promise.all(loadingPromises).then(() => {
-        const picturesPerColumn = Math.floor(numPictures / numColumns);
-        const columnsWithExtra = numPictures % numColumns;
-        let pictureIndex = 0;
+    // Once all images are loaded, generate columns
+    Promise.all(loadingPromises).then(() => {
+      const picturesPerColumn = Math.floor(numPictures / numColumns);
+      const columnsWithExtra = numPictures % numColumns;
+      let pictureIndex = 0;
 
-        for (let colIndex = 0; colIndex < numColumns; colIndex++) {
-          let columnPictures = picturesPerColumn;
-          if (colIndex < columnsWithExtra) {
-            columnPictures++;
-          }
-          this.columns[colIndex] = [];
-          for (let j = 0; j < columnPictures; j++) {
-            this.columns[colIndex].push(this.pictures[pictureIndex]);
-            pictureIndex++;
-          }
+      for (let colIndex = 0; colIndex < numColumns; colIndex++) {
+        let columnPictures = picturesPerColumn;
+        if (colIndex < columnsWithExtra) {
+          columnPictures++;
         }
-        this.loadingService.setLoading(false);
-      });
-    }
+        this.columns[colIndex] = [];
+        for (let j = 0; j < columnPictures; j++) {
+          this.columns[colIndex].push(this.pictures[pictureIndex]);
+          pictureIndex++;
+        }
+      }
+      this.loadingService.setLoading(false);
+    });
   }
+
 }
