@@ -1,8 +1,8 @@
 <div class="container">
   <ng-container *ngFor="let column of columns">
     <div class="col">
-      <div *ngFor="let picture of column">
-        <img [ngSrc]="picture.src" [alt]="picture.alt" class="picture" (click)="navigateToPicture(picture.id)" priority="" fill="">
+      <div *ngFor="let picture of column; let i = index" [style.animation-delay]="i * 0.15 + 's'" class="fade-in-picture">
+        <img [src]="picture.src" [alt]="picture.alt" class="picture" (click)="navigateToPicture(picture.id)">
       </div>
     </div>
   </ng-container>
