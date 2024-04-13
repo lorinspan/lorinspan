@@ -20,7 +20,7 @@ export class DevelopmentComponent implements OnInit {
 
   navigateToWebsite(websiteId: number, presentationId: number) {
     if (websiteId !== 0 && websiteId) {
-      this.router.navigate(['/website', websiteId, 'presentation', presentationId]);
+      this.router.navigate(['/website', websiteId, 'presentation']);
     }
   }
 
