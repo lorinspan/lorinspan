@@ -16,7 +16,7 @@ export class PhotographyComponent implements OnInit, AfterViewInit {
   @ViewChild('container') container!: ElementRef;
   @ViewChildren('imageContainer') imageContainers!: QueryList<ElementRef>;
 
-  private observer: IntersectionObserver | undefined;
+  private loadedImagesCount = 0;
 
   constructor(private readonly picturesService: PicturesService, private router: Router, private renderer: Renderer2) {
     this.columns = [];
@@ -37,32 +37,15 @@ export class PhotographyComponent implements OnInit, AfterViewInit {
   }
 
   ngAfterViewInit(): void {
-    // Set up Intersection Observer
-    this.observer = new IntersectionObserver((entries, observer) => {
-      entries.forEach(entry => {
-        if (entry.isIntersecting) {
-          const image = entry.target.querySelector('.picture') as HTMLImageElement;
-          if (image && !image.src) {
-            const src = image.getAttribute('data-src');
-            if (src) {
-              image.src = src;
-            }
-          }
-          observer.unobserve(entry.target);
-        }
-      });
-    });
-
-    // Start observing image containers
-    this.imageContainers.forEach(container => {
-      this.observer?.observe(container.nativeElement);
-    });
+    this.lazyLoadImages();
   }
 
   @HostListener('window:resize', ['$event'])
   onResize(event: any) {
     this.calculateColumns();
     this.generatePictures();
+    // Re-evaluate lazy loading when window is resized
+    this.lazyLoadImages();
   }
 
   calculateColumns() {
@@ -103,5 +86,24 @@ export class PhotographyComponent implements OnInit, AfterViewInit {
         pictureIndex++;
       }
     }
+  }
+
+  lazyLoadImages() {
+    // Calculate the number of images to load based on the number of columns
+    const imagesToLoad = this.numberOfColumns * 3; // Load 3 times the number of columns
+
+    // Load images that haven't been loaded yet
+    for (let i = this.loadedImagesCount; i < Math.min(this.loadedImagesCount + imagesToLoad, this.pictures.length); i++) {
+      const image = this.imageContainers.toArray()[i].nativeElement.querySelector('.picture') as HTMLImageElement;
+      if (image && !image.src) {
+        const src = image.getAttribute('data-src');
+        if (src) {
+          image.src = src;
+        }
+      }
+    }
+
+    // Update the count of loaded images
+    this.loadedImagesCount += imagesToLoad;
   }
 }
