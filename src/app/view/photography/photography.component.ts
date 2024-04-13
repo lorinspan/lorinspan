@@ -27,6 +27,7 @@ export class PhotographyComponent implements OnInit {
     this.calculateColumns();
     this.picturesService.getPictures().subscribe(pictures => {
       this.pictures = pictures;
+      this.loadingService.setLoading(true);
       this.generatePictures();
     });
   }
@@ -48,7 +49,6 @@ export class PhotographyComponent implements OnInit {
   }
 
   generatePictures() {
-    this.loadingService.setLoading(true);
     const numPictures = this.pictures.length;
     const numColumns = this.numberOfColumns;
 
