@@ -1,12 +1,17 @@
-import { Component } from '@angular/core';
+import {AfterViewInit, Component, OnInit} from '@angular/core';
+import {LoadingService} from "../../services/loading-service";
 
 @Component({
   selector: 'app-about-me',
   templateUrl: './about-me.component.html',
   styleUrls: ['./about-me.component.scss']
 })
-export class AboutMeComponent {
-  constructor() {}
+export class AboutMeComponent implements AfterViewInit, OnInit {
+  constructor(public loadingService: LoadingService) {}
+
+  ngOnInit(): void {
+    this.loadingService.setLoading(true);
+  }
 
   navigateToMail() {
     window.location.href = 'mailto:lorinspanx@gmail.com';
@@ -20,5 +25,30 @@ export class AboutMeComponent {
     document.body.appendChild(link);
     link.click();
     link.remove(); // Clean up
+  }
+
+  checkImagesLoaded(images: HTMLImageElement[]): Promise<Awaited<void>[]> {
+    const promises: Promise<void>[] = [];
+
+    // Create a promise for each image
+    images.forEach((img) => {
+      const promise = new Promise<void>((resolve) => {
+        img.onload = () => resolve();
+      });
+      promises.push(promise);
+    });
+
+    // Return a promise that resolves when all images have loaded
+    return Promise.all(promises);
+  }
+
+  ngAfterViewInit() {
+    const images: HTMLImageElement[] = Array.from(document.querySelectorAll('.picture, .picture-2')) as HTMLImageElement[];
+
+    // Check if all images have loaded
+    this.checkImagesLoaded(images).then(() => {
+      // All images have loaded
+      this.loadingService.setLoading(false); // Set loading to false
+    });
   }
 }
