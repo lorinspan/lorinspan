@@ -2,6 +2,7 @@ import {Component, HostListener, OnInit} from '@angular/core';
 import {Website} from "../../model/website";
 import {websites, WebsitesService} from "../../services/websites-service";
 import {Router} from "@angular/router";
+import {LoadingService} from "../../services/loading-service";
 
 @Component({
   selector: 'app-development',
@@ -13,7 +14,7 @@ export class DevelopmentComponent implements OnInit {
   websites: Website[];
   columns: Website[][];
 
-  constructor(private readonly websitesService: WebsitesService, private router: Router) {
+  constructor(private readonly websitesService: WebsitesService, private router: Router, public loadingService: LoadingService) {
     this.websites = [];
     this.columns = [];
   }
@@ -34,6 +35,7 @@ export class DevelopmentComponent implements OnInit {
     this.calculateWebsites();
     this.websitesService.getWebsites().subscribe(websites => {
       this.websites = websites;
+      this.loadingService.setLoading(true);
       this.generateWebsites();
     });
   }
@@ -69,5 +71,6 @@ export class DevelopmentComponent implements OnInit {
         websiteIndex++;
       }
     }
+    this.loadingService.setLoading(false);
   }
 }
