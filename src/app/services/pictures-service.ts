@@ -21,7 +21,7 @@ export class PicturesService {
 export const pictures: Picture[] = [
   new Picture(1,
     'lavinia-popa-afi-cotroceni-leu-c.jpg',
-    'The first snapshot I took with my new mirrorless camera features Lavinia, my friend and dorm neighbor, against the backdrop of the AFI Cotroceni Sphere, perched atop our student residence roof. Illuminated solely by natural light, I improvised with a phone flash to fill in the shadows, as professional lighting gear wasn\'t yet part of my kit.',
+    'The first snapshot I took with my new mirrorless camera features Lavinia against the backdrop of the AFI Cotroceni Sphere, perched atop our student residence roof. Illuminated solely by natural light, I improvised with a phone flash to fill in the shadows, as professional lighting gear wasn\'t yet part of my kit.',
     '11th of April, 2024',
     'The Lion Complex',
     'https://maps.app.goo.gl/WZ3KBwhREhcmRgNP8' ,
