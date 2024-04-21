@@ -1,13 +1,26 @@
 $scale-factor: 1.015; // Factor by which the element grows on hover
 $transition-duration: 0.1s; // Duration of the transition effect
 
+/* Animation keyframes for fade-in */
+@keyframes fadeIn {
+  from {
+    opacity: 0; // Start from invisible
+    transform: scale(0.95); // Slightly smaller for a pop-in effect
+  }
+  to {
+    opacity: 1; // Fully visible
+    transform: scale(1); // Normal size
+  }
+}
+
 .picture {
   display: block; // Images should be block-level to fit within columns
   width: 100%; // Fill the column's width
   height: auto; // Maintain aspect ratio
   break-inside: avoid; // Prevents breaking within a column
   cursor: pointer;
-  transition: transform $transition-duration ease-in-out;
+  transition: transform $transition-duration ease-in-out, opacity $transition-duration ease-in-out;
+  animation: fadeIn 0.5s ease-in; // Apply the fade-in animation with duration and easing
 }
 
 .picture:hover {
