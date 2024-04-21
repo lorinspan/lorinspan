@@ -1,4 +1,4 @@
-import { Component, OnInit, OnDestroy, HostListener } from '@angular/core';
+import {Component, OnInit, OnDestroy, HostListener, ElementRef, QueryList, ViewChildren} from '@angular/core';
 import { Picture } from '../../model/picture';
 import { PicturesService } from '../../services/pictures-service';
 import { Router } from '@angular/router';
@@ -10,6 +10,8 @@ import { LoadingService } from '../../services/loading-service';
   styleUrls: ['./photography.component.scss'],
 })
 export class PhotographyComponent implements OnInit, OnDestroy {
+  @ViewChildren('picture') pictureElements!: QueryList<ElementRef<HTMLImageElement>>;
+  visiblePicturesIndex = 0;
   numberOfColumns = 1;
   allPictures: Picture[] = [];
   visiblePictures: Picture[] = [];
@@ -21,6 +23,7 @@ export class PhotographyComponent implements OnInit, OnDestroy {
   intervalIncrementFactor = 50;
   currentIncrement = this.baseIncrement;
   intervalId: number | null = null;
+  private observer!: IntersectionObserver;
 
   constructor(
     private readonly picturesService: PicturesService,
@@ -34,16 +37,42 @@ export class PhotographyComponent implements OnInit, OnDestroy {
 
   ngOnInit(): void {
     this.calculateColumns();
+
     this.picturesService.getPictures().subscribe((pictures) => {
-    console.log("oninit");
       this.allPictures = pictures;
+
       this.setBatchAndInterval();
       this.visiblePictures = this.allPictures.slice(0, this.initialBatchLoadSize);
+
       this.loadingService.setLoading(true);
       this.generatePictures();
-      this.setLoadInterval(); // Start the load interval with the updated time
+      this.setLoadInterval();
     });
+
+    this.setupObserver(); // Set up the observer to track which picture is in view
   }
+
+// Create an IntersectionObserver and track visible pictures
+  setupObserver() {
+    this.observer = new IntersectionObserver((entries) => {
+      entries.forEach((entry) => {
+        if (entry.isIntersecting) {
+          const nativeElement = entry.target as HTMLImageElement; // Explicitly cast to HTMLImageElement
+          const elementArray = this.pictureElements.map((elementRef) => elementRef.nativeElement); // Get native elements
+
+          const index = elementArray.indexOf(nativeElement); // Find index of the current element
+          if (index >= 0) {
+            this.visiblePicturesIndex = index; // Set the current visible picture index
+          }
+        }
+      });
+    }, { threshold: 0.5 });
+
+    // Observe each picture element
+    this.pictureElements.forEach((element) => this.observer.observe(element.nativeElement));
+  }
+
+
 
   @HostListener('window:resize', ['$event'])
   onWindowResize() {
@@ -86,43 +115,46 @@ export class PhotographyComponent implements OnInit, OnDestroy {
   }
 
   loadMorePictures() {
-    console.log("loadmorepictures");
+    // Current implementation with addition of re-anchoring based on the visible picture
     const currentLength = this.visiblePictures.length;
 
-    // If we've reached or surpassed the total number of pictures, stop loading
     if (currentLength >= this.allPictures.length) {
       if (this.intervalId) {
-        clearInterval(this.intervalId); // Stop the interval
+        clearInterval(this.intervalId);
       }
-      return; // Nothing else to load
+      return;
     }
 
-    // Determine batch size based on the batch count
     let newBatchSize;
     if (this.batchCount === 0) {
-      newBatchSize = 3; // Second batch size is 3
+      newBatchSize = 3;
     } else {
-      newBatchSize = 2; // All subsequent batches are 2
+      newBatchSize = 2;
     }
 
     const endIndex = Math.min(currentLength + newBatchSize, this.allPictures.length);
-
     const newBatch = this.allPictures.slice(currentLength, endIndex);
+
     this.visiblePictures = [...this.visiblePictures, ...newBatch];
 
     this.generatePictures();
 
+    // Re-anchoring the scroll to the currently visible picture
+    const visiblePictureElement = this.pictureElements.toArray()[this.visiblePicturesIndex];
+    if (visiblePictureElement) {
+      visiblePictureElement.nativeElement.scrollIntoView({ behavior: 'smooth', block: 'start' });
+    }
+
     this.batchCount++; // Increment the batch count
 
-    // Adjust the interval time
     this.currentLoadInterval += this.currentIncrement;
     if (this.currentLoadInterval > 1000) {
-      this.currentLoadInterval = 1000; // Cap at one second
+      this.currentLoadInterval = 1000;
     }
 
     this.currentIncrement += this.intervalIncrementFactor;
 
-    this.setLoadInterval(); // Reset with updated interval if needed
+    this.setLoadInterval();
   }
 
   calculateColumns() {
@@ -152,7 +184,10 @@ export class PhotographyComponent implements OnInit, OnDestroy {
   }
 
   ngOnDestroy() {
-    console.log("destroy");
+    if (this.observer) {
+      this.observer.disconnect();
+    }
+
     if (this.intervalId) {
       window.clearInterval(this.intervalId);
     }
