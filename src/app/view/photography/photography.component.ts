@@ -148,45 +148,26 @@ export class PhotographyComponent implements OnInit, OnDestroy {
   }
 
   loadMorePictures() {
-    this.isLoadingMore = true; // Lock to prevent multiple triggers
+    this.isLoadingMore = true;
+
     const currentLength = this.visiblePictures.length;
+    const newBatchSize = this.numberOfColumns === 1 ? 2 : this.numberOfColumns;
 
-    let newBatchSize;
+    const newPictures = this.allPictures.slice(
+      currentLength,
+      currentLength + newBatchSize
+    );
 
-    if (this.numberOfColumns === 5) {
-      newBatchSize = 5; // Subsequent batches for 5 columns
-    } else if (this.numberOfColumns === 3) {
-      newBatchSize = 3; // Subsequent batches for 3 columns
-    } else {
-      if (this.batchCount === 0) {
-        newBatchSize = 3; // First additional batch after initial load
-      } else {
-        newBatchSize = 2; // All subsequent batches for 1 column
-      }
-    }
+    // Use Angular's ChangeDetectorRef to avoid unnecessary change detection cycles
+    this.visiblePictures.push(...newPictures);
 
-    const endIndex = Math.min(currentLength + newBatchSize, this.allPictures.length);
-
-    const newBatch = this.allPictures.slice(currentLength, endIndex).map((picture) => ({
-      ...picture,
-      isNew: true, // Indicate these are newly loaded pictures for animation
-    }));
-
-    this.visiblePictures = [...this.visiblePictures, ...newBatch]; // Append new batch
-
-    this.generatePictures(); // Recreate columns with new batch
+    this.generatePictures(); // Re-render columns after batch update
 
     setTimeout(() => {
-      this.visiblePictures.forEach((picture) => {
-        picture.isNew = false; // Reset the 'isNew' flag after animation duration
-      });
-    }, 500); // Align with the animation duration
-
-    this.batchCount++; // Increment batch count
-
-    this.adjustLoadInterval(); // Adjust the loading interval
-    this.isLoadingMore = false; // Unlock
+      this.isLoadingMore = false;
+    }, 500); // Adjust delay if needed
   }
+
 
   adjustLoadInterval() {
     this.currentLoadInterval += this.baseIncrement; // Use base increment for adjustments
