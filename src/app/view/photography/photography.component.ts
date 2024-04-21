@@ -35,20 +35,19 @@ export class PhotographyComponent implements OnInit, OnDestroy {
   ngOnInit(): void {
     this.calculateColumns();
     this.picturesService.getPictures().subscribe((pictures) => {
+    console.log("oninit");
       this.allPictures = pictures;
       this.setBatchAndInterval();
-
       this.visiblePictures = this.allPictures.slice(0, this.initialBatchLoadSize);
-
       this.loadingService.setLoading(true);
       this.generatePictures();
-
       this.setLoadInterval(); // Start the load interval with the updated time
     });
   }
 
   @HostListener('window:resize', ['$event'])
   onWindowResize() {
+    console.log("resize");
     const previousNumberOfColumns = this.numberOfColumns;
     this.calculateColumns();
 
@@ -59,6 +58,7 @@ export class PhotographyComponent implements OnInit, OnDestroy {
   }
 
   setBatchAndInterval() {
+    console.log("batchandinterval");
     if (this.numberOfColumns === 1) {
       this.initialBatchLoadSize = 7; // Start with 7 for the first batch
       this.currentLoadInterval = 250; // Faster intervals
@@ -73,17 +73,29 @@ export class PhotographyComponent implements OnInit, OnDestroy {
   }
 
   setLoadInterval() {
+    console.log("loadinterval");
     if (this.intervalId) {
       clearInterval(this.intervalId); // Clear any existing interval
     }
 
-    this.intervalId = window.setInterval(() => {
-      this.loadMorePictures();
-    }, this.currentLoadInterval);
+    if (this.visiblePictures.length < this.allPictures.length) {
+      this.intervalId = window.setInterval(() => {
+        this.loadMorePictures();
+      }, this.currentLoadInterval);
+    }
   }
 
   loadMorePictures() {
+    console.log("loadmorepictures");
     const currentLength = this.visiblePictures.length;
+
+    // If we've reached or surpassed the total number of pictures, stop loading
+    if (currentLength >= this.allPictures.length) {
+      if (this.intervalId) {
+        clearInterval(this.intervalId); // Stop the interval
+      }
+      return; // Nothing else to load
+    }
 
     // Determine batch size based on the batch count
     let newBatchSize;
@@ -102,6 +114,7 @@ export class PhotographyComponent implements OnInit, OnDestroy {
 
     this.batchCount++; // Increment the batch count
 
+    // Adjust the interval time
     this.currentLoadInterval += this.currentIncrement;
     if (this.currentLoadInterval > 1000) {
       this.currentLoadInterval = 1000; // Cap at one second
@@ -109,10 +122,11 @@ export class PhotographyComponent implements OnInit, OnDestroy {
 
     this.currentIncrement += this.intervalIncrementFactor;
 
-    this.setLoadInterval(); // Reset with updated interval
+    this.setLoadInterval(); // Reset with updated interval if needed
   }
 
   calculateColumns() {
+    console.log("calculatecolumns");
     if (window.matchMedia('(min-width: 993px)').matches) {
       this.numberOfColumns = 5;
     } else if (
@@ -125,6 +139,7 @@ export class PhotographyComponent implements OnInit, OnDestroy {
   }
 
   generatePictures() {
+    console.log("generatepictures");
     const numColumns = this.numberOfColumns;
     this.columns = Array.from({ length: numColumns }, () => []); // Reset columns
 
@@ -136,11 +151,8 @@ export class PhotographyComponent implements OnInit, OnDestroy {
     this.loadingService.setLoading(false); // Loading complete
   }
 
-  trackByPictureId(index: number, picture: Picture): number {
-    return picture.id; // Unique identifier for tracking
-  }
-
   ngOnDestroy() {
+    console.log("destroy");
     if (this.intervalId) {
       window.clearInterval(this.intervalId);
     }
