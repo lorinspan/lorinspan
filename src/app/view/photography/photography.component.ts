@@ -62,7 +62,7 @@ export class PhotographyComponent implements OnInit, OnDestroy {
     if (this.numberOfColumns === 1) {
       this.initialBatchLoadSize = 7; // Start with 7 for the first batch
       this.currentLoadInterval = 250; // Faster intervals
-      this.intervalIncrementFactor = 10;
+      this.intervalIncrementFactor = 35;
     } else {
       this.initialBatchLoadSize = 5; // Larger batches for larger screens
       this.currentLoadInterval = 250; // Default interval for larger screens
