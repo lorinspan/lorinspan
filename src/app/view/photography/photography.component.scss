@@ -1,11 +1,6 @@
 $scale-factor: 1.015; // Factor by which the element grows on hover
 $transition-duration: 0.1s; // Duration of the transition effect
 
-.container {
-  column-count: 5; // Split into 5 columns
-  column-gap: 0; // No gaps between columns
-}
-
 .picture {
   display: block; // Images should be block-level to fit within columns
   width: 100%; // Fill the column's width
@@ -13,7 +8,6 @@ $transition-duration: 0.1s; // Duration of the transition effect
   break-inside: avoid; // Prevents breaking within a column
   cursor: pointer;
   transition: transform $transition-duration ease-in-out;
-  margin: 5%;
 }
 
 .picture:hover {
@@ -22,21 +16,35 @@ $transition-duration: 0.1s; // Duration of the transition effect
 
 /* Adjustments for smaller devices */
 @media (max-width: 768px) {
+  .picture {
+    margin-bottom: 2%;
+  }
+
   .container {
-    column-count: 2; // Reduce to 2 columns
+    column-count: 1; // Single column for small devices
   }
 }
 
 /* Adjustments for medium devices */
 @media (min-width: 769px) and (max-width: 992px) {
+  .picture {
+    margin-bottom: 3%; // % margin between images vertically
+  }
+
   .container {
-    column-count: 3; // Set to 3 columns
+    column-count: 3; // Set to 3 columns for medium devices
+    column-gap: 1.15%; // Retain % column gap
   }
 }
 
 /* Adjustments for extra-large devices */
 @media (min-width: 993px) {
+  .picture {
+    margin-bottom: 3.5%; // % margin between images vertically
+  }
+
   .container {
-    column-count: 5; // Set to 5 columns
+    column-count: 5; // Set to 5 columns for large devices
+    column-gap: 0.75%; // Retain % column gap
   }
 }
