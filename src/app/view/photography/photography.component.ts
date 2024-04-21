@@ -1,4 +1,4 @@
-import {Component, OnInit, OnDestroy, HostListener, ElementRef, QueryList, ViewChildren} from '@angular/core';
+import { Component, OnInit, OnDestroy, HostListener } from '@angular/core';
 import { Picture } from '../../model/picture';
 import { PicturesService } from '../../services/pictures-service';
 import { Router } from '@angular/router';
@@ -10,99 +10,65 @@ import { LoadingService } from '../../services/loading-service';
   styleUrls: ['./photography.component.scss'],
 })
 export class PhotographyComponent implements OnInit, OnDestroy {
-  @ViewChildren('picture') pictureElements!: QueryList<ElementRef<HTMLImageElement>>;
-  visiblePicturesIndex = 0;
+  // Columns information
   numberOfColumns = 1;
+  columns: Picture[][] = [];
+
+  // Picture data
   allPictures: Picture[] = [];
   visiblePictures: Picture[] = [];
-  columns: Picture[][] = [];
-  initialBatchLoadSize = 7; // Start with 7 for the first batch
-  batchCount = 0; // To track the number of batches loaded
-  currentLoadInterval = 250;
-  baseIncrement = 250;
-  intervalIncrementFactor = 50;
-  currentIncrement = this.baseIncrement;
-  intervalId: number | null = null;
-  private observer!: IntersectionObserver;
+
+  // Batch and Interval information
+  initialBatchLoadSize = 5; // Default batch size for initial load
+  intervalId: number = 0;
+  loadInterval = 250; // Default interval for loading more pictures
 
   constructor(
-    private readonly picturesService: PicturesService,
+    private picturesService: PicturesService,
     private router: Router,
     public loadingService: LoadingService
   ) {}
 
-  navigateToPicture(pictureId: number) {
-    this.router.navigate(['/photo', pictureId]);
-  }
-
   ngOnInit(): void {
-    this.calculateColumns();
-
+    this.calculateColumns(); // Determine initial number of columns
     this.picturesService.getPictures().subscribe((pictures) => {
       this.allPictures = pictures;
-
-      this.setBatchAndInterval();
-      this.visiblePictures = this.allPictures.slice(0, this.initialBatchLoadSize);
-
-      this.loadingService.setLoading(true);
-      this.generatePictures();
-      this.setLoadInterval();
+      this.loadInitialPictures();
+      this.setLoadInterval(); // Start the interval to load more pictures
     });
-
-    this.setupObserver(); // Set up the observer to track which picture is in view
   }
 
-// Create an IntersectionObserver and track visible pictures
-  setupObserver() {
-    this.observer = new IntersectionObserver((entries) => {
-      entries.forEach((entry) => {
-        if (entry.isIntersecting) {
-          const nativeElement = entry.target as HTMLImageElement; // Explicitly cast to HTMLImageElement
-          const elementArray = this.pictureElements.map((elementRef) => elementRef.nativeElement); // Get native elements
-
-          const index = elementArray.indexOf(nativeElement); // Find index of the current element
-          if (index >= 0) {
-            this.visiblePicturesIndex = index; // Set the current visible picture index
-          }
-        }
-      });
-    }, { threshold: 0.5 });
-
-    // Observe each picture element
-    this.pictureElements.forEach((element) => this.observer.observe(element.nativeElement));
-  }
-
-
-
+  // Handle window resize to adjust the number of columns
   @HostListener('window:resize', ['$event'])
   onWindowResize() {
-    console.log("resize");
-    const previousNumberOfColumns = this.numberOfColumns;
+    const prevColumns = this.numberOfColumns;
     this.calculateColumns();
 
-    if (previousNumberOfColumns !== this.numberOfColumns) {
-      this.setBatchAndInterval(); // Update batch size and interval based on columns
-      this.generatePictures(); // Recalculate the columns
+    if (prevColumns !== this.numberOfColumns) {
+      this.recalculateColumns(); // Update columns after resizing
     }
   }
 
-  setBatchAndInterval() {
-    console.log("batchandinterval");
-    if (this.numberOfColumns === 1) {
-      this.initialBatchLoadSize = 7; // Start with 7 for the first batch
-      this.currentLoadInterval = 250; // Faster intervals
-      this.intervalIncrementFactor = 35;
+  // Determine the number of columns based on screen width
+  calculateColumns() {
+    if (window.matchMedia('(min-width: 993px)').matches) {
+      this.numberOfColumns = 5;
+    } else if (window.matchMedia('(min-width: 769px) and (max-width: 992px)').matches) {
+      this.numberOfColumns = 3;
     } else {
-      this.initialBatchLoadSize = 5; // Larger batches for larger screens
-      this.currentLoadInterval = 250; // Default interval for larger screens
-      this.intervalIncrementFactor = 50;
+      this.numberOfColumns = 1;
     }
-
-    this.currentIncrement = this.baseIncrement; // Reset current increment to the base
   }
 
+  // Load initial batch of pictures and set them to visible
+  loadInitialPictures() {
+    const initialBatch = this.allPictures.slice(0, this.initialBatchLoadSize);
+    this.visiblePictures = initialBatch;
+    this.recalculateColumns();
+  }
+
+  // Set an interval to load more pictures periodically
   setLoadInterval() {
-    console.log("loadinterval");
     if (this.intervalId) {
       clearInterval(this.intervalId); // Clear any existing interval
     }
@@ -110,84 +76,48 @@ export class PhotographyComponent implements OnInit, OnDestroy {
     if (this.visiblePictures.length < this.allPictures.length) {
       this.intervalId = window.setInterval(() => {
         this.loadMorePictures();
-      }, this.currentLoadInterval);
+      }, this.loadInterval);
     }
   }
 
+  // Load more pictures and adjust the batch size and interval incrementally
   loadMorePictures() {
-    // Current implementation with addition of re-anchoring based on the visible picture
     const currentLength = this.visiblePictures.length;
 
     if (currentLength >= this.allPictures.length) {
-      if (this.intervalId) {
-        clearInterval(this.intervalId);
-      }
+      clearInterval(this.intervalId); // Stop loading when all pictures are visible
       return;
     }
 
-    let newBatchSize;
-    if (this.batchCount === 0) {
-      newBatchSize = 3;
-    } else {
-      newBatchSize = 2;
-    }
+    const batchSize = Math.min(3, this.allPictures.length - currentLength); // New batch size
+    const newPictures = this.allPictures.slice(currentLength, currentLength + batchSize);
+    this.visiblePictures.push(...newPictures);
 
-    const endIndex = Math.min(currentLength + newBatchSize, this.allPictures.length);
-    const newBatch = this.allPictures.slice(currentLength, endIndex);
+    this.recalculateColumns(); // Redistribute the columns
 
-    this.visiblePictures = [...this.visiblePictures, ...newBatch];
-
-    this.generatePictures();
-
-    // Re-anchoring the scroll to the currently visible picture
-    const visiblePictureElement = this.pictureElements.toArray()[this.visiblePicturesIndex];
-    if (visiblePictureElement) {
-      visiblePictureElement.nativeElement.scrollIntoView({ behavior: 'smooth', block: 'start' });
-    }
-
-    this.batchCount++; // Increment the batch count
-
-    this.currentLoadInterval += this.currentIncrement;
-    if (this.currentLoadInterval > 1000) {
-      this.currentLoadInterval = 1000;
-    }
-
-    this.currentIncrement += this.intervalIncrementFactor;
-
-    this.setLoadInterval();
+    this.loadInterval = Math.min(1000, this.loadInterval + 50); // Increment the interval
+    this.setLoadInterval(); // Reset the interval with the updated time
   }
 
-  calculateColumns() {
-    console.log("calculatecolumns");
-    if (window.matchMedia('(min-width: 993px)').matches) {
-      this.numberOfColumns = 5;
-    } else if (
-      window.matchMedia('(min-width: 769px) and (max-width: 992px)').matches
-    ) {
-      this.numberOfColumns = 3;
-    } else {
-      this.numberOfColumns = 1;
-    }
-  }
-
-  generatePictures() {
-    console.log("generatepictures");
-    const numColumns = this.numberOfColumns;
-    this.columns = Array.from({ length: numColumns }, () => []); // Reset columns
+  // Redistribute the visible pictures among the correct number of columns
+  recalculateColumns() {
+    this.columns = Array.from({ length: this.numberOfColumns }, () => []);
 
     this.visiblePictures.forEach((picture, index) => {
-      const colIndex = index % numColumns; // Determine the correct column
-      this.columns[colIndex].push(picture); // Insert the picture into the correct column
+      const colIndex = index % this.numberOfColumns;
+      this.columns[colIndex].push(picture);
     });
 
-    this.loadingService.setLoading(false); // Loading complete
+    this.loadingService.setLoading(false); // Indicate that loading is complete
   }
 
-  ngOnDestroy() {
-    if (this.observer) {
-      this.observer.disconnect();
-    }
+  // Navigate to the specific picture's detail page
+  navigateToPicture(pictureId: number) {
+    this.router.navigate(['/photo', pictureId]);
+  }
 
+  // Clear the interval upon component destruction
+  ngOnDestroy() {
     if (this.intervalId) {
       window.clearInterval(this.intervalId);
     }
