@@ -1,5 +1,5 @@
 <div class="container">
-  <ng-container *ngIf="!loadingService.getLoading()">
+  <ng-container>
     <ng-container *ngFor="let column of columns">
       <div class="col">
         <ng-container *ngFor="let picture of column; let i = index; trackBy: trackByPictureId">
