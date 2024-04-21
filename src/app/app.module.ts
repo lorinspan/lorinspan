@@ -11,6 +11,7 @@ import { PhotoComponent } from './view/photography/photo/photo.component';
 import { WebsiteComponent } from './view/development/website/website.component';
 import { MatProgressBarModule } from "@angular/material/progress-bar";
 import {NgOptimizedImage} from "@angular/common";
+import {CdkFixedSizeVirtualScroll, CdkVirtualForOf, CdkVirtualScrollViewport} from "@angular/cdk/scrolling";
 
 
 @NgModule({
@@ -28,6 +29,9 @@ import {NgOptimizedImage} from "@angular/common";
     AppRoutingModule,
     NgOptimizedImage,
     MatProgressBarModule,
+    CdkVirtualScrollViewport,
+    CdkFixedSizeVirtualScroll,
+    CdkVirtualForOf,
   ],
   providers: [],
   bootstrap: [AppComponent]
