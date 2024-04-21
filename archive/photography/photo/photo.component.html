@@ -1,0 +1,24 @@
+<div class="container" *ngIf="picture">
+  <div class="picture-wrapper" [ngClass]="{'zoomed': isZoomed}" (click)="toggleZoom()" [style.cursor]="getCursorType()">
+    <img [src]="picture.src" [alt]="picture.alt" class="picture">
+  </div>
+  <div class="picture-menu">
+    <div class="buttons">
+      <!-- Previous button -->
+      <img [src]="leftImageSrc" *ngIf="hasPrevious()" class="navigation-button left" (click)="navigateToPrevious()" (mouseenter)="onLeftButtonHover(true)" (mouseleave)="onLeftButtonHover(false)">
+      <img [src]="leftImageSrc" *ngIf="!hasPrevious()" class="navigation-button left hidden" (mouseenter)="onLeftButtonHover(true)" (mouseleave)="onLeftButtonHover(false)">
+      <!-- Next button with conditional rendering and hiding -->
+      <img [src]="rightImageSrc" *ngIf="hasNext()" class="navigation-button right" (click)="navigateToNext()" (mouseenter)="onRightButtonHover(true)" (mouseleave)="onRightButtonHover(false)">
+      <img [src]="rightImageSrc" *ngIf="!hasNext()" class="navigation-button right hidden" (mouseenter)="onRightButtonHover(true)" (mouseleave)="onRightButtonHover(false)">
+      <!-- Exit button -->
+      <img [src]="exitImageSrc" class="navigation-button exit" (click)="navigateToPhotography()" (mouseenter)="onExitButtonHover(true)" (mouseleave)="onExitButtonHover(false)">
+    </div>
+    <div class="about">
+      <p *ngIf="picture.about.description" class="description"> {{ picture.about.description }}</p>
+      <p *ngIf="picture.about.date" class="date"> {{ picture.about.date }}</p>
+      <p *ngIf="picture.about.location" class="location" [ngClass]="{'clickable' : picture.about.location.href}" (click)="navigateTo(picture.about.location.href)">{{ picture.about.location.location }}</p>
+      <p *ngIf="picture.about.model" class="model" [ngClass]="{'clickable' : picture.about.model.href}" (click)="navigateTo(picture.about.model.href)">{{ picture.about.model.model }}</p>
+      <p *ngIf="picture.about.settings" class="settings"> {{ picture.about.settings }}</p>
+    </div>
+  </div>
+</div>

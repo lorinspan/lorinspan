@@ -1,0 +1,11 @@
+<div class="container" >
+  <ng-container *ngIf="!loadingService.getLoading()">
+    <ng-container *ngFor="let column of columns">
+      <div class="col">
+        <ng-container *ngFor="let picture of column; let i = index">
+          <img [src]="picture.src" [alt]="picture.alt" class="picture" (click)="navigateToPicture(picture.id)">
+        </ng-container>
+      </div>
+    </ng-container>
+  </ng-container>
+</div>
