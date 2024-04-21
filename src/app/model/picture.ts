@@ -3,7 +3,8 @@ export class Picture {
   src: string;
   alt: string;
   about: Description;
-  lazySrc: string | null; // New property for lazy loading
+  lazySrc: string | null;
+  isNew: boolean; // Flag for new pictures to apply animations
 
   constructor(
     id: number,
@@ -19,10 +20,18 @@ export class Picture {
     this.id = id;
     this.src = 'assets/pictures/' + alt;
     this.alt = alt;
-    this.lazySrc = null; // Initialize the lazySrc property
-    this.about = new Description(description, date, new Location(location, locationHref), new Model(model, modelHref), settings);
+    this.lazySrc = null;
+    this.isNew = true; // Mark all new instances as 'new'
+    this.about = new Description(
+      description,
+      date,
+      new Location(location, locationHref),
+      new Model(model, modelHref),
+      settings
+    );
   }
 }
+
 
 
 export class Description {

@@ -6,9 +6,7 @@ export class LoadingService {
   public static loading: boolean = false;
 
   setLoading(flag: boolean): void {
-    console.log(this.getLoading());
     LoadingService.loading = flag;
-    console.log(this.getLoading());
   }
 
   getLoading(): boolean {

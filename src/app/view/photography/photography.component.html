@@ -3,8 +3,14 @@
     <ng-container *ngFor="let column of columns">
       <div class="col">
         <ng-container *ngFor="let picture of column; let i = index; trackBy: trackByPictureId">
-          <div [style.animation-delay]="i * 0.025 + 's'" class="fade-in-picture">
-            <img [src]="picture.src" [alt]="picture.alt" class="picture" (click)="navigateToPicture(picture.id)">
+          <div>
+            <img
+              [src]="picture.src"
+              [alt]="picture.alt"
+              class="picture"
+              (click)="navigateToPicture(picture.id)"
+              [ngClass]="{ 'fade-in': picture.isNew }"
+            />
           </div>
         </ng-container>
       </div>
