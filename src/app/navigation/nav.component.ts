@@ -24,7 +24,7 @@ export class NavComponent {
       default:
         return;
     }
-    window.location.href = href;
+    window.open(href);
   }
 
   constructor(public loadingService: LoadingService) {

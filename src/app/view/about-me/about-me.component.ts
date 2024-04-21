@@ -14,7 +14,7 @@ export class AboutMeComponent implements AfterViewInit, OnInit {
   }
 
   navigateToMail() {
-    window.location.href = 'mailto:lorinspanx@gmail.com';
+    window.open('mailto:lorinspanx@gmail.com');
   }
 
   downloadCV() {

@@ -112,7 +112,7 @@ export class WebsiteComponent implements OnInit {
 
   navigateTo(href: string | null): void {
     if(href) {
-      window.location.href = href;
+      window.open(href);
     }
   }
 }
