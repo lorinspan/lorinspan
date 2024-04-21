@@ -9,7 +9,8 @@ export class PicturesService {
   constructor() { }
 
   getPictures(): Observable<Picture[]> {
-    return of(pictures);
+    const sortedPictures = [...pictures].sort((a, b) => a.id - b.id); // Using spread to avoid mutating the original array
+    return of(sortedPictures);
   }
 
   getPictureById(id: number): Observable<Picture | null> {
