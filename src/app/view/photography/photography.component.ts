@@ -1,4 +1,4 @@
-import {Component, OnInit, OnDestroy, HostListener, ElementRef, ViewChild} from '@angular/core';
+import { Component, OnInit, OnDestroy, HostListener } from '@angular/core';
 import { Picture } from '../../model/picture';
 import { PicturesService } from '../../services/pictures-service';
 import { Router } from '@angular/router';
@@ -10,9 +10,6 @@ import { LoadingService } from '../../services/loading-service';
   styleUrls: ['./photography.component.scss'],
 })
 export class PhotographyComponent implements OnInit, OnDestroy {
-  @ViewChild('container', { static: true }) containerRef!: ElementRef;
-
-  private previousScrollY = 0; // To store the previous scroll position
   numberOfColumns = 1;
   allPictures: Picture[] = [];
   visiblePictures: Picture[] = [];
@@ -89,7 +86,6 @@ export class PhotographyComponent implements OnInit, OnDestroy {
   }
 
   loadMorePictures() {
-    this.previousScrollY = this.containerRef.nativeElement.scrollTop;
     console.log("loadmorepictures");
     const currentLength = this.visiblePictures.length;
 
@@ -127,9 +123,6 @@ export class PhotographyComponent implements OnInit, OnDestroy {
     this.currentIncrement += this.intervalIncrementFactor;
 
     this.setLoadInterval(); // Reset with updated interval if needed
-    setTimeout(() => {
-      this.containerRef.nativeElement.scrollTop = this.previousScrollY;
-    }, 100); // Delay to allow the DOM to stabilize
   }
 
   calculateColumns() {
