@@ -14,7 +14,8 @@ export class PhotographyComponent implements OnInit, OnDestroy {
   allPictures: Picture[] = [];
   visiblePictures: Picture[] = [];
   columns: Picture[][] = [];
-  initialBatchLoadSize = 5;
+  initialBatchLoadSize = 7; // Start with 7 for the first batch
+  batchCount = 0; // To track the number of batches loaded
   currentLoadInterval = 250;
   baseIncrement = 250;
   intervalIncrementFactor = 50;
@@ -59,7 +60,7 @@ export class PhotographyComponent implements OnInit, OnDestroy {
 
   setBatchAndInterval() {
     if (this.numberOfColumns === 1) {
-      this.initialBatchLoadSize = 2; // Smaller batches for smaller screens
+      this.initialBatchLoadSize = 7; // Start with 7 for the first batch
       this.currentLoadInterval = 250; // Faster intervals
       this.intervalIncrementFactor = 10;
     } else {
@@ -83,13 +84,23 @@ export class PhotographyComponent implements OnInit, OnDestroy {
 
   loadMorePictures() {
     const currentLength = this.visiblePictures.length;
-    const newBatchSize = this.initialBatchLoadSize;
+
+    // Determine batch size based on the batch count
+    let newBatchSize;
+    if (this.batchCount === 0) {
+      newBatchSize = 3; // Second batch size is 3
+    } else {
+      newBatchSize = 2; // All subsequent batches are 2
+    }
+
     const endIndex = Math.min(currentLength + newBatchSize, this.allPictures.length);
 
     const newBatch = this.allPictures.slice(currentLength, endIndex);
     this.visiblePictures = [...this.visiblePictures, ...newBatch];
 
     this.generatePictures();
+
+    this.batchCount++; // Increment the batch count
 
     this.currentLoadInterval += this.currentIncrement;
     if (this.currentLoadInterval > 1000) {
@@ -118,8 +129,8 @@ export class PhotographyComponent implements OnInit, OnDestroy {
     this.columns = Array.from({ length: numColumns }, () => []); // Reset columns
 
     this.visiblePictures.forEach((picture, index) => {
-      const colIndex = index % numColumns;
-      this.columns[colIndex].push(picture); // Push into the correct column
+      const colIndex = index % numColumns; // Determine the correct column
+      this.columns[colIndex].push(picture); // Insert the picture into the correct column
     });
 
     this.loadingService.setLoading(false); // Loading complete
