@@ -1,16 +1,18 @@
-<cdk-virtual-scroll-viewport itemSize="100" class="scroll-container">
-  <ng-container *cdkVirtualFor="let column of columns">
-    <div class="col">
-      <ng-container *ngFor="let picture of column; let i = index; trackBy: trackByPictureId">
-        <div>
-          <img
-            [src]="picture.src"
-            [alt]="picture.alt"
-            class="picture"
-            (click)="navigateToPicture(picture.id)"
-          />
-        </div>
-      </ng-container>
-    </div>
+<div class="container">
+  <ng-container *ngIf="!loadingService.getLoading()">
+    <ng-container *ngFor="let column of columns">
+      <div class="col">
+        <ng-container *ngFor="let picture of column; let i = index; trackBy: trackByPictureId">
+          <div>
+            <img
+              [src]="picture.src"
+              [alt]="picture.alt"
+              class="picture"
+              (click)="navigateToPicture(picture.id)"
+            />
+          </div>
+        </ng-container>
+      </div>
+    </ng-container>
   </ng-container>
-</cdk-virtual-scroll-viewport>
+</div>

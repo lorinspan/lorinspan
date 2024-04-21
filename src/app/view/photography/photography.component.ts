@@ -1,11 +1,10 @@
-import {Component, OnInit, OnDestroy, HostListener, NgZone, ViewChild} from '@angular/core';
+import { Component, OnInit, OnDestroy, HostListener, NgZone } from '@angular/core';
 import { Picture } from '../../model/picture';
 import { PicturesService } from '../../services/pictures-service';
 import {NavigationStart, Router} from '@angular/router';
 import { LoadingService } from '../../services/loading-service';
 import {PicturesStateService} from "../../services/pictures-state-service";
 import {Subscription} from "rxjs";
-import {CdkVirtualScrollViewport} from "@angular/cdk/scrolling";
 
 @Component({
   selector: 'app-photography',
@@ -13,7 +12,6 @@ import {CdkVirtualScrollViewport} from "@angular/cdk/scrolling";
   styleUrls: ['./photography.component.scss'],
 })
 export class PhotographyComponent implements OnInit, OnDestroy {
-  @ViewChild(CdkVirtualScrollViewport) viewport!: CdkVirtualScrollViewport;
   numberOfColumns = 1;
   allPictures: Picture[] = [];
   visiblePictures: Picture[] = [];
@@ -149,8 +147,6 @@ export class PhotographyComponent implements OnInit, OnDestroy {
 
 
   loadMorePictures() {
-    const scrollOffset = this.viewport.measureScrollOffset();
-
     const currentLength = this.visiblePictures.length;
 
     let newBatchSize;
@@ -187,7 +183,6 @@ export class PhotographyComponent implements OnInit, OnDestroy {
     this.batchCount++; // Increment batch count
 
     this.adjustLoadInterval(); // Adjust the loading interval
-    this.viewport.scrollToOffset(scrollOffset);
   }
 
   adjustLoadInterval() {
