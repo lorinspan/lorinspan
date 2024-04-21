@@ -60,16 +60,16 @@ export class PhotographyComponent implements OnInit, OnDestroy {
   setBatchAndInterval() {
     if (this.numberOfColumns === 1) {
       this.initialBatchLoadSize = 2; // Smaller batches for smaller screens
-      this.currentLoadInterval = 250; // Faster intervals
-      this.intervalIncrementFactor = 15;
+      this.currentLoadInterval = 150; // Faster intervals
+      this.intervalIncrementFactor = 25;
     } else if (this.numberOfColumns === 5) {
       this.initialBatchLoadSize = 5; // Larger batches for larger screens
       this.currentLoadInterval = 250; // Default interval for larger screens
-      this.intervalIncrementFactor = 250;
+      this.intervalIncrementFactor = 100;
     } else {
-      this.initialBatchLoadSize = 3;
-      this.currentLoadInterval = 125;
-      this.intervalIncrementFactor = 125;
+      this.initialBatchLoadSize = 3; // Larger batches for larger screens
+      this.currentLoadInterval = 200; // Default interval for larger screens
+      this.intervalIncrementFactor = 75;
     }
 
     this.currentIncrement = this.baseIncrement; // Reset current increment to the base
@@ -95,15 +95,26 @@ export class PhotographyComponent implements OnInit, OnDestroy {
 
     this.generatePictures();
 
+    // Increment the load interval with the current increment
     this.currentLoadInterval += this.currentIncrement;
-    if (this.currentLoadInterval > 1000) {
-      this.currentLoadInterval = 1000; // Cap at one second
+
+    // Determine the maximum interval based on the number of columns
+    let maxInterval: number;
+    if (this.numberOfColumns === 1) {
+      maxInterval = 1000; // Cap at 1000ms for one column
+    } else if (this.numberOfColumns === 3) {
+      maxInterval = 1350; // Cap at 1350ms for three columns
+    } else {
+      maxInterval = 1750; // Cap at 1750ms for five columns
     }
 
-    this.currentIncrement += this.intervalIncrementFactor;
+    // Ensure currentLoadInterval does not exceed the maximum
+    this.currentLoadInterval = Math.min(this.currentLoadInterval, maxInterval);
 
-    this.setLoadInterval(); // Reset with updated interval
+    // Reset the interval with the new (possibly capped) interval
+    this.setLoadInterval();
   }
+
 
   calculateColumns() {
     if (window.matchMedia('(min-width: 993px)').matches) {
