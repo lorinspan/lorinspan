@@ -23,6 +23,7 @@ export class PhotographyComponent implements OnInit, OnDestroy {
   batchCount = 0;
   intervalId: number | null = null;
   routerSubscription: Subscription | null = null; // To track router navigation events
+  isLoadingMore = false;
 
   constructor(
     private readonly picturesService: PicturesService,
@@ -31,14 +32,6 @@ export class PhotographyComponent implements OnInit, OnDestroy {
     public loadingService: LoadingService,
     private zone: NgZone
   ) {
-  }
-
-  saveScrollPosition() {
-    return window.scrollY;
-  }
-
-  restoreScrollPosition(position: number) {
-    window.scrollTo(0, position);
   }
 
   ngOnInit(): void {
@@ -133,28 +126,29 @@ export class PhotographyComponent implements OnInit, OnDestroy {
 
   setLoadInterval() {
     if (this.intervalId) {
-      clearInterval(this.intervalId);
+      clearInterval(this.intervalId); // Clear existing interval if any
     }
 
     this.intervalId = window.setInterval(() => {
-      this.zone.run(() => {
-        const savedScrollPosition = this.saveScrollPosition(); // Save scroll position
-
-        if (this.visiblePictures.length < this.allPictures.length) {
-          this.loadMorePictures(); // Load more pictures if there are any left
-          this.restoreScrollPosition(savedScrollPosition); // Restore scroll position
-        } else {
-          if (this.intervalId) {
-            clearInterval(this.intervalId);
-            this.intervalId = null; // Reset interval ID
-          }
-        }
-      });
-    }, this.currentLoadInterval);
+      this.zone.run(() => this.loadMorePictures()); // Ensure code runs in Angular zone
+    }, this.currentLoadInterval); // Adjusted interval
   }
 
+  @HostListener('window:scroll', [])
+  onWindowScroll() {
+    if (this.isLoadingMore) {
+      return; // Prevent multiple triggers during loading
+    }
+
+    const bottomReached = window.innerHeight + window.scrollY >= document.body.offsetHeight - 50;
+
+    if (bottomReached) {
+      this.loadMorePictures(); // Load more when bottom is reached
+    }
+  }
 
   loadMorePictures() {
+    this.isLoadingMore = true; // Lock to prevent multiple triggers
     const currentLength = this.visiblePictures.length;
 
     let newBatchSize;
@@ -191,6 +185,7 @@ export class PhotographyComponent implements OnInit, OnDestroy {
     this.batchCount++; // Increment batch count
 
     this.adjustLoadInterval(); // Adjust the loading interval
+    this.isLoadingMore = false; // Unlock
   }
 
   adjustLoadInterval() {
