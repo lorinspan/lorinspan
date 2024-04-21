@@ -1,10 +1,8 @@
-import { Component, OnInit, OnDestroy, HostListener, NgZone } from '@angular/core';
+import { Component, OnInit, OnDestroy, HostListener } from '@angular/core';
 import { Picture } from '../../model/picture';
 import { PicturesService } from '../../services/pictures-service';
-import {NavigationStart, Router} from '@angular/router';
+import { Router } from '@angular/router';
 import { LoadingService } from '../../services/loading-service';
-import {PicturesStateService} from "../../services/pictures-state-service";
-import {Subscription} from "rxjs";
 
 @Component({
   selector: 'app-photography',
@@ -12,206 +10,119 @@ import {Subscription} from "rxjs";
   styleUrls: ['./photography.component.scss'],
 })
 export class PhotographyComponent implements OnInit, OnDestroy {
-  allLoaded = false; // New property to track if all images have been loaded
   numberOfColumns = 1;
   allPictures: Picture[] = [];
   visiblePictures: Picture[] = [];
   columns: Picture[][] = [];
-  initialBatchLoadSize = 7;
+  initialBatchLoadSize = 5;
   currentLoadInterval = 250;
   baseIncrement = 250;
   intervalIncrementFactor = 50;
-  batchCount = 0;
+  currentIncrement = this.baseIncrement;
   intervalId: number | null = null;
-  routerSubscription: Subscription | null = null; // To track router navigation events
-  isLoadingMore = false;
 
   constructor(
     private readonly picturesService: PicturesService,
-    private readonly picturesStateService: PicturesStateService,
     private router: Router,
-    public loadingService: LoadingService,
-    private zone: NgZone
-  ) {
+    public loadingService: LoadingService
+  ) {}
+
+  navigateToPicture(pictureId: number) {
+    this.router.navigate(['/photo', pictureId]);
   }
 
   ngOnInit(): void {
-    this.restoreStateOrLoadInitial();
-
     this.calculateColumns();
-    this.setBatchAndInterval();
+    this.picturesService.getPictures().subscribe((pictures) => {
+      this.allPictures = pictures;
+      this.setBatchAndInterval();
 
-    if (this.visiblePictures.length === 0) {
-      this.loadInitialPictures();
-    } else {
+      this.visiblePictures = this.allPictures.slice(0, this.initialBatchLoadSize);
+
+      this.loadingService.setLoading(true);
       this.generatePictures();
-      this.setLoadInterval();
-    }
 
-    // Listen for navigation events to clear state if necessary
-    this.routerSubscription = this.router.events.subscribe((event) => {
-      if (event instanceof NavigationStart && event.url !== '/photography') {
-        this.picturesStateService.clearState(); // Clear state when navigating away
-      }
+      this.setLoadInterval(); // Start the load interval with the updated time
     });
-  }
-
-  restoreStateOrLoadInitial(): void {
-    const loadedPictures = this.picturesStateService.getLoadedPictures();
-    const remainingPictures = this.picturesStateService.getRemainingPictures();
-
-    if (loadedPictures.length > 0 || remainingPictures.length > 0) {
-      this.visiblePictures = loadedPictures;
-      this.allPictures = [...loadedPictures, ...remainingPictures];
-    }
-  }
-
-  navigateToPicture(pictureId: number) {
-    this.router.navigate(['/photo', pictureId]); // Navigate to a specific picture
   }
 
   @HostListener('window:resize', ['$event'])
   onWindowResize() {
     const previousNumberOfColumns = this.numberOfColumns;
-    this.calculateColumns(); // Recalculate columns on window resize
+    this.calculateColumns();
 
     if (previousNumberOfColumns !== this.numberOfColumns) {
-      this.setBatchAndInterval(); // Adjust batch size and intervals
-      this.generatePictures(); // Recreate columns if needed
+      this.setBatchAndInterval(); // Update batch size and interval based on columns
+      this.generatePictures(); // Recalculate the columns
     }
-  }
-
-  calculateColumns() {
-    if (window.matchMedia('(min-width: 993px)').matches) {
-      this.numberOfColumns = 5; // For larger screens, use five columns
-    } else if (
-      window.matchMedia('(min-width: 769px) and (max-width: 992px)').matches
-    ) {
-      this.numberOfColumns = 3; // For medium-sized screens, use three columns
-    } else {
-      this.numberOfColumns = 1; // For smaller screens, use one column
-    }
-
-    this.setBatchAndInterval(); // Update batch size and interval accordingly
   }
 
   setBatchAndInterval() {
-    if (this.numberOfColumns === 5) {
-      this.initialBatchLoadSize = 5; // Initial batch for 5 columns
-      this.currentLoadInterval = 250; // Starting interval
-      this.intervalIncrementFactor = this.baseIncrement; // Use the base increment
-    } else if (this.numberOfColumns === 3) {
-      this.initialBatchLoadSize = 6; // Initial batch for 3 columns
-      this.currentLoadInterval = 250; // Default interval for 3 columns
-      this.intervalIncrementFactor = this.baseIncrement; // Use base increment
+    if (this.numberOfColumns === 1) {
+      this.initialBatchLoadSize = 2; // Smaller batches for smaller screens
+      this.currentLoadInterval = 250; // Faster intervals
+      this.intervalIncrementFactor = 10;
     } else {
-      this.initialBatchLoadSize = 7; // Initial batch for smaller screens
-      this.currentLoadInterval = 250; // Faster intervals for 1 column
-      this.intervalIncrementFactor = 25; // Smaller increment factor
+      this.initialBatchLoadSize = 5; // Larger batches for larger screens
+      this.currentLoadInterval = 250; // Default interval for larger screens
+      this.intervalIncrementFactor = 50;
     }
-  }
 
-  loadInitialPictures() {
-    this.picturesService.getPictures().subscribe((pictures) => {
-      this.allPictures = pictures;
-
-      if (this.visiblePictures.length === 0) {
-        this.visiblePictures = this.allPictures.slice(0, this.initialBatchLoadSize);
-      }
-
-      this.loadingService.setLoading(true);
-      this.generatePictures();
-      this.setLoadInterval();
-    });
+    this.currentIncrement = this.baseIncrement; // Reset current increment to the base
   }
 
   setLoadInterval() {
     if (this.intervalId) {
-      clearInterval(this.intervalId); // Clear existing interval if any
-    }
-
-    if (this.allLoaded) {
-      return; // Don't set a new interval if everything is already loaded
+      clearInterval(this.intervalId); // Clear any existing interval
     }
 
     this.intervalId = window.setInterval(() => {
-      this.zone.run(() => this.loadMorePictures()); // Ensure code runs in Angular zone
+      this.loadMorePictures();
     }, this.currentLoadInterval);
   }
 
-
-  @HostListener('window:scroll', [])
-  onWindowScroll() {
-    if (this.isLoadingMore) {
-      return; // Prevent multiple triggers during loading
-    }
-
-    const bottomReached = window.innerHeight + window.scrollY >= document.body.offsetHeight - 50;
-
-    if (bottomReached) {
-      this.loadMorePictures(); // Load more when bottom is reached
-    }
-  }
-
   loadMorePictures() {
-    if (this.allLoaded || this.isLoadingMore) {
-      return; // Don't load if already all loaded or if in the middle of a load
-    }
-
-    this.isLoadingMore = true; // Lock to prevent multiple triggers
     const currentLength = this.visiblePictures.length;
-    const endIndex = Math.min(currentLength + this.numberOfColumns, this.allPictures.length);
-
-    if (currentLength >= this.allPictures.length) {
-      this.allLoaded = true; // Mark all loaded
-      this.clearLoadInterval(); // Clear the interval when all loaded
-      return; // No more pictures to load
-    }
+    const newBatchSize = this.initialBatchLoadSize;
+    const endIndex = Math.min(currentLength + newBatchSize, this.allPictures.length);
 
     const newBatch = this.allPictures.slice(currentLength, endIndex);
-    this.visiblePictures.push(...newBatch); // Add new pictures to visible ones
-    this.generatePictures(); // Recreate columns with new batch
+    this.visiblePictures = [...this.visiblePictures, ...newBatch];
 
-    setTimeout(() => {
-      this.isLoadingMore = false; // Unlock after a delay
-    }, 500);
+    this.generatePictures();
 
-    this.adjustLoadInterval(); // Adjust the interval based on logic
-  }
-
-  clearLoadInterval() {
-    if (this.intervalId) {
-      clearInterval(this.intervalId);
-      this.intervalId = null; // Reset the interval ID
+    this.currentLoadInterval += this.currentIncrement;
+    if (this.currentLoadInterval > 1000) {
+      this.currentLoadInterval = 1000; // Cap at one second
     }
+
+    this.currentIncrement += this.intervalIncrementFactor;
+
+    this.setLoadInterval(); // Reset with updated interval
   }
 
-
-  adjustLoadInterval() {
-    if (this.numberOfColumns === 1) {
-      this.currentLoadInterval += 25; // Increment by 25 ms for 1 column
-      if (this.currentLoadInterval > 1000) {
-        this.currentLoadInterval = 1000; // Cap interval at 1000 ms
-      }
+  calculateColumns() {
+    if (window.matchMedia('(min-width: 993px)').matches) {
+      this.numberOfColumns = 5;
+    } else if (
+      window.matchMedia('(min-width: 769px) and (max-width: 992px)').matches
+    ) {
+      this.numberOfColumns = 3;
     } else {
-      this.currentLoadInterval += 250; // Increment by 250 ms for 3 or 5 columns
-      if (this.currentLoadInterval > 1750) {
-        this.currentLoadInterval = 1750; // Cap interval at 1750 ms
-      }
+      this.numberOfColumns = 1;
     }
-
-    this.setLoadInterval(); // Restart the interval with updated timing
   }
 
   generatePictures() {
-    this.columns = Array.from({length: this.numberOfColumns}, () => []);
+    const numColumns = this.numberOfColumns;
+    this.columns = Array.from({ length: numColumns }, () => []); // Reset columns
 
     this.visiblePictures.forEach((picture, index) => {
-      const colIndex = index % this.numberOfColumns; // Determine correct column
-      this.columns[colIndex].push(picture); // Add picture to appropriate column
+      const colIndex = index % numColumns;
+      this.columns[colIndex].push(picture); // Push into the correct column
     });
 
-    this.loadingService.setLoading(false); // Indicate loading completion
+    this.loadingService.setLoading(false); // Loading complete
   }
 
   trackByPictureId(index: number, picture: Picture): number {
@@ -220,16 +131,7 @@ export class PhotographyComponent implements OnInit, OnDestroy {
 
   ngOnDestroy() {
     if (this.intervalId) {
-      clearInterval(this.intervalId);
-    }
-
-    const loadedPictures = this.visiblePictures;
-    const remainingPictures = this.allPictures.slice(loadedPictures.length);
-    this.picturesStateService.saveState(loadedPictures, remainingPictures);
-
-    // Unsubscribe from router events
-    if (this.routerSubscription) {
-      this.routerSubscription.unsubscribe();
+      window.clearInterval(this.intervalId);
     }
   }
 }
