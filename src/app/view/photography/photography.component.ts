@@ -3,7 +3,6 @@ import { Picture } from '../../model/picture';
 import { PicturesService } from '../../services/pictures-service';
 import { Router } from '@angular/router';
 import { LoadingService } from '../../services/loading-service';
-import {PicturesStateService} from "../../services/pictures-state-service";
 
 @Component({
   selector: 'app-photography',
@@ -25,8 +24,7 @@ export class PhotographyComponent implements OnInit, OnDestroy {
   constructor(
     private readonly picturesService: PicturesService,
     private router: Router,
-    public loadingService: LoadingService,
-    private picturesStateService: PicturesStateService // Inject the state service
+    public loadingService: LoadingService
   ) {}
 
   navigateToPicture(pictureId: number) {
@@ -35,29 +33,17 @@ export class PhotographyComponent implements OnInit, OnDestroy {
 
   ngOnInit(): void {
     this.calculateColumns();
+    this.picturesService.getPictures().subscribe((pictures) => {
+      this.allPictures = pictures;
+      this.setBatchAndInterval();
 
-    const loadedPictures = this.picturesStateService.getLoadedPictures();
-    const remainingPictures = this.picturesStateService.getRemainingPictures();
+      this.visiblePictures = this.allPictures.slice(0, this.initialBatchLoadSize);
 
-    if (loadedPictures.length > 0) {
-      this.allPictures = [...loadedPictures, ...remainingPictures];
-      this.visiblePictures = loadedPictures;
-      this.loadingService.setLoading(false);
+      this.loadingService.setLoading(true);
       this.generatePictures();
-      this.setLoadInterval(); // Start the interval again with the appropriate interval
-    } else {
-      this.picturesService.getPictures().subscribe((pictures) => {
-        this.allPictures = pictures;
-        this.setBatchAndInterval();
 
-        this.visiblePictures = this.allPictures.slice(0, this.initialBatchLoadSize);
-
-        this.loadingService.setLoading(true);
-        this.generatePictures();
-
-        this.setLoadInterval(); // Start the load interval with the updated time
-      });
-    }
+      this.setLoadInterval(); // Start the load interval with the updated time
+    });
   }
 
   @HostListener('window:resize', ['$event'])
@@ -112,6 +98,7 @@ export class PhotographyComponent implements OnInit, OnDestroy {
     // Increment the load interval with the current increment
     this.currentLoadInterval += this.currentIncrement;
 
+    // Determine the maximum interval based on the number of columns
     let maxInterval: number;
     if (this.numberOfColumns === 1) {
       maxInterval = 1000; // Cap at 1000ms for one column
@@ -121,10 +108,13 @@ export class PhotographyComponent implements OnInit, OnDestroy {
       maxInterval = 1750; // Cap at 1750ms for five columns
     }
 
+    // Ensure currentLoadInterval does not exceed the maximum
     this.currentLoadInterval = Math.min(this.currentLoadInterval, maxInterval);
 
-    this.setLoadInterval(); // Reset the interval with the updated load interval
+    // Reset the interval with the new (possibly capped) interval
+    this.setLoadInterval();
   }
+
 
   calculateColumns() {
     if (window.matchMedia('(min-width: 993px)').matches) {
@@ -156,14 +146,7 @@ export class PhotographyComponent implements OnInit, OnDestroy {
 
   ngOnDestroy() {
     if (this.intervalId) {
-      window.clearInterval(this.intervalId); // Clear any existing interval
+      window.clearInterval(this.intervalId);
     }
-
-    const remainingPictures = this.allPictures.slice(this.visiblePictures.length);
-
-    this.picturesStateService.saveState(
-      this.visiblePictures,
-      remainingPictures
-    ); // Save the current state
   }
 }
