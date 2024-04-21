@@ -20,7 +20,7 @@ export class PhotographyComponent implements OnInit, OnDestroy {
   baseIncrement = 250;
   intervalIncrementFactor = 50;
   currentIncrement = this.baseIncrement;
-  intervalId: number | null = null;
+  intervalId: number = 0;
 
   constructor(
     private readonly picturesService: PicturesService,
@@ -47,15 +47,15 @@ export class PhotographyComponent implements OnInit, OnDestroy {
 
   @HostListener('window:resize', ['$event'])
   onWindowResize() {
-    console.log("resize");
-    const previousNumberOfColumns = this.numberOfColumns;
-    this.calculateColumns();
+    const previousColumns = this.numberOfColumns;
+    this.calculateColumns(); // Update the number of columns based on window size
 
-    if (previousNumberOfColumns !== this.numberOfColumns) {
-      this.setBatchAndInterval(); // Update batch size and interval based on columns
-      this.generatePictures(); // Recalculate the columns
+    if (previousColumns !== this.numberOfColumns) {
+      this.setBatchAndInterval(); // Update batch and interval if column count changes
+      this.generatePictures(); // Recalculate columns
     }
   }
+
 
   setBatchAndInterval() {
     console.log("batchandinterval");
@@ -86,44 +86,26 @@ export class PhotographyComponent implements OnInit, OnDestroy {
   }
 
   loadMorePictures() {
-    console.log("loadmorepictures");
     const currentLength = this.visiblePictures.length;
 
-    // If we've reached or surpassed the total number of pictures, stop loading
+    // Stop if we've loaded all pictures
     if (currentLength >= this.allPictures.length) {
-      if (this.intervalId) {
-        clearInterval(this.intervalId); // Stop the interval
-      }
-      return; // Nothing else to load
+      clearInterval(this.intervalId);
+      return;
     }
 
-    // Determine batch size based on the batch count
-    let newBatchSize;
-    if (this.batchCount === 0) {
-      newBatchSize = 3; // Second batch size is 3
-    } else {
-      newBatchSize = 2; // All subsequent batches are 2
-    }
-
+    // Determine new batch size
+    const newBatchSize = this.batchCount === 0 ? 3 : 2;
     const endIndex = Math.min(currentLength + newBatchSize, this.allPictures.length);
 
     const newBatch = this.allPictures.slice(currentLength, endIndex);
-    this.visiblePictures = [...this.visiblePictures, ...newBatch];
+    this.visiblePictures.push(...newBatch); // Append new batch
+    this.generatePictures(); // Recalculate columns with new data
 
-    this.generatePictures();
-
-    this.batchCount++; // Increment the batch count
-
-    // Adjust the interval time
-    this.currentLoadInterval += this.currentIncrement;
-    if (this.currentLoadInterval > 1000) {
-      this.currentLoadInterval = 1000; // Cap at one second
-    }
-
-    this.currentIncrement += this.intervalIncrementFactor;
-
-    this.setLoadInterval(); // Reset with updated interval if needed
+    this.batchCount++;
+    this.setLoadInterval(); // Update interval timing
   }
+
 
   calculateColumns() {
     console.log("calculatecolumns");
@@ -139,17 +121,20 @@ export class PhotographyComponent implements OnInit, OnDestroy {
   }
 
   generatePictures() {
-    console.log("generatepictures");
     const numColumns = this.numberOfColumns;
-    this.columns = Array.from({ length: numColumns }, () => []); // Reset columns
+
+    // Reset columns based on the number of columns
+    const newColumns: Picture[][] = Array.from({ length: numColumns }, () => []);
 
     this.visiblePictures.forEach((picture, index) => {
-      const colIndex = index % numColumns; // Determine the correct column
-      this.columns[colIndex].push(picture); // Insert the picture into the correct column
+      const colIndex = index % numColumns; // Calculate column index
+      newColumns[colIndex].push(picture);
     });
 
-    this.loadingService.setLoading(false); // Loading complete
+    this.columns = newColumns; // Assign new columns
+    this.loadingService.setLoading(false); // Indicate loading completion
   }
+
 
   ngOnDestroy() {
     console.log("destroy");
