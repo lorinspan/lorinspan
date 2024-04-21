@@ -1,5 +1,11 @@
-<div class="container">
-  <ng-container *ngFor="let picture of pictures">
-    <img class="picture" [lazyLoad]="picture.src" loading="lazy" [alt]="picture.alt" (click)="navigateToPicture(picture.id)">
+<div class="container" #container>
+  <ng-container *ngFor="let picture of reorderedPictures">
+    <img
+      class="picture"
+      [lazyLoad]="picture.src"
+      loading="lazy"
+      [alt]="picture.alt"
+      (click)="navigateToPicture(picture.id)"
+    />
   </ng-container>
 </div>
