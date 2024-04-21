@@ -1,9 +1,8 @@
-import { Component, OnInit, OnDestroy } from '@angular/core';
+import { Component, OnInit, OnDestroy, HostListener } from '@angular/core';
 import { Picture } from '../../model/picture';
 import { PicturesService } from '../../services/pictures-service';
 import { Router } from '@angular/router';
-import { Subscription } from 'rxjs';
-import {LoadingService} from "../../services/loading-service";
+import { LoadingService } from '../../services/loading-service';
 
 @Component({
   selector: 'app-photography',
@@ -11,16 +10,16 @@ import {LoadingService} from "../../services/loading-service";
   styleUrls: ['./photography.component.scss'],
 })
 export class PhotographyComponent implements OnInit, OnDestroy {
-  numberOfColumns: number = 1;
-  allPictures: Picture[] = []; // All pictures available from the service
-  visiblePictures: Picture[] = []; // Pictures currently being displayed
-  columns: Picture[][] = []; // Columnized pictures
-  initialBatchLoadSize = 5; // Number of pictures to load at a time
-  currentLoadInterval = 250; // Initial interval in milliseconds for lazy loading
-  baseIncrement = 250; // Base increment amount
-  intervalIncrementFactor = 50; // Additional increment factor
-  currentIncrement = this.baseIncrement; // Start with the base increment
-  intervalId: number | null = null; // ID for setInterval
+  numberOfColumns = 1;
+  allPictures: Picture[] = [];
+  visiblePictures: Picture[] = [];
+  columns: Picture[][] = [];
+  initialBatchLoadSize = 5;
+  currentLoadInterval = 250;
+  baseIncrement = 250;
+  intervalIncrementFactor = 50;
+  currentIncrement = this.baseIncrement;
+  intervalId: number | null = null;
 
   constructor(
     private readonly picturesService: PicturesService,
@@ -36,20 +35,28 @@ export class PhotographyComponent implements OnInit, OnDestroy {
     this.calculateColumns();
     this.picturesService.getPictures().subscribe((pictures) => {
       this.allPictures = pictures;
-
-      // Load the first batch
       this.visiblePictures = this.allPictures.slice(0, this.initialBatchLoadSize);
+
       this.loadingService.setLoading(true);
       this.generatePictures();
 
-      // Start loading more pictures incrementally
       this.setLoadInterval();
     });
   }
 
+  @HostListener('window:resize', ['$event'])
+  onWindowResize() {
+    const previousNumberOfColumns = this.numberOfColumns;
+    this.calculateColumns();
+
+    if (previousNumberOfColumns !== this.numberOfColumns) {
+      this.generatePictures(); // Recalculate the columns
+    }
+  }
+
   setLoadInterval() {
     if (this.intervalId) {
-      clearInterval(this.intervalId); // Clear any existing interval
+      clearInterval(this.intervalId);
     }
 
     this.intervalId = window.setInterval(() => {
@@ -62,21 +69,15 @@ export class PhotographyComponent implements OnInit, OnDestroy {
     const newBatchSize = this.initialBatchLoadSize;
     const endIndex = Math.min(currentLength + newBatchSize, this.allPictures.length);
 
-    // Append the new batch to the visiblePictures
     const newBatch = this.allPictures.slice(currentLength, endIndex);
-    this.visiblePictures = [...this.visiblePictures, ...newBatch]; // Concatenating arrays
+    this.visiblePictures = [...this.visiblePictures, ...newBatch];
 
-    // Regenerate the columns with updated visiblePictures
     this.generatePictures();
 
-    // Update the interval based on the current increment
     this.currentLoadInterval += this.currentIncrement;
-
-    // Adjust the increment for the next increase
     this.currentIncrement += this.intervalIncrementFactor;
 
-    // Reset the interval with the updated load interval
-    this.setLoadInterval();
+    this.setLoadInterval(); // Reset with updated interval
   }
 
   calculateColumns() {
@@ -93,14 +94,11 @@ export class PhotographyComponent implements OnInit, OnDestroy {
 
   generatePictures() {
     const numColumns = this.numberOfColumns;
-
-    // Reset columns
     this.columns = Array.from({ length: numColumns }, () => []);
 
-    // Fill the columns with the staggered pattern
     this.visiblePictures.forEach((picture, index) => {
-      const colIndex = index % numColumns; // Determine which column to insert into
-      this.columns[colIndex].push(picture); // Push the picture into the correct column
+      const colIndex = index % numColumns;
+      this.columns[colIndex].push(picture);
     });
 
     this.loadingService.setLoading(false);
