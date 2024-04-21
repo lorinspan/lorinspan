@@ -1,23 +1,32 @@
-import { Component, HostListener, OnInit } from '@angular/core';
-import { Picture } from "../../model/picture";
-import { PicturesService } from "../../services/pictures-service";
-import { Router } from "@angular/router";
+import { Component, OnInit, OnDestroy } from '@angular/core';
+import { Picture } from '../../model/picture';
+import { PicturesService } from '../../services/pictures-service';
+import { Router } from '@angular/router';
+import { Subscription } from 'rxjs';
 import {LoadingService} from "../../services/loading-service";
 
 @Component({
   selector: 'app-photography',
   templateUrl: './photography.component.html',
-  styleUrls: ['./photography.component.scss']
+  styleUrls: ['./photography.component.scss'],
 })
-export class PhotographyComponent implements OnInit {
+export class PhotographyComponent implements OnInit, OnDestroy {
   numberOfColumns: number = 1;
-  pictures: Picture[];
-  columns: Picture[][];
+  allPictures: Picture[] = []; // All pictures available from the service
+  visiblePictures: Picture[] = []; // Pictures currently being displayed
+  columns: Picture[][] = []; // Columnized pictures
+  initialBatchLoadSize = 5; // Number of pictures to load at a time
+  currentLoadInterval = 250; // Initial interval in milliseconds for lazy loading
+  baseIncrement = 250; // Base increment amount
+  intervalIncrementFactor = 50; // Additional increment factor
+  currentIncrement = this.baseIncrement; // Start with the base increment
+  intervalId: number | null = null; // ID for setInterval
 
-  constructor(private readonly picturesService: PicturesService, private router: Router, public loadingService: LoadingService) {
-    this.columns = [];
-    this.pictures = [];
-  }
+  constructor(
+    private readonly picturesService: PicturesService,
+    private router: Router,
+    public loadingService: LoadingService
+  ) {}
 
   navigateToPicture(pictureId: number) {
     this.router.navigate(['/photo', pictureId]);
@@ -25,28 +34,57 @@ export class PhotographyComponent implements OnInit {
 
   ngOnInit(): void {
     this.calculateColumns();
-    this.picturesService.getPictures().subscribe(pictures => {
-      this.pictures = pictures;
+    this.picturesService.getPictures().subscribe((pictures) => {
+      this.allPictures = pictures;
+
+      // Load the first batch
+      this.visiblePictures = this.allPictures.slice(0, this.initialBatchLoadSize);
       this.loadingService.setLoading(true);
       this.generatePictures();
+
+      // Start loading more pictures incrementally
+      this.setLoadInterval();
     });
   }
 
-  @HostListener('window:resize', ['$event'])
-  onResize(event: any) {
-    let lastNumberOfColumns = this.numberOfColumns;
-    this.calculateColumns();
-    if(lastNumberOfColumns !== this.numberOfColumns) {
-      this.generatePictures();
-    } else {
-      this.loadingService.setLoading(false);
+  setLoadInterval() {
+    if (this.intervalId) {
+      clearInterval(this.intervalId); // Clear any existing interval
     }
+
+    this.intervalId = window.setInterval(() => {
+      this.loadMorePictures();
+    }, this.currentLoadInterval);
+  }
+
+  loadMorePictures() {
+    const currentLength = this.visiblePictures.length;
+    const newBatchSize = this.initialBatchLoadSize;
+    const endIndex = Math.min(currentLength + newBatchSize, this.allPictures.length);
+
+    // Append the new batch to the visiblePictures
+    const newBatch = this.allPictures.slice(currentLength, endIndex);
+    this.visiblePictures = [...this.visiblePictures, ...newBatch]; // Concatenating arrays
+
+    // Regenerate the columns with updated visiblePictures
+    this.generatePictures();
+
+    // Update the interval based on the current increment
+    this.currentLoadInterval += this.currentIncrement;
+
+    // Adjust the increment for the next increase
+    this.currentIncrement += this.intervalIncrementFactor;
+
+    // Reset the interval with the updated load interval
+    this.setLoadInterval();
   }
 
   calculateColumns() {
     if (window.matchMedia('(min-width: 993px)').matches) {
       this.numberOfColumns = 5;
-    } else if (window.matchMedia('(min-width: 769px) and (max-width: 992px)').matches) {
+    } else if (
+      window.matchMedia('(min-width: 769px) and (max-width: 992px)').matches
+    ) {
       this.numberOfColumns = 3;
     } else {
       this.numberOfColumns = 1;
@@ -54,46 +92,23 @@ export class PhotographyComponent implements OnInit {
   }
 
   generatePictures() {
-    const numPictures = this.pictures.length;
     const numColumns = this.numberOfColumns;
 
-    // Create a promise array to track image loading
-    const loadingPromises: Promise<void>[] = [];
-
     // Reset columns
-    this.columns = [];
+    this.columns = Array.from({ length: numColumns }, () => []);
 
-    // Iterate over pictures to preload images and track loading
-    this.pictures.forEach((picture, index) => {
-      const img = new Image();
-      const promise = new Promise<void>((resolve) => {
-        img.onload = () => {
-          resolve();
-        };
-      });
-      img.src = picture.src;
-      loadingPromises.push(promise);
+    // Fill the columns with the staggered pattern
+    this.visiblePictures.forEach((picture, index) => {
+      const colIndex = index % numColumns; // Determine which column to insert into
+      this.columns[colIndex].push(picture); // Push the picture into the correct column
     });
 
-    // Once all images are loaded, generate columns
-    Promise.all(loadingPromises).then(() => {
-      const picturesPerColumn = Math.floor(numPictures / numColumns);
-      const columnsWithExtra = numPictures % numColumns;
-      let pictureIndex = 0;
-
-      for (let colIndex = 0; colIndex < numColumns; colIndex++) {
-        let columnPictures = picturesPerColumn;
-        if (colIndex < columnsWithExtra) {
-          columnPictures++;
-        }
-        this.columns[colIndex] = [];
-        for (let j = 0; j < columnPictures; j++) {
-          this.columns[colIndex].push(this.pictures[pictureIndex]);
-          pictureIndex++;
-        }
-      }
-      this.loadingService.setLoading(false);
-    });
+    this.loadingService.setLoading(false);
   }
 
+  ngOnDestroy() {
+    if (this.intervalId) {
+      window.clearInterval(this.intervalId);
+    }
+  }
 }

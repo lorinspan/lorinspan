@@ -3,15 +3,27 @@ export class Picture {
   src: string;
   alt: string;
   about: Description;
+  lazySrc: string | null; // New property for lazy loading
 
-  constructor(id: number, alt: string, description: string | null, date: string | null, location: string | null, locationHref: string | null, model: string | null, modelHref: string | null, settings: string | null) {
+  constructor(
+    id: number,
+    alt: string,
+    description: string | null,
+    date: string | null,
+    location: string | null,
+    locationHref: string | null,
+    model: string | null,
+    modelHref: string | null,
+    settings: string | null
+  ) {
     this.id = id;
     this.src = 'assets/pictures/' + alt;
     this.alt = alt;
+    this.lazySrc = null; // Initialize the lazySrc property
     this.about = new Description(description, date, new Location(location, locationHref), new Model(model, modelHref), settings);
   }
-
 }
+
 
 export class Description {
   description: string | null;
