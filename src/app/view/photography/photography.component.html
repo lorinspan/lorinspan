@@ -1,18 +1,16 @@
 <div class="container">
-  <ng-container>
-    <ng-container *ngFor="let column of columns">
-      <div class="col">
-        <ng-container *ngFor="let picture of column; let i = index; trackBy: trackByPictureId">
-          <div>
-            <img
-              [src]="picture.src"
-              [alt]="picture.alt"
-              class="picture"
-              (click)="navigateToPicture(picture.id)"
-            />
-          </div>
-        </ng-container>
-      </div>
-    </ng-container>
+  <ng-container *ngFor="let column of columns">
+    <div class="col">
+      <ng-container *ngFor="let picture of column; let i = index; trackBy: trackByPictureId">
+        <div>
+          <img
+            [src]="picture.src"
+            [alt]="picture.alt"
+            class="picture"
+            (click)="navigateToPicture(picture.id)"
+          />
+        </div>
+      </ng-container>
+    </div>
   </ng-container>
 </div>
