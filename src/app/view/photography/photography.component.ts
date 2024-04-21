@@ -14,7 +14,8 @@ export class PhotographyComponent implements OnInit, OnDestroy {
   allPictures: Picture[] = [];
   visiblePictures: Picture[] = [];
   columns: Picture[][] = [];
-  initialBatchLoadSize = 5;
+  initialBatchLoadSize = 7; // Start with 7 for the first batch
+  batchCount = 0; // To track the number of batches loaded
   currentLoadInterval = 250;
   baseIncrement = 250;
   intervalIncrementFactor = 50;
@@ -59,17 +60,13 @@ export class PhotographyComponent implements OnInit, OnDestroy {
 
   setBatchAndInterval() {
     if (this.numberOfColumns === 1) {
-      this.initialBatchLoadSize = 2; // Smaller batches for smaller screens
-      this.currentLoadInterval = 150; // Faster intervals
-      this.intervalIncrementFactor = 25;
-    } else if (this.numberOfColumns === 5) {
+      this.initialBatchLoadSize = 7; // Start with 7 for the first batch
+      this.currentLoadInterval = 250; // Faster intervals
+      this.intervalIncrementFactor = 10;
+    } else {
       this.initialBatchLoadSize = 5; // Larger batches for larger screens
       this.currentLoadInterval = 250; // Default interval for larger screens
-      this.intervalIncrementFactor = 100;
-    } else {
-      this.initialBatchLoadSize = 3; // Larger batches for larger screens
-      this.currentLoadInterval = 200; // Default interval for larger screens
-      this.intervalIncrementFactor = 75;
+      this.intervalIncrementFactor = 50;
     }
 
     this.currentIncrement = this.baseIncrement; // Reset current increment to the base
@@ -87,7 +84,15 @@ export class PhotographyComponent implements OnInit, OnDestroy {
 
   loadMorePictures() {
     const currentLength = this.visiblePictures.length;
-    const newBatchSize = this.initialBatchLoadSize;
+
+    // Determine batch size based on the batch count
+    let newBatchSize;
+    if (this.batchCount === 0) {
+      newBatchSize = 3; // Second batch size is 3
+    } else {
+      newBatchSize = 2; // All subsequent batches are 2
+    }
+
     const endIndex = Math.min(currentLength + newBatchSize, this.allPictures.length);
 
     const newBatch = this.allPictures.slice(currentLength, endIndex);
@@ -95,26 +100,17 @@ export class PhotographyComponent implements OnInit, OnDestroy {
 
     this.generatePictures();
 
-    // Increment the load interval with the current increment
-    this.currentLoadInterval += this.currentIncrement;
+    this.batchCount++; // Increment the batch count
 
-    // Determine the maximum interval based on the number of columns
-    let maxInterval: number;
-    if (this.numberOfColumns === 1) {
-      maxInterval = 1000; // Cap at 1000ms for one column
-    } else if (this.numberOfColumns === 3) {
-      maxInterval = 1350; // Cap at 1350ms for three columns
-    } else {
-      maxInterval = 1750; // Cap at 1750ms for five columns
+    this.currentLoadInterval += this.currentIncrement;
+    if (this.currentLoadInterval > 1000) {
+      this.currentLoadInterval = 1000; // Cap at one second
     }
 
-    // Ensure currentLoadInterval does not exceed the maximum
-    this.currentLoadInterval = Math.min(this.currentLoadInterval, maxInterval);
+    this.currentIncrement += this.intervalIncrementFactor;
 
-    // Reset the interval with the new (possibly capped) interval
-    this.setLoadInterval();
+    this.setLoadInterval(); // Reset with updated interval
   }
-
 
   calculateColumns() {
     if (window.matchMedia('(min-width: 993px)').matches) {
@@ -133,8 +129,8 @@ export class PhotographyComponent implements OnInit, OnDestroy {
     this.columns = Array.from({ length: numColumns }, () => []); // Reset columns
 
     this.visiblePictures.forEach((picture, index) => {
-      const colIndex = index % numColumns;
-      this.columns[colIndex].push(picture); // Push into the correct column
+      const colIndex = index % numColumns; // Determine the correct column
+      this.columns[colIndex].push(picture); // Insert the picture into the correct column
     });
 
     this.loadingService.setLoading(false); // Loading complete

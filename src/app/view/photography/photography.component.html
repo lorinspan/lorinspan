@@ -1,16 +1,13 @@
 <div class="container">
-  <ng-container *ngFor="let column of columns">
-    <div class="col">
-      <ng-container *ngFor="let picture of column; let i = index">
-        <div>
-          <img
-            [src]="picture.src"
-            [alt]="picture.alt"
-            class="picture"
-            (click)="navigateToPicture(picture.id)"
-          />
-        </div>
-      </ng-container>
-    </div>
+  <ng-container *ngIf="!loadingService.getLoading()">
+    <ng-container *ngFor="let column of columns">
+      <div class="col">
+        <ng-container *ngFor="let picture of column; let i = index; trackBy: trackByPictureId">
+          <div [style.animation-delay]="i * 0.025 + 's'" class="fade-in-picture">
+            <img [src]="picture.src" [alt]="picture.alt" class="picture" (click)="navigateToPicture(picture.id)">
+          </div>
+        </ng-container>
+      </div>
+    </ng-container>
   </ng-container>
 </div>

@@ -22,6 +22,18 @@ mat-progress-bar {
   height: auto;
 }
 
+.fade-in-picture {
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
 /* Adjustments for medium devices */
 @media (max-width: 768px) {
   .col {
