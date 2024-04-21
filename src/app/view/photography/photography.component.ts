@@ -33,6 +33,14 @@ export class PhotographyComponent implements OnInit, OnDestroy {
   ) {
   }
 
+  saveScrollPosition() {
+    return window.scrollY;
+  }
+
+  restoreScrollPosition(position: number) {
+    window.scrollTo(0, position);
+  }
+
   ngOnInit(): void {
     this.restoreStateOrLoadInitial();
 
@@ -124,21 +132,21 @@ export class PhotographyComponent implements OnInit, OnDestroy {
   }
 
   setLoadInterval() {
-    // Clear any existing interval to avoid multiple intervals running at once
     if (this.intervalId) {
       clearInterval(this.intervalId);
     }
 
     this.intervalId = window.setInterval(() => {
       this.zone.run(() => {
-        // Before loading more pictures, check if there are any left to load
+        const savedScrollPosition = this.saveScrollPosition(); // Save scroll position
+
         if (this.visiblePictures.length < this.allPictures.length) {
           this.loadMorePictures(); // Load more pictures if there are any left
+          this.restoreScrollPosition(savedScrollPosition); // Restore scroll position
         } else {
-          // If no more pictures are left to load, clear the interval
           if (this.intervalId) {
             clearInterval(this.intervalId);
-            this.intervalId = null; // Ensure the interval ID is reset
+            this.intervalId = null; // Reset interval ID
           }
         }
       });
