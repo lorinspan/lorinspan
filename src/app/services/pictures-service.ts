@@ -21,7 +21,7 @@ export class PicturesService {
 export const pictures: Picture[] = [
   new Picture(1,
     'stefania-ionescu-leu-c-min.jpg',
-    'This image captures my early exploration into studio-like portrait photography, equipped with my newly acquired lighting setup, albeit not perfect. It included a light positioned behind Ștefania, an off-camera flash with an umbrella diffuser, and a wireless trigger on the camera.',
+    null,
     '18th of April, 2024',
     'The Lion Complex',
     'https://maps.app.goo.gl/CnRDSFfyjTTqtEHA8',
