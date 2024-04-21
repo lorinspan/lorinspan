@@ -1,7 +1,7 @@
 <div class="container">
   <ng-container *ngFor="let column of columns">
     <div class="col">
-      <ng-container *ngFor="let picture of column; let i = index; trackBy: trackByPictureId">
+      <ng-container *ngFor="let picture of column; let i = index">
         <div>
           <img
             [src]="picture.src"

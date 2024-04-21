@@ -112,10 +112,6 @@ export class PhotographyComponent implements OnInit, OnDestroy {
     this.startLoadInterval(); // Reset interval with updated delay
   }
 
-  trackByPictureId(index: number, picture: Picture): number {
-    return picture.id;
-  }
-
   ngOnDestroy() {
     this.stopLoadInterval(); // Clean up interval on destroy
     this.resizeSubscription.unsubscribe(); // Unsubscribe from resize subject
