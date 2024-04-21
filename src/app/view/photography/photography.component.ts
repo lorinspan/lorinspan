@@ -25,113 +25,113 @@ export class PhotographyComponent implements OnInit, OnDestroy {
     private readonly picturesService: PicturesService,
     private router: Router,
     public loadingService: LoadingService
-) {}
+  ) {}
 
-navigateToPicture(pictureId: number) {
-  this.router.navigate(['/photo', pictureId]);
-}
+  navigateToPicture(pictureId: number) {
+    this.router.navigate(['/photo', pictureId]);
+  }
 
-ngOnInit(): void {
-  this.calculateColumns();
-  this.picturesService.getPictures().subscribe((pictures) => {
-    this.allPictures = pictures;
-    this.setBatchAndInterval();
+  ngOnInit(): void {
+    this.calculateColumns();
+    this.picturesService.getPictures().subscribe((pictures) => {
+      this.allPictures = pictures;
+      this.setBatchAndInterval();
 
-    this.visiblePictures = this.allPictures.slice(0, this.initialBatchLoadSize);
+      this.visiblePictures = this.allPictures.slice(0, this.initialBatchLoadSize);
 
-    this.loadingService.setLoading(true);
+      this.loadingService.setLoading(true);
+      this.generatePictures();
+
+      this.setLoadInterval(); // Start the load interval with the updated time
+    });
+  }
+
+  @HostListener('window:resize', ['$event'])
+  onWindowResize() {
+    const previousNumberOfColumns = this.numberOfColumns;
+    this.calculateColumns();
+
+    if (previousNumberOfColumns !== this.numberOfColumns) {
+      this.setBatchAndInterval(); // Update batch size and interval based on columns
+      this.generatePictures(); // Recalculate the columns
+    }
+  }
+
+  setBatchAndInterval() {
+    if (this.numberOfColumns === 1) {
+      this.initialBatchLoadSize = 2; // Smaller batches for smaller screens
+      this.currentLoadInterval = 250; // Faster intervals
+      this.intervalIncrementFactor = 10;
+    } else {
+      this.initialBatchLoadSize = 5; // Larger batches for larger screens
+      this.currentLoadInterval = 250; // Default interval for larger screens
+      this.intervalIncrementFactor = 50;
+    }
+
+    this.currentIncrement = this.baseIncrement; // Reset current increment to the base
+  }
+
+  setLoadInterval() {
+    if (this.intervalId) {
+      clearInterval(this.intervalId); // Clear any existing interval
+    }
+
+    this.intervalId = window.setInterval(() => {
+      this.loadMorePictures();
+    }, this.currentLoadInterval);
+  }
+
+  loadMorePictures() {
+    const currentLength = this.visiblePictures.length;
+    const newBatchSize = this.initialBatchLoadSize;
+    const endIndex = Math.min(currentLength + newBatchSize, this.allPictures.length);
+
+    const newBatch = this.allPictures.slice(currentLength, endIndex);
+    this.visiblePictures = [...this.visiblePictures, ...newBatch];
+
     this.generatePictures();
 
-    this.setLoadInterval(); // Start the load interval with the updated time
-  });
-}
+    this.currentLoadInterval += this.currentIncrement;
+    if (this.currentLoadInterval > 1000) {
+      this.currentLoadInterval = 1000; // Cap at one second
+    }
 
-@HostListener('window:resize', ['$event'])
-onWindowResize() {
-  const previousNumberOfColumns = this.numberOfColumns;
-  this.calculateColumns();
+    this.currentIncrement += this.intervalIncrementFactor;
 
-  if (previousNumberOfColumns !== this.numberOfColumns) {
-    this.setBatchAndInterval(); // Update batch size and interval based on columns
-    this.generatePictures(); // Recalculate the columns
-  }
-}
-
-setBatchAndInterval() {
-  // Adjust batch size and load interval based on the number of columns
-  if (this.numberOfColumns === 1) {
-    this.initialBatchLoadSize = 2; // Smaller batches for smaller screens
-    this.currentLoadInterval = 250; // Faster intervals
-    this.intervalIncrementFactor = 10;
-  } else {
-    this.initialBatchLoadSize = 5; // Larger batches for larger screens
-    this.currentLoadInterval = 250; // Default interval for larger screens
-    this.intervalIncrementFactor = 50;
+    this.setLoadInterval(); // Reset with updated interval
   }
 
-  this.currentIncrement = this.baseIncrement; // Reset current increment to the base
-}
-
-setLoadInterval() {
-  if (this.intervalId) {
-    clearInterval(this.intervalId); // Clear any existing interval
+  calculateColumns() {
+    if (window.matchMedia('(min-width: 993px)').matches) {
+      this.numberOfColumns = 5;
+    } else if (
+      window.matchMedia('(min-width: 769px) and (max-width: 992px)').matches
+    ) {
+      this.numberOfColumns = 3;
+    } else {
+      this.numberOfColumns = 1;
+    }
   }
 
-  this.intervalId = window.setInterval(() => {
-    this.loadMorePictures();
-  }, this.currentLoadInterval);
-}
+  generatePictures() {
+    const numColumns = this.numberOfColumns;
+    this.columns = Array.from({ length: numColumns }, () => []); // Reset columns
 
-loadMorePictures() {
-  const currentLength = this.visiblePictures.length;
-  const newBatchSize = this.initialBatchLoadSize;
-  const endIndex = Math.min(currentLength + newBatchSize, this.allPictures.length);
+    this.visiblePictures.forEach((picture, index) => {
+      const colIndex = index % numColumns;
+      this.columns[colIndex].push(picture); // Push into the correct column
+    });
 
-  const newBatch = this.allPictures.slice(currentLength, endIndex);
-  this.visiblePictures = [...this.visiblePictures, ...newBatch];
-
-  this.generatePictures();
-
-  // Update the interval based on the current increment
-  this.currentLoadInterval += this.currentIncrement;
-
-  // Ensure the interval doesn't exceed one second
-  if (this.currentLoadInterval > 1000) {
-    this.currentLoadInterval = 1000; // Cap at one second
+    this.loadingService.setLoading(false); // Loading complete
   }
 
-  this.currentIncrement += this.intervalIncrementFactor;
-
-  this.setLoadInterval(); // Reset with updated interval
-}
-
-calculateColumns() {
-  if (window.matchMedia('(min-width: 993px)').matches) {
-    this.numberOfColumns = 5;
-  } else if (
-    window.matchMedia('(min-width: 769px) and (max-width: 992px)').matches
-  ) {
-    this.numberOfColumns = 3;
-  } else {
-    this.numberOfColumns = 1;
+  trackByPictureId(index: number, picture: Picture): number {
+    return picture.id; // Unique identifier for tracking
   }
-}
 
-generatePictures() {
-  const numColumns = this.numberOfColumns;
-  this.columns = Array.from({ length: numColumns }, () => []); // Reset columns
-
-  this.visiblePictures.forEach((picture, index) => {
-    const colIndex = index % numColumns;
-    this.columns[colIndex].push(picture); // Push the picture into the correct column
-  });
-
-  this.loadingService.setLoading(false); // Loading complete
-}
-
-ngOnDestroy() {
-  if (this.intervalId) {
-    window.clearInterval(this.intervalId);
+  ngOnDestroy() {
+    if (this.intervalId) {
+      window.clearInterval(this.intervalId);
+    }
   }
-}
 }
