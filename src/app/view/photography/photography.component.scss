@@ -1,63 +1,45 @@
-$scale-factor: 1.015; // Factor by which the element grows on hover
-$transition-duration: 0.25s; // Duration of the transition effect
+.flex-container {
+  display: flex;
+  justify-content: space-between; /* Evenly space columns */
+  gap: 10px; /* Space between columns */
+}
 
-/* Animation keyframes for fade-in */
-@keyframes fadeIn {
-  from {
-    opacity: 0; // Start from invisible
-    transform: scale(0.95); // Slightly smaller for a pop-in effect
-  }
-  to {
-    opacity: 1; // Fully visible
-    transform: scale(1); // Normal size
-  }
+.flex-column {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 10px; /* Space between images */
+}
+
+.hidden {
+  display: none; /* Hide hidden columns */
 }
 
 .picture {
-  display: block; // Images should be block-level to fit within columns
-  width: 100%; // Fill the column's width
-  height: auto; // Maintain aspect ratio
-  break-inside: avoid; // Prevents breaking within a column
+  width: 100%; /* Fill column width */
+  height: auto; /* Maintain aspect ratio */
   cursor: pointer;
-  transition: transform $transition-duration ease-in-out, opacity $transition-duration ease-in-out;
-  animation: fadeIn 0.5s ease-in; // Apply the fade-in animation with duration and easing
 }
 
-.picture:hover {
-  transform: scale($scale-factor); // Hover effect with scaling
-}
-
-/* Adjustments for smaller devices */
+/* Responsive adjustments for different screen sizes */
 @media (max-width: 768px) {
-  .picture {
-    margin-bottom: 2%;
-  }
-
-  .container {
-    column-count: 1; // Single column for small devices
+  .flex-container {
+    flex-direction: column; /* Stack columns on smaller screens */
   }
 }
 
-/* Adjustments for medium devices */
+/* 3 columns for medium screens */
 @media (min-width: 769px) and (max-width: 992px) {
-  .picture {
-    margin-bottom: 3%; // % margin between images vertically
-  }
-
-  .container {
-    column-count: 3; // Set to 3 columns for medium devices
-    column-gap: 1.15%; // Retain % column gap
+  .flex-container {
+    flex-direction: row;
+    justify-content: space-between;
   }
 }
 
-/* Adjustments for extra-large devices */
+/* 5 columns for large screens */
 @media (min-width: 993px) {
-  .picture {
-    margin-bottom: 3.5%; // % margin between images vertically
-  }
-
-  .container {
-    column-count: 5; // Set to 5 columns for large devices
-    column-gap: 0.75%; // Retain % column gap
+  .flex-container {
+    flex-direction: row;
+    justify-content: space-between;
   }
 }

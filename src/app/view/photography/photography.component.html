@@ -1,11 +1,116 @@
-<div class="container" #container>
-  <ng-container *ngFor="let picture of reorderedPictures">
-    <img
-      class="picture"
-      [lazyLoad]="picture.src"
-      loading="lazy"
-      [alt]="picture.alt"
-      (click)="navigateToPicture(picture.id)"
-    />
-  </ng-container>
+<div class="flex-container" #container *ngIf="isLargeScreen()">
+  <!-- Create 5 flex columns, but use media queries to show/hide based on screen size -->
+  <div class="flex-column">
+    <ng-container *ngFor="let picture of reorderedPictures; let i = index">
+      <img *ngIf="i % 5 === 0"
+           class="picture"
+           [lazyLoad]="picture.src"
+           loading="lazy"
+           [alt]="picture.alt"
+           (click)="navigateToPicture(picture.id)"
+      />
+    </ng-container>
+  </div>
+
+  <div class="flex-column">
+    <ng-container *ngFor="let picture of reorderedPictures; let i = index">
+      <img *ngIf="i % 5 === 1"
+           class="picture"
+           [lazyLoad]="picture.src"
+           loading="lazy"
+           [alt]="picture.alt"
+           (click)="navigateToPicture(picture.id)"
+      />
+    </ng-container>
+  </div>
+
+  <div class="flex-column">
+    <ng-container *ngFor="let picture of reorderedPictures; let i = index">
+      <img *ngIf="i % 5 === 2"
+           class="picture"
+           [lazyLoad]="picture.src"
+           loading="lazy"
+           [alt]="picture.alt"
+           (click)="navigateToPicture(picture.id)"
+      />
+    </ng-container>
+  </div>
+
+  <div class="flex-column">
+    <ng-container *ngFor="let picture of reorderedPictures; let i = index">
+      <img *ngIf="i % 5 === 3"
+           class="picture"
+           [lazyLoad]="picture.src"
+           loading="lazy"
+           [alt]="picture.alt"
+           (click)="navigateToPicture(picture.id)"
+      />
+    </ng-container>
+  </div>
+
+  <div class="flex-column">
+    <ng-container *ngFor="let picture of reorderedPictures; let i = index">
+      <img *ngIf="i % 5 === 4"
+           class="picture"
+           [lazyLoad]="picture.src"
+           loading="lazy"
+           [alt]="picture.alt"
+           (click)="navigateToPicture(picture.id)"
+      />
+    </ng-container>
+  </div>
+</div>
+
+<div class="flex-container" #container *ngIf="isMediumScreen()">
+  <!-- Create 5 flex columns, but use media queries to show/hide based on screen size -->
+  <div class="flex-column">
+    <ng-container *ngFor="let picture of reorderedPictures; let i = index">
+      <img *ngIf="i % 3 === 0"
+           class="picture"
+           [lazyLoad]="picture.src"
+           loading="lazy"
+           [alt]="picture.alt"
+           (click)="navigateToPicture(picture.id)"
+      />
+    </ng-container>
+  </div>
+
+  <div class="flex-column">
+    <ng-container *ngFor="let picture of reorderedPictures; let i = index">
+      <img *ngIf="i % 3 === 1"
+           class="picture"
+           [lazyLoad]="picture.src"
+           loading="lazy"
+           [alt]="picture.alt"
+           (click)="navigateToPicture(picture.id)"
+      />
+    </ng-container>
+  </div>
+
+  <div class="flex-column">
+    <ng-container *ngFor="let picture of reorderedPictures; let i = index">
+      <img *ngIf="i % 3 === 2"
+           class="picture"
+           [lazyLoad]="picture.src"
+           loading="lazy"
+           [alt]="picture.alt"
+           (click)="navigateToPicture(picture.id)"
+      />
+    </ng-container>
+  </div>
+</div>
+
+<div class="flex-container" #container *ngIf="isSmallScreen()">
+  <!-- Create 5 flex columns, but use media queries to show/hide based on screen size -->
+  <div class="flex-column">
+    <ng-container *ngFor="let picture of reorderedPictures; let i = index">
+      <img
+           class="picture"
+           [lazyLoad]="picture.src"
+           loading="lazy"
+           [alt]="picture.alt"
+           (click)="navigateToPicture(picture.id)"
+      />
+    </ng-container>
+  </div>
 </div>

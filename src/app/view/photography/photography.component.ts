@@ -37,6 +37,34 @@ export class PhotographyComponent implements OnInit {
     }
   }
 
+  isHidden(columnIndex: number): boolean {
+    const screenWidth = window.innerWidth;
+
+    if (screenWidth < 769) {
+      return columnIndex > 0; // Hide all columns except the first one for small screens
+    } else if (screenWidth >= 769 && screenWidth <= 992) {
+      return columnIndex >= 3; // Hide columns 3 and above for medium screens
+    } else {
+      return false; // Show all columns for large screens
+    }
+  }
+
+  isLargeScreen(): boolean {
+    console.log('large screen')
+    console.log(window.innerWidth > 993)
+    return window.innerWidth > 993;
+  }
+
+  isMediumScreen(): boolean {
+    console.log('medium screen')
+    console.log(window.innerWidth >= 769 && window.innerWidth <= 992)
+    return window.innerWidth >= 769 && window.innerWidth <= 992;
+  }
+
+  isSmallScreen(): boolean {
+    return window.innerWidth < 769;
+  }
+
   detectColumnCount(): number {
     const mediumScreen = window.matchMedia('(min-width: 769px) and (max-width: 992px)');
     const largeScreen = window.matchMedia('(min-width: 993px)');
@@ -52,27 +80,7 @@ export class PhotographyComponent implements OnInit {
 
   reorderPicturesBasedOnColumns() {
     const columnCount = this.currentColumnCount;
-    if (isNaN(columnCount) || columnCount < 1) {
-      this.reorderedPictures = [...this.pictures];
-    } else {
-      this.reorderedPictures = this.rearrangePictures(this.pictures, columnCount);
-    }
-  }
-
-  rearrangePictures(pictures: any[], columns: number): any[] {
-    const result: any[] = [];
-    const rows = Math.ceil(pictures.length / columns);
-
-    for (let col = 0; col < columns; col++) {
-      for (let row = 0; row < rows; row++) {
-        const index = col + row * columns;
-        if (index < pictures.length) {
-          result.push(pictures[index]);
-        }
-      }
-    }
-
-    return result;
+    this.reorderedPictures = [...this.pictures];
   }
 
   navigateToPicture(pictureId: number) {

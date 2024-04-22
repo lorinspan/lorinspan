@@ -1,87 +1,63 @@
 $scale-factor: 1.015; // Factor by which the element grows on hover
-$transition-duration: 0.1s; // Duration of the transition effect
+$transition-duration: 0.25s; // Duration of the transition effect
 
-.container {
-  display: flex;
-  flex-wrap: wrap;
-}
-
-.col {
-  flex: 1; /* Allow columns to grow and shrink equally */
-  max-width: calc(25% - 10px); /* Set maximum width for each column */
-}
-
-mat-progress-bar {
-  width: 50vw;
+/* Animation keyframes for fade-in */
+@keyframes fadeIn {
+  from {
+    opacity: 0; // Start from invisible
+    transform: scale(0.95); // Slightly smaller for a pop-in effect
+  }
+  to {
+    opacity: 1; // Fully visible
+    transform: scale(1); // Normal size
+  }
 }
 
 .picture {
+  display: block; // Images should be block-level to fit within columns
+  width: 100%; // Fill the column's width
+  height: auto; // Maintain aspect ratio
+  break-inside: avoid; // Prevents breaking within a column
   cursor: pointer;
-  width: 100%;
-  height: auto;
+  transition: transform $transition-duration ease-in-out, opacity $transition-duration ease-in-out;
+  animation: fadeIn 0.5s ease-in; // Apply the fade-in animation with duration and easing
+}
+
+.picture:hover {
+  transform: scale($scale-factor); // Hover effect with scaling
+}
+
+/* Adjustments for smaller devices */
+@media (max-width: 768px) {
+  .picture {
+    margin-bottom: 2%;
+  }
+
+  .container {
+    column-count: 1; // Single column for small devices
+  }
 }
 
 /* Adjustments for medium devices */
-@media (max-width: 768px) {
-  .col {
-    max-width: calc(100% - 10px); /* One columns per row */
-  }
-
-  .container {
-    justify-content: center;
-  }
-
-  * {
-    transition: none;
-
-    &:hover {
-      transform: none;
-    }
-  }
-}
-
-/* Adjustments for large devices */
 @media (min-width: 769px) and (max-width: 992px) {
-  .col {
-    max-width: calc(33.33% - 10px); /* Three columns per row */
+  .picture {
+    margin-bottom: 3%; // % margin between images vertically
   }
 
   .container {
-    justify-content: space-between;
-  }
-
-  * {
-    &:not(.container, .col) {
-      transition: transform $transition-duration ease-in-out;
-
-      &:hover {
-        transform: scale($scale-factor);
-      }
-    }
+    column-count: 3; // Set to 3 columns for medium devices
+    column-gap: 1.15%; // Retain % column gap
   }
 }
 
-/* Adjustments for extra large devices */
+/* Adjustments for extra-large devices */
 @media (min-width: 993px) {
-  .col {
-    max-width: calc(20% - 10px); /* Five columns per row */
-  }
-
   .picture {
-    margin-bottom: 2.5%;
+    margin-bottom: 3.5%; // % margin between images vertically
   }
 
   .container {
-    justify-content: space-between;
-  }
-
-  * {
-    &:not(.container, .col) {
-      transition: transform $transition-duration ease-in-out;
-
-      &:hover {
-        transform: scale($scale-factor);
-      }
-    }
+    column-count: 5; // Set to 5 columns for large devices
+    column-gap: 0.75%; // Retain % column gap
   }
 }
