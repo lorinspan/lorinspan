@@ -37,18 +37,6 @@ export class PhotographyComponent implements OnInit {
     }
   }
 
-  isHidden(columnIndex: number): boolean {
-    const screenWidth = window.innerWidth;
-
-    if (screenWidth < 769) {
-      return columnIndex > 0; // Hide all columns except the first one for small screens
-    } else if (screenWidth >= 769 && screenWidth <= 992) {
-      return columnIndex >= 3; // Hide columns 3 and above for medium screens
-    } else {
-      return false; // Show all columns for large screens
-    }
-  }
-
   isLargeScreen(): boolean {
     console.log('large screen')
     console.log(window.innerWidth > 993)
