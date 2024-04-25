@@ -1,7 +1,6 @@
 import { Component, OnInit, HostListener } from '@angular/core';
 import { Router } from '@angular/router';
 import { PicturesService } from '../../services/pictures-service';
-import { ImageCacheService } from "../../services/image-cache-service";
 
 @Component({
   selector: 'app-photography',
@@ -16,7 +15,6 @@ export class PhotographyComponent implements OnInit {
   constructor(
     private readonly picturesService: PicturesService,
     private router: Router,
-    private imageCacheService: ImageCacheService // Inject the image cache service
   ) {
     this.currentColumnCount = this.detectColumnCount();
   }
