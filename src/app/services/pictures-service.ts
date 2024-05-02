@@ -23,7 +23,7 @@ export const pictures: Picture[] = [
   new Picture(1,
     'stefania-ionescu-targoviste-min.jpg',
     null,
-    '18th of April, 2024',
+    '1st of May, 2024',
     'Târgoviște, România',
     'https://maps.app.goo.gl/8GWzhKLjFKUkHWyJA',
     'Ștefania Ionescu',
