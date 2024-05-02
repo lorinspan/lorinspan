@@ -21,6 +21,16 @@ export class PicturesService {
 
 export const pictures: Picture[] = [
   new Picture(1,
+    'stefania-ionescu-targoviste-min.jpg',
+    null,
+    '18th of April, 2024',
+    'Târgoviște, România',
+    'https://maps.app.goo.gl/8GWzhKLjFKUkHWyJA',
+    'Ștefania Ionescu',
+    'https://www.instagram.com/steff_06_/',
+    'f/5.6, 1/180 sec, ISO 160. On-camera flash.'
+    ),
+  new Picture(25,
     'stefania-ionescu-leu-c-min.jpg',
     null,
     '18th of April, 2024',
@@ -444,7 +454,7 @@ export const pictures: Picture[] = [
     null,
     null,
     'f/4, 1/1600 sec, ISO 100.'),
-  new Picture(25,
+  new Picture(50,
     'basarab-passage-6-min.jpg',
     null,
     '21th of April, 2024',
