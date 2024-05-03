@@ -9,19 +9,55 @@ export class PicturesService {
   constructor() { }
 
   getPictures(): Observable<Picture[]> {
-    const sortedPictures = [...pictures].sort((a, b) => a.id - b.id); // Using spread to avoid mutating the original array
-    return of(sortedPictures);
+    const sortedPictures = [...pictures].sort((a, b) => {
+      return a.id - b.id;
+    }); // Using spread to avoid mutating the original array
+    return of(this.reorderAndReassignIDs(pictures));
   }
 
   getPictureById(id: number): Observable<Picture | null> {
     const picture = pictures.find(p => p.id === id);
     return of(picture || null);
   }
+
+  private getShuffleSeed(): number {
+    const now = new Date();
+    const day = now.getDate();
+    const month = now.getMonth() + 1; // Months are zero-based
+    const year = now.getFullYear();
+    return day + month * 69 + year * 420;
+  }
+
+  reorderAndReassignIDs(pictures: Picture[]): Picture[] {
+    const seed = this.getShuffleSeed(); // Get a deterministic seed based on the current date
+    const shuffledPictures = this.shuffleArray(pictures, seed); // Shuffle with a seed
+
+    // Reassign IDs sequentially
+    shuffledPictures.forEach((picture, index) => {
+      picture.id = index + 1; // Reassign IDs from 1 to the length of the array
+    });
+
+    return shuffledPictures; // Return the reordered and re-IDed array
+  }
+
+  private shuffleArray<T>(array: T[], seed: number): T[] {
+    const shuffledArray = [...array];
+    let currentSeed = seed;
+
+    // Fisher-Yates shuffle with a deterministic seed
+    for (let i = shuffledArray.length - 1; i > 0; i--) {
+      currentSeed = (currentSeed * 9301 + 49297) % 233280; // Generate a pseudo-random number
+      const j = Math.floor((currentSeed / 233280) * (i + 1)); // Random index
+      [shuffledArray[i], shuffledArray[j]] = [shuffledArray[j], shuffledArray[i]]; // Swap elements
+    }
+
+    return shuffledArray;
+  }
 }
 
 export const pictures: Picture[] = [
-  new Picture(1,
-    'stefania-ionescu-targoviste-min.jpg',
+  new Picture(
+    'stefania-ionescu-targoviste-1-min.jpg',
     null,
     '1st of May, 2024',
     'Târgoviște, România',
@@ -30,7 +66,27 @@ export const pictures: Picture[] = [
     'https://www.instagram.com/steff_06_/',
     'f/5.6, 1/180 sec, ISO 160. On-camera flash.'
     ),
-  new Picture(25,
+  new Picture(
+    'stefania-ionescu-targoviste-2-min.jpg',
+    null,
+    '1st of May, 2024',
+    'Târgoviște, România',
+    'https://maps.app.goo.gl/8GWzhKLjFKUkHWyJA',
+    'Ștefania Ionescu',
+    'https://www.instagram.com/steff_06_/',
+    'f/5.6, 1/180 sec, ISO 160. On-camera flash.'
+  ),
+  new Picture(
+    'stefania-ionescu-targoviste-3-min.jpg',
+    null,
+    '1st of May, 2024',
+    'Târgoviște, România',
+    'https://maps.app.goo.gl/8GWzhKLjFKUkHWyJA',
+    'Ștefania Ionescu',
+    'https://www.instagram.com/steff_06_/',
+    'f/8, 1/180 sec, ISO 200. On-camera flash.'
+  ),
+  new Picture(
     'stefania-ionescu-leu-c-min.jpg',
     null,
     '18th of April, 2024',
@@ -40,7 +96,7 @@ export const pictures: Picture[] = [
     'https://www.instagram.com/steff_06_/',
     'f/2.8, 1/180 sec, ISO 200. Backlit & off camera flash with umbrella diffuser.'
     ),
-  new Picture(32,
+  new Picture(
     'bucharest-court-min.jpg',
     null,
     '20th of April, 2024',
@@ -49,7 +105,7 @@ export const pictures: Picture[] = [
     null,
     null,
     'f/5, 1/4000 sec, ISO 500.'),
-  new Picture(40,
+  new Picture(
     'national-library-of-romania-min.jpg',
     null,
     '20th of April, 2024',
@@ -58,16 +114,7 @@ export const pictures: Picture[] = [
     null,
     null,
     'f/2.2, 1/2000 sec, ISO 100.'),
-  new Picture(42,
-    'double-bmws-min.jpg',
-    null,
-    '20th of April, 2024',
-    'Chamber of Commerce and Industry',
-    'https://maps.app.goo.gl/TyVhoVUJh3Wucvij8',
-    null,
-    null,
-    'f/2.2, 1/2000 sec, ISO 400.'),
-  new Picture(15,
+  new Picture(
     'chamber-of-commerce-and-industry-min.jpg',
     null,
     '20th of April, 2024',
@@ -76,7 +123,7 @@ export const pictures: Picture[] = [
     null,
     null,
     'f/2.2, 1/2000 sec, ISO 100.'),
-  new Picture(29,
+  new Picture(
     'blvd-mircea-voda-min.jpg',
     null,
     '20th of April, 2024',
@@ -85,16 +132,7 @@ export const pictures: Picture[] = [
     null,
     null,
     'f/2.2, 1/2000 sec, ISO 100.'),
-  new Picture(38,
-    'jandarmeria-truck-1-min.jpg',
-    null,
-    '20th of April, 2024',
-    'Union Boulevard',
-    'https://maps.app.goo.gl/z9qokV8ju6y6fmbZA',
-    null,
-    null,
-    'f/2.2, 1/2000 sec, ISO 125.'),
-  new Picture(3,
+  new Picture(
     'jandarmeria-truck-2-min.jpg',
     null,
     '20th of April, 2024',
@@ -103,7 +141,7 @@ export const pictures: Picture[] = [
     null,
     null,
     'f/1.8, 1/1000 sec, ISO 100.'),
-  new Picture(23,
+  new Picture(
     'color-run-playful-child-min.jpg',
     null,
     '20th of April, 2024',
@@ -112,7 +150,7 @@ export const pictures: Picture[] = [
     null,
     null,
     'f/2.2, 1/2000 sec, ISO 200.'),
-  new Picture(26,
+  new Picture(
     'jandarmeria-crosswalk-min.jpg',
     null,
     '20th of April, 2024',
@@ -121,7 +159,7 @@ export const pictures: Picture[] = [
     null,
     null,
     'f/1.8, 1/2500 sec, ISO 160.'),
-  new Picture(11,
+  new Picture(
     'color-run-finish-line-min.jpg',
     null,
     '20th of April, 2024',
@@ -130,16 +168,7 @@ export const pictures: Picture[] = [
     null,
     null,
     'f/1.8, 1/2500 sec, ISO 100.'),
-  new Picture(35,
-    'jandarmeria-back-shot-1-min.jpg',
-    null,
-    '20th of April, 2024',
-    'Color Run',
-    'https://maps.app.goo.gl/PQQVi5ox9qD3Ashv9',
-    null,
-    null,
-    'f/1.8, 1/2000 sec, ISO 250.'),
-  new Picture(20,
+  new Picture(
     'color-run-back-shot-1-min.jpg',
     null,
     '20th of April, 2024',
@@ -148,7 +177,7 @@ export const pictures: Picture[] = [
     null,
     null,
     'f/1.8, 1/2000 sec, ISO 125.'),
-  new Picture(14,
+  new Picture(
     'bike-1-min.jpg',
     null,
     '20th of April, 2024',
@@ -157,7 +186,7 @@ export const pictures: Picture[] = [
     null,
     null,
     'f/1.8, 1/800 sec, ISO 250.'),
-  new Picture(5,
+  new Picture(
     'tesla-1-min.jpg',
     null,
     '20th of April, 2024',
@@ -166,7 +195,7 @@ export const pictures: Picture[] = [
     null,
     null,
     'f/1.8, 1/400 sec, ISO 100.'),
-  new Picture(4,
+  new Picture(
     'garlic-1-min.jpg',
     null,
     '20th of April, 2024',
@@ -175,16 +204,7 @@ export const pictures: Picture[] = [
     null,
     null,
     'f/1.8, 1/1600 sec, ISO 160.'),
-  new Picture(22,
-    'bike-girl-1-min.jpg',
-    null,
-    '20th of April, 2024',
-    'Union Boulevard',
-    'https://maps.app.goo.gl/J2LBhTnQ6nfQwMRr9',
-    null,
-    null,
-    'f/1.8, 1/1250 sec, ISO 250.'),
-  new Picture(33,
+  new Picture(
     'old-man-1-min.jpg',
     null,
     '20th of April, 2024',
@@ -193,7 +213,7 @@ export const pictures: Picture[] = [
     null,
     null,
     'f/1.8, 1/1250 sec, ISO 100.'),
-  new Picture(13,
+  new Picture(
     'union-boulevard-1-min.jpg',
     null,
     '20th of April, 2024',
@@ -202,7 +222,7 @@ export const pictures: Picture[] = [
     null,
     null,
     'f/4, 1/1000 sec, ISO 100.'),
-  new Picture(21,
+  new Picture(
     'union-boulevard-2-min.jpg',
     null,
     '20th of April, 2024',
@@ -211,7 +231,7 @@ export const pictures: Picture[] = [
     null,
     null,
     'f/4.5, 1/640 sec, ISO 100.'),
-  new Picture(18,
+  new Picture(
     'bmw-1-min.jpg',
     null,
     '20th of April, 2024',
@@ -220,7 +240,7 @@ export const pictures: Picture[] = [
     null,
     null,
     'f/1.8, 1/400 sec, ISO 400.'),
-  new Picture(16,
+  new Picture(
     'guy-waiting-flower-1-min.jpg',
     null,
     '20th of April, 2024',
@@ -229,7 +249,7 @@ export const pictures: Picture[] = [
     null,
     null,
     'f/3.2, 1/250 sec, ISO 100.'),
-  new Picture(49,
+  new Picture(
     'guy-on-bike-1-min.jpg',
     null,
     '20th of April, 2024',
@@ -238,7 +258,7 @@ export const pictures: Picture[] = [
     null,
     null,
     'f/3.2, 1/250 sec, ISO 100.'),
-  new Picture(8,
+  new Picture(
     'guy-back-shot-1-min.jpg',
     null,
     '20th of April, 2024',
@@ -247,7 +267,7 @@ export const pictures: Picture[] = [
     null,
     null,
     'f/1.8, 1/800 sec, ISO 100.'),
-  new Picture(10,
+  new Picture(
     'accordion-player-min.jpg',
     null,
     '20th of April, 2024',
@@ -256,7 +276,7 @@ export const pictures: Picture[] = [
     null,
     null,
     'f/3.2, 1/200 sec, ISO 500.'),
-  new Picture(28,
+  new Picture(
     'street-performer-1-min.jpg',
     null,
     '20th of April, 2024',
@@ -265,7 +285,7 @@ export const pictures: Picture[] = [
     null,
     null,
     'f/1.8, 1/1000 sec, ISO 320.'),
-  new Picture(12,
+  new Picture(
     'guy-tunnel-1-min.jpg',
     null,
     '20th of April, 2024',
@@ -274,7 +294,7 @@ export const pictures: Picture[] = [
     null,
     null,
     'f/1.8, 1/500 sec, ISO 160.'),
-  new Picture(6,
+  new Picture(
     'street-performer-2-min.jpg',
     null,
     '20th of April, 2024',
@@ -283,7 +303,7 @@ export const pictures: Picture[] = [
     null,
     null,
     'f/4, 1/640 sec, ISO 250.'),
-  new Picture(30,
+  new Picture(
     'palace-hall-min.jpg',
     null,
     '20th of April, 2024',
@@ -292,7 +312,7 @@ export const pictures: Picture[] = [
     null,
     null,
     'f/4, 1/1000 sec, ISO 200.'),
-  new Picture(19,
+  new Picture(
     'street-performer-3-min.jpg',
     null,
     '20th of April, 2024',
@@ -301,7 +321,7 @@ export const pictures: Picture[] = [
     null,
     null,
     'f/1.8, 1/800 sec, ISO 250.'),
-  new Picture(2,
+  new Picture(
     'jandarmeria-back-shot-2-min.jpg',
     null,
     '20th of April, 2024',
@@ -310,7 +330,7 @@ export const pictures: Picture[] = [
     null,
     null,
     'f/1.8, 1/1250 sec, ISO 250.'),
-  new Picture(31,
+  new Picture(
     'bancorex-headquarters-1-min.jpg',
     null,
     '20th of April, 2024',
@@ -319,7 +339,7 @@ export const pictures: Picture[] = [
     null,
     null,
     'f/4, 1/400 sec, ISO 125.'),
-  new Picture(34,
+  new Picture(
     'bancorex-headquarters-2-min.jpg',
     null,
     '20th of April, 2024',
@@ -328,7 +348,7 @@ export const pictures: Picture[] = [
     null,
     null,
     'f/4, 1/400 sec, ISO 125.'),
-  new Picture(27,
+  new Picture(
     'national-museum-of-romanian-history-1-min.jpg',
     null,
     '20th of April, 2024',
@@ -337,7 +357,7 @@ export const pictures: Picture[] = [
     null,
     null,
     'f/1.8, 1/500 sec, ISO 3200.'),
-  new Picture(36,
+  new Picture(
     'old-town-1-min.jpg',
     null,
     '20th of April, 2024',
@@ -346,7 +366,7 @@ export const pictures: Picture[] = [
     null,
     null,
     'f/1.8, 1/400 sec, ISO 320.'),
-  new Picture(48,
+  new Picture(
     'union-plaza-1-min.jpg',
     null,
     '20th of April, 2024',
@@ -355,7 +375,7 @@ export const pictures: Picture[] = [
     null,
     null,
     'f/1.8, 1/400 sec, ISO 400.'),
-  new Picture(7,
+  new Picture(
     'union-plaza-2-min.jpg',
     null,
     '20th of April, 2024',
@@ -364,7 +384,7 @@ export const pictures: Picture[] = [
     null,
     null,
     'f/1.8, 1/400 sec, ISO 1250.'),
-  new Picture(39,
+  new Picture(
     'union-plaza-3-min.jpg',
     null,
     '20th of April, 2024',
@@ -373,7 +393,7 @@ export const pictures: Picture[] = [
     null,
     null,
     'f/1.8, 1/400 sec, ISO 160.'),
-  new Picture(41,
+  new Picture(
     'union-plaza-4-min.jpg',
     null,
     '20th of April, 2024',
@@ -382,7 +402,7 @@ export const pictures: Picture[] = [
     null,
     null,
     'f/1.8, 1/400 sec, ISO 2500.'),
-  new Picture(47,
+  new Picture(
     'union-plaza-5-min.jpg',
     null,
     '20th of April, 2024',
@@ -391,7 +411,7 @@ export const pictures: Picture[] = [
     null,
     null,
     'f/1.8, 1/80 sec, ISO 1250.'),
-  new Picture(9,
+  new Picture(
     'national-museum-of-romanian-history-2-min.jpg',
     null,
     '20th of April, 2024',
@@ -400,7 +420,7 @@ export const pictures: Picture[] = [
     null,
     null,
     'f/1.8, 1/60 sec, ISO 500.'),
-  new Picture(17,
+  new Picture(
     'color-run-back-shot-2-min.jpg',
     null,
     '20th of April, 2024',
@@ -409,7 +429,7 @@ export const pictures: Picture[] = [
     null,
     null,
     'f/2.5, 1/2000 sec, ISO 640.'),
-  new Picture(43,
+  new Picture(
     'basarab-passage-1-min.jpg',
     null,
     '21th of April, 2024',
@@ -418,7 +438,7 @@ export const pictures: Picture[] = [
     null,
     null,
     'f/4.5, 1/800 sec, ISO 100.'),
-  new Picture(44,
+  new Picture(
     'basarab-passage-2-min.jpg',
     null,
     '21th of April, 2024',
@@ -427,7 +447,7 @@ export const pictures: Picture[] = [
     null,
     null,
     'f/3.2, 1/800 sec, ISO 100.'),
-  new Picture(45,
+  new Picture(
     'basarab-passage-3-min.jpg',
     null,
     '21th of April, 2024',
@@ -436,7 +456,7 @@ export const pictures: Picture[] = [
     null,
     null,
     'f/3.2, 1/800 sec, ISO 1000.'),
-  new Picture(46,
+  new Picture(
     'basarab-passage-4-min.jpg',
     null,
     '21th of April, 2024',
@@ -445,7 +465,7 @@ export const pictures: Picture[] = [
     null,
     null,
     'f/3.2, 1/800 sec, ISO 100.'),
-  new Picture(37,
+  new Picture(
     'basarab-passage-5-min.jpg',
     null,
     '21th of April, 2024',
@@ -454,7 +474,7 @@ export const pictures: Picture[] = [
     null,
     null,
     'f/4, 1/1600 sec, ISO 100.'),
-  new Picture(50,
+  new Picture(
     'basarab-passage-6-min.jpg',
     null,
     '21th of April, 2024',
@@ -463,7 +483,7 @@ export const pictures: Picture[] = [
     null,
     null,
     'f/4, 1/800 sec, ISO 200.'),
-  new Picture(24,
+  new Picture(
     'bucharest-north-train-station-1-min.jpg',
     null,
     '21th of April, 2024',
@@ -472,4 +492,304 @@ export const pictures: Picture[] = [
     null,
     null,
     'f/1.8, 1/3200 sec, ISO 160.'),
+  new Picture(
+    'giurgiu-landscape-1-min.jpg',
+    null,
+    '29th of April, 2024',
+    'Giurgiu, România',
+    null,
+    null,
+    null,
+    'f/6.3, 1/500 sec, ISO 125'
+  ),
+  new Picture(
+    'ruse-train-station-1-min.jpg',
+    null,
+    '29th of April, 2024',
+    'Ruse, Bulgaria',
+    'https://maps.app.goo.gl/WCxPRpm6MTQDzxw29',
+    null,
+    null,
+    'f/5, 1/800 sec, ISO 160'
+  ),
+  new Picture(
+    'ruse-train-station-2-min.jpg',
+    null,
+    '29th of April, 2024',
+    'Ruse, Bulgaria',
+    'https://maps.app.goo.gl/WCxPRpm6MTQDzxw29',
+    null,
+    null,
+    'f/4, 1/1250 sec, ISO 125'
+  ),
+  new Picture(
+    'ruse-architecture-1-min.jpg',
+    null,
+    '29th of April, 2024',
+    'Ruse, Bulgaria',
+    null,
+    null,
+    null,
+    'f/8, 1/250 sec, ISO 250'
+  ),
+  new Picture(
+    'ruse-architecture-2-min.jpg',
+    null,
+    '29th of April, 2024',
+    'Ruse, Bulgaria',
+    null,
+    null,
+    null,
+    'f/8, 1/250 sec, ISO 200'
+  ),
+  new Picture(
+    'ruse-train-station-3-min.jpg',
+    null,
+    '29th of April, 2024',
+    'Ruse, Bulgaria',
+    'https://maps.app.goo.gl/WCxPRpm6MTQDzxw29',
+    null,
+    null,
+    'f/5.6, 1/1250 sec, ISO 320'
+  ),
+  new Picture(
+    'ruse-architecture-3-min.jpg',
+    null,
+    '29th of April, 2024',
+    'Ruse, Bulgaria',
+    null,
+    null,
+    null,
+    'f/7.1, 1/60 sec, ISO 400'
+  ),
+  new Picture(
+    'ruse-architecture-4-min.jpg',
+    null,
+    '29th of April, 2024',
+    'Ruse, Bulgaria',
+    null,
+    null,
+    null,
+    'f/8, 1/250 sec, ISO 160'
+  ),
+  new Picture(
+    'ruse-architecture-5-min.jpg',
+    null,
+    '29th of April, 2024',
+    'Ruse, Bulgaria',
+    null,
+    null,
+    null,
+    'f/6.3, 1/200 sec, ISO 320'
+  ),
+  new Picture(
+    'ruse-architecture-6-min.jpg',
+    null,
+    '29th of April, 2024',
+    'Ruse, Bulgaria',
+    null,
+    null,
+    null,
+    'f/8, 1/60 sec, ISO 125'
+  ),
+  new Picture(
+    'ruse-architecture-7-min.jpg',
+    null,
+    '29th of April, 2024',
+    'Ruse, Bulgaria',
+    null,
+    null,
+    null,
+    'f/8, 1/320 sec, ISO 400'
+  ),
+  new Picture(
+    'ruse-architecture-8-min.jpg',
+    null,
+    '29th of April, 2024',
+    'Ruse, Bulgaria',
+    null,
+    null,
+    null,
+    'f/8, 1/60 sec, ISO 400'
+  ),
+  new Picture(
+    'ruse-car-1-min.jpg',
+    null,
+    '29th of April, 2024',
+    'Ruse, Bulgaria',
+    null,
+    null,
+    null,
+    'f/6.3, 1/400 sec, ISO 640'
+  ),
+  new Picture(
+    'ruse-rails-1-min.jpg',
+    null,
+    '29th of April, 2024',
+    'Ruse, Bulgaria',
+    null,
+    null,
+    null,
+    'f/7.1, 1/60 sec, ISO 640'
+  ),
+  new Picture(
+    'ruse-rails-2-min.jpg',
+    null,
+    '29th of April, 2024',
+    'Ruse, Bulgaria',
+    null,
+    null,
+    null,
+    'f/6.3, 1/320 sec, ISO 400'
+  ),
+  new Picture(
+    'ruse-cannon-min.jpg',
+    null,
+    '29th of April, 2024',
+    'Ruse, Bulgaria',
+    null,
+    null,
+    null,
+    'f/5.6, 1/800 sec, ISO 800'
+  ),
+  new Picture(
+    'ruse-sign-min.jpg',
+    null,
+    '29th of April, 2024',
+    'Ruse, Bulgaria',
+    null,
+    null,
+    null,
+    'f/6.3, 1/160 sec, ISO 320'
+  ),
+  new Picture(
+    'ruse-road-1-min.jpg',
+    null,
+    '29th of April, 2024',
+    'Ruse, Bulgaria',
+    null,
+    null,
+    null,
+    'f/6.3, 1/500 sec, ISO 125'
+  ),
+  new Picture(
+    'ruse-lock-min.jpg',
+    null,
+    '29th of April, 2024',
+    'Ruse, Bulgaria',
+    null,
+    null,
+    null,
+    'f/6.3, 1/320 sec, ISO 160'
+  ),
+  new Picture(
+    'ruse-danube-1-min.jpg',
+    null,
+    '29th of April, 2024',
+    'Ruse, Bulgaria',
+    null,
+    null,
+    null,
+    'f/6.3, 1/320 sec, ISO 250'
+  ),
+  new Picture(
+    'ruse-easter-eggs-min.jpg',
+    null,
+    '29th of April, 2024',
+    'Ruse, Bulgaria',
+    null,
+    null,
+    null,
+    'f/6.3, 1/160 sec, ISO 250'
+  ),
+  new Picture(
+    'giurgiu-landscape-2-min.jpg',
+    null,
+    '29th of April, 2024',
+    'Giurgiu, România',
+    null,
+    null,
+    null,
+    'f/5, 1/1000 sec, ISO 250'
+  ),
+  new Picture(
+    'giurgiu-landscape-3-min.jpg',
+    null,
+    '29th of April, 2024',
+    'Giurgiu, România',
+    null,
+    null,
+    null,
+    'f/6.3, 1/1000 sec, ISO 800'
+  ),
+  new Picture(
+    'giurgiu-train-shot-1-min.jpg',
+    null,
+    '29th of April, 2024',
+    'Giurgiu, România',
+    null,
+    null,
+    null,
+    'f/4.5, 1/1000 sec, ISO 500'
+  ),
+  new Picture(
+    'targoviste-park-1-min.jpg',
+    null,
+    '1st of May, 2024',
+    'Târgoviște, România',
+    'https://maps.app.goo.gl/RfTwDUrdLeYdXJS38',
+    null,
+    null,
+    'f/4, 1/400 sec, ISO 100'
+  ),
+  new Picture(
+    'targoviste-park-2-min.jpg',
+    null,
+    '1st of May, 2024',
+    'Târgoviște, România',
+    'https://maps.app.goo.gl/RfTwDUrdLeYdXJS38',
+    null,
+    null,
+    'f/6.3, 1/400 sec, ISO 320'
+  ),
+  new Picture(
+    'targoviste-chindiei-1-min.jpg',
+    null,
+    '1st of May, 2024',
+    'Târgoviște, România',
+    'https://maps.app.goo.gl/ApFdp67EGormM6v69',
+    null,
+    null,
+    'f/4, 1/400 sec, ISO 160'
+  ),
+  new Picture(
+    'targoviste-chindiei-2-min.jpg',
+    null,
+    '1st of May, 2024',
+    'Târgoviște, România',
+    'https://maps.app.goo.gl/ApFdp67EGormM6v69',
+    null,
+    null,
+    'f/5, 1/400 sec, ISO 250'
+  ),
+  new Picture(
+    'targoviste-chindiei-3-min.jpg',
+    null,
+    '1st of May, 2024',
+    'Târgoviște, România',
+    'https://maps.app.goo.gl/ApFdp67EGormM6v69',
+    null,
+    null,
+    'f/5.6, 1/400 sec, ISO 160'
+  ),
+  new Picture(
+    'ruse-bench-min.jpg',
+    null,
+    '29th of April, 2024',
+    'Ruse, Bulgaria',
+    null,
+    null,
+    null,
+    'f/4, 1/1600 sec, ISO 160'
+  ),
 ];
