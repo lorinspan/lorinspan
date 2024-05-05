@@ -36,14 +36,10 @@ export class PhotographyComponent implements OnInit {
   }
 
   isLargeScreen(): boolean {
-    console.log('large screen')
-    console.log(window.innerWidth > 993)
     return window.innerWidth > 993;
   }
 
   isMediumScreen(): boolean {
-    console.log('medium screen')
-    console.log(window.innerWidth >= 769 && window.innerWidth <= 992)
     return window.innerWidth >= 769 && window.innerWidth <= 992;
   }
 

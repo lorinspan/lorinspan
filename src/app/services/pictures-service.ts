@@ -169,15 +169,6 @@ export const pictures: Picture[] = [
     null,
     'f/1.8, 1/2500 sec, ISO 100.'),
   new Picture(
-    'color-run-back-shot-1-min.jpg',
-    null,
-    '20th of April, 2024',
-    'Color Run',
-    'https://maps.app.goo.gl/PQQVi5ox9qD3Ashv9',
-    null,
-    null,
-    'f/1.8, 1/2000 sec, ISO 125.'),
-  new Picture(
     'bike-1-min.jpg',
     null,
     '20th of April, 2024',
