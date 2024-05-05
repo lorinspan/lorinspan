@@ -196,15 +196,6 @@ export const pictures: Picture[] = [
     null,
     'f/1.8, 1/1600 sec, ISO 160.'),
   new Picture(
-    'old-man-1-min.jpg',
-    null,
-    '20th of April, 2024',
-    'Union Boulevard',
-    'https://maps.app.goo.gl/f3MqbLFxuE7KsaMG8',
-    null,
-    null,
-    'f/1.8, 1/1250 sec, ISO 100.'),
-  new Picture(
     'union-boulevard-1-min.jpg',
     null,
     '20th of April, 2024',
