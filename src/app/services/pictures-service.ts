@@ -913,7 +913,7 @@ export const pictures: Picture[] = [
     null,
     null,
     null,
-    'f/8, 1/250 sec, ISO 105'
+    'f/8, 1/250 sec, ISO 100'
   ),
   new Picture(
     'constanta-seagull-2-min.jpg',
