@@ -765,4 +765,194 @@ export const pictures: Picture[] = [
     null,
     'f/4, 1/1600 sec, ISO 160'
   ),
+  new Picture(
+    'constanta-church-1-min.jpg',
+    null,
+    '5th of May, 2024',
+    'Constanța, România',
+    null,
+    null,
+    null,
+    'f/5.6, 1/1000 sec, ISO 160'
+  ),
+  new Picture(
+    'constanta-pirate-boat-1-min.jpg',
+    null,
+    '5th of May, 2024',
+    'Constanța, România',
+    null,
+    null,
+    null,
+    'f/5, 1/2000 sec, ISO 250'
+  ),
+  new Picture(
+    'constanta-wheel-1-min.jpg',
+    null,
+    '5th of May, 2024',
+    'Constanța, România',
+    null,
+    null,
+    null,
+    'f/6.3, 1/1000 sec, ISO 160'
+  ),
+  new Picture(
+    'constanta-senior-couple-back-shot-1-min.jpg',
+    null,
+    '5th of May, 2024',
+    'Constanța, România',
+    null,
+    null,
+    null,
+    'f/6.3, 1/800 sec, ISO 250'
+  ),
+  new Picture(
+    'constanta-wooden-church-2-min.jpg',
+    null,
+    '4th of May, 2024',
+    'Constanța, România',
+    null,
+    null,
+    null,
+    'f/5, 1/60 sec, ISO 640'
+  ),
+  new Picture(
+    'negru-voda-landscape-1-min.jpg',
+    null,
+    '4th of May, 2024',
+    'Negru Vodă, România',
+    null,
+    null,
+    null,
+    'f/6.3, 1/800 sec, ISO 200'
+  ),
+  new Picture(
+    'negru-voda-landscape-2-min.jpg',
+    null,
+    '4th of May, 2024',
+    'Negru Vodă, România',
+    null,
+    null,
+    null,
+    'f/9, 1/800 sec, ISO 200'
+  ),
+  new Picture(
+    'negru-voda-landscape-3-min.jpg',
+    null,
+    '4th of May, 2024',
+    'Negru Vodă, România',
+    null,
+    null,
+    null,
+    'f/6.3, 1/640 sec, ISO 250'
+  ),
+  new Picture(
+    'mangalia-shipyard-1-min.jpg',
+    null,
+    '4th of May, 2024',
+    'Mangalia, România',
+    null,
+    null,
+    null,
+    'f/5, 1/4000 sec, ISO 250'
+  ),
+  new Picture(
+    'mangalia-hang-gliding-1-min.jpg',
+    null,
+    '4th of May, 2024',
+    'Mangalia, România',
+    null,
+    null,
+    null,
+    'f/6.3, 1/4000 sec, ISO 800'
+  ),
+  new Picture(
+    'mangalia-hang-gliding-2-min.jpg',
+    null,
+    '4th of May, 2024',
+    'Mangalia, România',
+    null,
+    null,
+    null,
+    'f/5.6, 1/2000 sec, ISO 100'
+  ),
+  new Picture(
+    'eforie-sud-lifeguard-tower-1-min.jpg',
+    null,
+    '4th of May, 2024',
+    'Eforie Sud, România',
+    null,
+    null,
+    null,
+    'f/8, 1/640 sec, ISO 320'
+  ),
+  new Picture(
+    'eforie-sud-coast-beach-landscape-1-min.jpg',
+    null,
+    '4th of May, 2024',
+    'Eforie Sud, România',
+    null,
+    null,
+    null,
+    'f/9, 1/640 sec, ISO 250'
+  ),
+  new Picture(
+    'eforie-sud-coast-landscape-1-min.jpg',
+    null,
+    '4th of May, 2024',
+    'Eforie Sud, România',
+    null,
+    null,
+    null,
+    'f/8, 1/320 sec, ISO 125'
+  ),
+  new Picture(
+    'constanta-seagull-1-min.jpg',
+    null,
+    '5th of May, 2024',
+    'Constanța, România',
+    null,
+    null,
+    null,
+    'f/8, 1/250 sec, ISO 105'
+  ),
+  new Picture(
+    'constanta-seagull-2-min.jpg',
+    null,
+    '5th of May, 2024',
+    'Constanța, România',
+    null,
+    null,
+    null,
+    'f/6.3, 1/60 sec, ISO 500'
+  ),
+  new Picture(
+    'constanta-seagull-3-min.jpg',
+    null,
+    '4th of May, 2024',
+    'Constanța, România',
+    null,
+    null,
+    null,
+    'f/6.3, 1/4000 sec, ISO 4000'
+  ),
+  new Picture(
+    'constanta-duck-1-min.jpg',
+    null,
+    '4th of May, 2024',
+    'Constanța, România',
+    null,
+    null,
+    null,
+    'f/6.3, 1/250 sec, ISO 800'
+  ),
+  new Picture(
+    'constanta-swans-1-min.jpg',
+    null,
+    '4th of May, 2024',
+    'Constanța, România',
+    null,
+    null,
+    null,
+    'f/6.3, 1/320 sec, ISO 400'
+  ),
 ];
