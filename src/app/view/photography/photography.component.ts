@@ -1,38 +1,39 @@
 import { Component, OnInit, HostListener } from '@angular/core';
 import { Router } from '@angular/router';
-import { PicturesService } from '../../services/pictures-service';
+import { CATEGORIES, PicturesService } from '../../services/pictures-service';
+import {CategoryService} from "../../services/category-service";
 
 @Component({
   selector: 'app-photography',
   templateUrl: './photography.component.html',
-  styleUrls: ['./photography.component.scss'],
+  styleUrls: ['./photography.component.scss']
 })
 export class PhotographyComponent implements OnInit {
   pictures: any[] = [];
   reorderedPictures: any[] = [];
   currentColumnCount: number;
+  categories: string[] = [];
+  selectedCategories: string[] = [];
 
   constructor(
     private readonly picturesService: PicturesService,
     private router: Router,
+    private categoryService: CategoryService
   ) {
     this.currentColumnCount = this.detectColumnCount();
   }
 
   ngOnInit(): void {
+    this.categories = Object.values(CATEGORIES);
     this.picturesService.getPictures().subscribe((pictures) => {
       this.pictures = pictures;
       this.reorderPicturesBasedOnColumns();
     });
-  }
 
-  @HostListener('window:resize')
-  onResize() {
-    const newColumnCount = this.detectColumnCount();
-    if (this.currentColumnCount !== newColumnCount) {
-      this.currentColumnCount = newColumnCount;
+    this.categoryService.selectedCategories$.subscribe((categories) => {
+      this.selectedCategories = categories;
       this.reorderPicturesBasedOnColumns();
-    }
+    });
   }
 
   isLargeScreen(): boolean {
@@ -45,6 +46,15 @@ export class PhotographyComponent implements OnInit {
 
   isSmallScreen(): boolean {
     return window.innerWidth < 769;
+  }
+
+  @HostListener('window:resize')
+  onResize() {
+    const newColumnCount = this.detectColumnCount();
+    if (this.currentColumnCount !== newColumnCount) {
+      this.currentColumnCount = newColumnCount;
+      this.reorderPicturesBasedOnColumns();
+    }
   }
 
   detectColumnCount(): number {
@@ -61,8 +71,13 @@ export class PhotographyComponent implements OnInit {
   }
 
   reorderPicturesBasedOnColumns() {
-    const columnCount = this.currentColumnCount;
-    this.reorderedPictures = [...this.pictures];
+    if (this.selectedCategories.length > 0) {
+      this.reorderedPictures = this.pictures.filter((picture) =>
+        this.selectedCategories.some((category) => picture.categories.includes(category))
+      );
+    } else {
+      this.reorderedPictures = [...this.pictures];
+    }
   }
 
   navigateToPicture(pictureId: number) {

@@ -6,7 +6,7 @@ $transition-duration: 0.2s; // Duration of the transition effect
 }
 
 * {
-  &:not(.container, .menu, .links) {
+  &:not(.container, .menu, .links, .categories-container, .category-button) {
     transition: transform $transition-duration ease-in-out;
 
     &:hover {
@@ -33,6 +33,7 @@ mat-progress-bar {
 }
 
 .links {
+  width: 100%;
   display: flex !important;
 }
 
@@ -44,22 +45,58 @@ mat-progress-bar {
 }
 
 .links-icon {
-  width: 50%;
+  width: 65%;
 }
+
+.category-button {
+  font-family: "Century Gothic", sans-serif;
+  background-color: transparent;
+  border: solid 1px black !important;
+  font-weight: bold;
+  cursor: pointer;
+  color: black !important;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.selected {
+  background-color: gray !important;
+  color: white !important;
+  border: solid 1px gray !important;
+}
+
 
 /* Medium devices (tablets, 768px and below) */
 @media (max-width: 768px) {
   .menu-item {
-    font-size: 35px;
+    font-size: 38px;
   }
 
   .menu {
     margin-top: 15%;
   }
 
+  .links-icon {
+    width: 45%;
+  }
+
   .links {
-    margin-top: 15%;
+    margin-top: 10%;
     margin-bottom: 10%;
+  }
+
+  .categories-container {
+    width: 100%; // Ensures it doesn't exceed the screen width
+    display: flex;
+    flex-wrap: wrap; // Allows items to wrap if needed
+    justify-content: center; // Centers items within the container
+  }
+
+  .category-button {
+    font-size: 24px;
+    margin-right: 2%;
+    margin-bottom: 2%;
   }
 }
 
@@ -75,6 +112,23 @@ mat-progress-bar {
   .links {
     margin-top: 35%;
   }
+
+  .category-button {
+    font-size: 14px;
+    margin-top: 2%;
+
+    &:hover {
+      background-color: gray !important;
+      color: white !important;
+      border: solid 1px gray !important;
+    }
+  }
+
+  .categories-container {
+    margin-top: 10%;
+    display: grid;
+    justify-items: end;
+  }
 }
 
 /* Extra large devices (large desktops, 993px and above) */
@@ -89,5 +143,22 @@ mat-progress-bar {
 
   .links {
     margin-top: 35%;
+  }
+
+  .category-button {
+    font-size: 14px;
+    margin-top: 2%;
+
+    &:hover {
+      background-color: gray !important;
+      color: white !important;
+      border: solid 1px gray !important;
+    }
+  }
+
+  .categories-container {
+    margin-top: 10%;
+    display: grid;
+    justify-items: end;
   }
 }

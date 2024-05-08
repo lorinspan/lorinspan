@@ -4,6 +4,7 @@ export class Picture {
   alt: string;
   about: Description;
   lazySrc: string | null; // New property for lazy loading
+  categories: string[];
 
   constructor(
     alt: string,
@@ -13,13 +14,15 @@ export class Picture {
     locationHref: string | null,
     model: string | null,
     modelHref: string | null,
-    settings: string | null
+    settings: string | null,
+    ...categories: string[]
   ) {
     this.id = 0;
     this.src = 'assets/pictures/' + alt;
     this.alt = alt;
     this.lazySrc = null; // Initialize the lazySrc property
     this.about = new Description(description, date, new Location(location, locationHref), new Model(model, modelHref), settings);
+    this.categories = categories;
   }
 }
 

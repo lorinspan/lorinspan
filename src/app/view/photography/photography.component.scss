@@ -13,6 +13,22 @@ $transition-duration: 0.25s; // Duration of the transition effect
   }
 }
 
+.categories-container {
+  width: 100%;
+  display: flex;
+  justify-content: start;
+}
+
+.category-button {
+  background-color: transparent;
+  border: 1px solid black;
+  border-radius: 5%;
+  margin-right: 2.5%;
+}
+
+.clear-category-button {
+}
+
 .flex-container {
   display: flex;
   justify-content: space-between; /* Evenly space columns */
