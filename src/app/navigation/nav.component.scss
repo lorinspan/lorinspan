@@ -5,16 +5,6 @@ $transition-duration: 0.2s; // Duration of the transition effect
   margin-top: 15%;
 }
 
-* {
-  &:not(.container, .menu, .links, .categories-container, .category-button) {
-    transition: transform $transition-duration ease-in-out;
-
-    &:hover {
-      transform: scale($scale-factor);
-    }
-  }
-}
-
 .logo {
   cursor: pointer;
   width: 100%;
@@ -38,13 +28,13 @@ mat-progress-bar {
 }
 
 .links-item {
-  cursor: pointer;
   display: flex;
-  justify-content: center;
+  justify-content: end;
   width: 100%;
 }
 
 .links-icon {
+  cursor: pointer;
   width: 65%;
 }
 
@@ -102,6 +92,16 @@ mat-progress-bar {
 
 /* Large devices (desktops, 992px and below) */
 @media (min-width: 769px) and (max-width: 992px) {
+  * {
+    &:not(.container, .menu, .links, .categories-container, .category-button, .links-item) {
+      transition: transform $transition-duration ease-in-out;
+
+      &:hover {
+        transform: scale($scale-factor);
+      }
+    }
+  }
+
   .menu-item {
     font-size: 24px;
   }
@@ -133,6 +133,16 @@ mat-progress-bar {
 
 /* Extra large devices (large desktops, 993px and above) */
 @media (min-width: 993px) {
+  * {
+    &:not(.container, .menu, .links, .categories-container, .category-button, .links-item) {
+      transition: transform $transition-duration ease-in-out;
+
+      &:hover {
+        transform: scale($scale-factor);
+      }
+    }
+  }
+
   .menu-item {
     font-size: 24px;
   }
