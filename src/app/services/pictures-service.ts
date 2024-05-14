@@ -61,8 +61,9 @@ export enum CATEGORIES {
   WILDLIFE_ANIMALS = 'WILDLIFE / ANIMALS',
   ARCHITECTURE = 'ARCHITECTURE',
   LANDSCAPE = 'LANDSCAPE',
-  VEHICLES = 'VEHICLES',
   PORTRAIT = 'PORTRAIT',
+  VEHICLES = 'VEHICLES',
+  EVENTS = 'EVENTS',
   SPORTS = 'SPORTS',
   FOOD = 'FOOD'
 }
@@ -176,7 +177,7 @@ export const pictures: Picture[] = [
     null,
     null,
     'f/2.2, 1/2000 sec, ISO 200.',
-    CATEGORIES.STREET_PHOTOGRAPHY
+    CATEGORIES.EVENTS
   ),
   new Picture(
     'jandarmeria-crosswalk-min.jpg',
@@ -198,7 +199,7 @@ export const pictures: Picture[] = [
     null,
     null,
     'f/1.8, 1/2500 sec, ISO 100.',
-    CATEGORIES.STREET_PHOTOGRAPHY, CATEGORIES.SPORTS
+    CATEGORIES.EVENTS
   ),
   new Picture(
     'bike-1-min.jpg',
@@ -1101,5 +1102,60 @@ export const pictures: Picture[] = [
     null,
     'f/6.3, 1/320 sec, ISO 400',
     CATEGORIES.WILDLIFE_ANIMALS
+  ),
+  new Picture(
+    'save-the-children-semi-marathon-1-min.jpg',
+    null,
+    '11th of May, 2024',
+    'Bucharest, România',
+    null,
+    null,
+    null,
+    'f/6.3, 1/1600 sec, ISO 400',
+    CATEGORIES.EVENTS
+  ),
+  new Picture(
+    'save-the-children-semi-marathon-2-min.jpg',
+    null,
+    '11th of May, 2024',
+    'Bucharest, România',
+    null,
+    null,
+    null,
+    'f/6.3, 1/400 sec, ISO 250',
+    CATEGORIES.EVENTS
+  ),
+  new Picture(
+    'save-the-children-semi-marathon-3-min.jpg',
+    null,
+    '11th of May, 2024',
+    'Bucharest, România',
+    null,
+    null,
+    null,
+    'f/11, 1/1250 sec, ISO 3200',
+    CATEGORIES.EVENTS
+  ),
+  new Picture(
+    'save-the-children-semi-marathon-4-min.jpg',
+    null,
+    '11th of May, 2024',
+    'Bucharest, România',
+    null,
+    null,
+    null,
+    'f/5.6, 1/1600 sec, ISO 200',
+    CATEGORIES.EVENTS
+  ),
+  new Picture(
+    'save-the-children-semi-marathon-5-min.jpg',
+    null,
+    '11th of May, 2024',
+    'Bucharest, România',
+    null,
+    null,
+    null,
+    'f/5, 1/400 sec, ISO 400',
+    CATEGORIES.EVENTS
   ),
 ];
