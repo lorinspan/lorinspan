@@ -1,5 +1,5 @@
 <div class="container">
-  <navigation></navigation>
+  <navigation *ngIf="showNavigation"></navigation>
   <router-outlet></router-outlet>
 </div>
 <img [src]="getScrollToTopImage()" *ngIf="!hideScrollToTopBtn" alt="arrow-up" id="scrollToTopBtn" class="scroll-to-top-btn"

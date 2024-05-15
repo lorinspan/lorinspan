@@ -10,8 +10,16 @@ export class AppComponent implements OnInit {
   isPageScrolled: boolean = false;
   hovering: boolean = false; // Property to track hover state
   hideScrollToTopBtn: boolean = false; // Flag to hide scroll-to-top button
+  showNavigation: boolean = true;
 
-  constructor(private router: Router) {}
+  constructor(private router: Router) {
+    // Subscribe to router events to hide navigation on specific routes
+    this.router.events.subscribe(event => {
+      if (event instanceof NavigationEnd) {
+        this.showNavigation = !event.url.includes('/elena'); // Hide navigation on /elena route
+      }
+    });
+  }
 
   ngOnInit() {
     window.addEventListener('scroll', this.scrollHandler, true);
