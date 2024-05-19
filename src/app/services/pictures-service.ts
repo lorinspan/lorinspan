@@ -1160,4 +1160,81 @@ export const pictures: Picture[] = [
     'f/5, 1/400 sec, ISO 400',
     CATEGORIES.EVENTS
   ),
+  new Picture(
+    'koi-fish-1-min.jpg',
+    null,
+    '16th of May, 2024',
+    'Bucharest, România',
+    null,
+    null,
+    null,
+    'f/6.3, 1/2000 sec, ISO 12800',
+    CATEGORIES.WILDLIFE_ANIMALS
+  ),
+  new Picture(
+    'flowers-1-min.jpg',
+    null,
+    '16th of May, 2024',
+    'Bucharest, România',
+    null,
+    null,
+    null,
+    'f/10, 1/320 sec, ISO 500',
+    CATEGORIES.FLOWERS
+  ),
+  new Picture(
+    'flowers-2-min.jpg',
+    null,
+    '16th of May, 2024',
+    'Bucharest, România',
+    null,
+    null,
+    null,
+    'f/6.3, 1/1600 sec, ISO 200',
+    CATEGORIES.FLOWERS
+  ),
+  new Picture(
+    'flowers-3-min.jpg',
+    null,
+    '16th of May, 2024',
+    'Bucharest, România',
+    null,
+    null,
+    null,
+    'f/6.3, 1/500 sec, ISO 100',
+    CATEGORIES.FLOWERS
+  ),
+  new Picture(
+    'flowers-4-min.jpg',
+    null,
+    '16th of May, 2024',
+    'Bucharest, România',
+    null,
+    null,
+    null,
+    'f/5, 1/2500 sec, ISO 200',
+    CATEGORIES.FLOWERS
+  ),
+  new Picture(
+    'flowers-5-min.jpg',
+    null,
+    '16th of May, 2024',
+    'Bucharest, România',
+    null,
+    null,
+    null,
+    'f/5, 1/2500 sec, ISO 2000',
+    CATEGORIES.FLOWERS
+  ),
+  new Picture(
+    'flowers-6-min.jpg',
+    null,
+    '16th of May, 2024',
+    'Bucharest, România',
+    null,
+    null,
+    null,
+    'f/5, 1/400 sec, ISO 320',
+    CATEGORIES.FLOWERS
+  ),
 ];
