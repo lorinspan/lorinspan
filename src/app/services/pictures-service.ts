@@ -248,28 +248,6 @@ export const pictures: Picture[] = [
     CATEGORIES.STREET_PHOTOGRAPHY
   ),
   new Picture(
-    'union-boulevard-2-min.jpg',
-    null,
-    '20th of April, 2024',
-    'Union Boulevard',
-    'https://maps.app.goo.gl/f3MqbLFxuE7KsaMG8',
-    null,
-    null,
-    'f/4.5, 1/640 sec, ISO 100.',
-    CATEGORIES.STREET_PHOTOGRAPHY
-  ),
-  new Picture(
-    'bmw-1-min.jpg',
-    null,
-    '20th of April, 2024',
-    'Union Boulevard',
-    'https://maps.app.goo.gl/6nY3XAcv7G5CzPVb6',
-    null,
-    null,
-    'f/1.8, 1/400 sec, ISO 400.',
-    CATEGORIES.STREET_PHOTOGRAPHY, CATEGORIES.VEHICLES
-  ),
-  new Picture(
     'guy-waiting-flower-1-min.jpg',
     null,
     '20th of April, 2024',
@@ -279,17 +257,6 @@ export const pictures: Picture[] = [
     null,
     'f/3.2, 1/250 sec, ISO 100.',
     CATEGORIES.STREET_PHOTOGRAPHY
-  ),
-  new Picture(
-    'guy-on-bike-1-min.jpg',
-    null,
-    '20th of April, 2024',
-    'Union Plaza',
-    'https://maps.app.goo.gl/vyiQHuiZMkpcQpQg7',
-    null,
-    null,
-    'f/3.2, 1/250 sec, ISO 100.',
-    CATEGORIES.STREET_PHOTOGRAPHY, CATEGORIES.VEHICLES
   ),
   new Picture(
     'guy-back-shot-1-min.jpg',
@@ -501,28 +468,6 @@ export const pictures: Picture[] = [
     CATEGORIES.ARCHITECTURE
   ),
   new Picture(
-    'basarab-passage-2-min.jpg',
-    null,
-    '21th of April, 2024',
-    'Basarab Passage',
-    'https://maps.app.goo.gl/4ZoneC3t4yaksRt47',
-    null,
-    null,
-    'f/3.2, 1/800 sec, ISO 100.',
-    CATEGORIES.ARCHITECTURE
-  ),
-  new Picture(
-    'basarab-passage-3-min.jpg',
-    null,
-    '21th of April, 2024',
-    'Basarab Passage',
-    'https://maps.app.goo.gl/4ZoneC3t4yaksRt47',
-    null,
-    null,
-    'f/3.2, 1/800 sec, ISO 1000.',
-    CATEGORIES.ARCHITECTURE, CATEGORIES.STREET_PHOTOGRAPHY
-  ),
-  new Picture(
     'basarab-passage-4-min.jpg',
     null,
     '21th of April, 2024',
@@ -578,17 +523,6 @@ export const pictures: Picture[] = [
     CATEGORIES.LANDSCAPE
   ),
   new Picture(
-    'ruse-train-station-1-min.jpg',
-    null,
-    '29th of April, 2024',
-    'Ruse, Bulgaria',
-    'https://maps.app.goo.gl/WCxPRpm6MTQDzxw29',
-    null,
-    null,
-    'f/5, 1/800 sec, ISO 160',
-    CATEGORIES.ARCHITECTURE
-  ),
-  new Picture(
     'ruse-train-station-2-min.jpg',
     null,
     '29th of April, 2024',
@@ -630,17 +564,6 @@ export const pictures: Picture[] = [
     null,
     null,
     'f/5.6, 1/1250 sec, ISO 320',
-    CATEGORIES.ARCHITECTURE
-  ),
-  new Picture(
-    'ruse-architecture-3-min.jpg',
-    null,
-    '29th of April, 2024',
-    'Ruse, Bulgaria',
-    null,
-    null,
-    null,
-    'f/7.1, 1/60 sec, ISO 400',
     CATEGORIES.ARCHITECTURE
   ),
   new Picture(
