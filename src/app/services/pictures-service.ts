@@ -72,50 +72,6 @@ export enum CATEGORIES {
 
 export const pictures: Picture[] = [
   new Picture(
-    'stefania-ionescu-targoviste-1-min.jpg',
-    null,
-    '1st of May, 2024',
-    'Târgoviște, România',
-    'https://maps.app.goo.gl/8GWzhKLjFKUkHWyJA',
-    'Ștefania Ionescu',
-    'https://www.instagram.com/steff_06_/',
-    'f/5.6, 1/180 sec, ISO 160. On-camera flash.',
-    CATEGORIES.PORTRAIT
-    ),
-  new Picture(
-    'stefania-ionescu-targoviste-2-min.jpg',
-    null,
-    '1st of May, 2024',
-    'Târgoviște, România',
-    'https://maps.app.goo.gl/8GWzhKLjFKUkHWyJA',
-    'Ștefania Ionescu',
-    'https://www.instagram.com/steff_06_/',
-    'f/5.6, 1/180 sec, ISO 160. On-camera flash.',
-    CATEGORIES.PORTRAIT
-  ),
-  new Picture(
-    'stefania-ionescu-targoviste-3-min.jpg',
-    null,
-    '1st of May, 2024',
-    'Târgoviște, România',
-    'https://maps.app.goo.gl/8GWzhKLjFKUkHWyJA',
-    'Ștefania Ionescu',
-    'https://www.instagram.com/steff_06_/',
-    'f/8, 1/180 sec, ISO 200. On-camera flash.',
-    CATEGORIES.PORTRAIT
-  ),
-  new Picture(
-    'stefania-ionescu-leu-c-min.jpg',
-    null,
-    '18th of April, 2024',
-    'The Lion Complex',
-    'https://maps.app.goo.gl/CnRDSFfyjTTqtEHA8',
-    'Ștefania Ionescu',
-    'https://www.instagram.com/steff_06_/',
-    'f/2.8, 1/180 sec, ISO 200. Backlit & off camera flash with umbrella diffuser.',
-    CATEGORIES.PORTRAIT
-    ),
-  new Picture(
     'bucharest-court-min.jpg',
     null,
     '20th of April, 2024',
