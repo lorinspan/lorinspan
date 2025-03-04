@@ -49,6 +49,12 @@ export class PersonalComponent implements OnInit {
     }
   }
 
+  toggleCheckbox(item: any) {
+    item.checked = !item.checked;
+    this.updateCheckbox(item);
+  }
+
+
   updateCheckbox(item: any) {
     const checklistItemRef = doc(this.firestore, `checklist/${item.id}`);
     updateDoc(checklistItemRef, { checked: item.checked })

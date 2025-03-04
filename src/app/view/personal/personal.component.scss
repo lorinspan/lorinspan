@@ -36,6 +36,7 @@ h3 {
   display: flex;
   align-items: flex-start;
   gap: 10px;
+  cursor: pointer;
 }
 
 .checklist-item input[type="checkbox"] {
@@ -47,6 +48,7 @@ h3 {
 .checklist-text {
   text-align: left;
   display: block;
+  cursor: pointer;
 }
 
 .input-pin {
@@ -90,6 +92,7 @@ h3 {
 
   .pin-container {
     margin-top: 15%;
+    padding-bottom: 65%;
   }
 
   .checklist-container {

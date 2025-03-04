@@ -16,7 +16,7 @@
     <div class="checklist">
       <div *ngFor="let item of checklist$ | async" class="checklist-item">
         <input type="checkbox" [(ngModel)]="item.checked" (change)="updateCheckbox(item)">
-        <span class="checklist-text">{{ item.text }}</span>
+        <span class="checklist-text" (click)="toggleCheckbox(item)">{{ item.text }}</span>
       </div>
     </div>
   </div>
