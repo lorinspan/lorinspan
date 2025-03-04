@@ -71,10 +71,10 @@
           "builder": "@angular-devkit/build-angular:dev-server",
           "configurations": {
             "production": {
-              "browserTarget": "lorinspan:build:production"
+              "buildTarget": "lorinspan:build:production"
             },
             "development": {
-              "browserTarget": "lorinspan:build:development"
+              "buildTarget": "lorinspan:build:development"
             }
           },
           "defaultConfiguration": "development"
@@ -82,7 +82,7 @@
         "extract-i18n": {
           "builder": "@angular-devkit/build-angular:extract-i18n",
           "options": {
-            "browserTarget": "lorinspan:build"
+            "buildTarget": "lorinspan:build"
           }
         },
         "test": {
