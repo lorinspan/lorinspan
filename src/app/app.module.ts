@@ -12,7 +12,8 @@ import { WebsiteComponent } from './view/development/website/website.component';
 import { MatProgressBarModule } from "@angular/material/progress-bar";
 import {NgOptimizedImage} from "@angular/common";
 import {LazyLoadImageModule} from "ng-lazyload-image";
-import { ElenaComponent } from './hidden/elena/elena.component';
+import {PersonalComponent} from "./view/personal/personal.component";
+import {FormsModule} from "@angular/forms";
 
 
 @NgModule({
@@ -24,7 +25,7 @@ import { ElenaComponent } from './hidden/elena/elena.component';
     AboutMeComponent,
     PhotoComponent,
     WebsiteComponent,
-    ElenaComponent,
+    PersonalComponent,
   ],
   imports: [
     BrowserModule,
@@ -32,6 +33,7 @@ import { ElenaComponent } from './hidden/elena/elena.component';
     NgOptimizedImage,
     MatProgressBarModule,
     LazyLoadImageModule,
+    FormsModule,
   ],
   providers: [],
   bootstrap: [AppComponent]

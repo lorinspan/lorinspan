@@ -5,7 +5,7 @@ import { DevelopmentComponent } from "./view/development/development.component";
 import { AboutMeComponent } from "./view/about-me/about-me.component";
 import { PhotoComponent } from "./view/photography/photo/photo.component";
 import { WebsiteComponent } from "./view/development/website/website.component";
-import { ElenaComponent } from "./hidden/elena/elena.component";
+import {PersonalComponent} from "./view/personal/personal.component";
 
 const routes: Routes = [
   { path: '', redirectTo: '/photography', pathMatch: 'full' },
@@ -14,7 +14,7 @@ const routes: Routes = [
   { path: 'aboutme', component: AboutMeComponent },
   { path: 'photo/:id', component: PhotoComponent },
   { path: 'website/:websiteId/presentation', component: WebsiteComponent },
-  { path: 'elena', component: ElenaComponent },
+  { path: 'personal', component: PersonalComponent},
   { path: '**', redirectTo: '/photography' }
 ];
 

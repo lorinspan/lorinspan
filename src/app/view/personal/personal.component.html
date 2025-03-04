@@ -1,0 +1,24 @@
+<div class="container">
+
+  <div *ngIf="isUnlocked" class="pin-container">
+    <input type="password"
+           inputmode="numeric"
+           pattern="[0-9]*"
+           maxlength="4"
+           [(ngModel)]="pin"
+           (input)="onPinChange()"
+           class="input-pin"
+           placeholder="Enter PIN">
+  </div>
+
+  <div *ngIf="!isUnlocked" class="checklist-container">
+    <h3>Lista verificari apartament</h3>
+    <div class="checklist">
+      <div *ngFor="let item of checklist" class="checklist-item">
+        <input type="checkbox" [(ngModel)]="item.checked">
+        <span class="checklist-text">{{ item.text }}</span>
+      </div>
+    </div>
+  </div>
+
+</div>

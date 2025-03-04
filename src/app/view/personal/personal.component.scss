@@ -1,0 +1,152 @@
+$scale-factor: 1.075; // Factor by which the element grows on hover
+$transition-duration: 0.2s; // Duration of the transition effect
+
+.container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-family: "Century Gothic", sans-serif;
+  text-align: center;
+}
+
+.pin-container {
+  margin-top: 4%;
+}
+
+.checklist-container {
+  margin-top: 8%;
+  margin-left: 15%;
+  margin-right: 10%;
+  padding-bottom: 5%;
+}
+
+h3 {
+  font-size: 30px;
+}
+
+.checklist {
+  display: flex;
+  flex-direction: column;
+  align-items: start;
+  gap: 10px;
+  margin-top: 7.5%;
+}
+
+.checklist-item {
+  display: flex;
+  align-items: flex-start;
+  gap: 10px;
+}
+
+.checklist-item input[type="checkbox"] {
+  width: 20px;
+  height: 20px;
+  flex-shrink: 0;
+}
+
+.checklist-text {
+  text-align: left;
+  display: block;
+}
+
+.input-pin {
+  padding: 2.1%;
+  transition: all 0.15s ease-in-out;
+  font-family: "Century Gothic", sans-serif;
+  background-color: transparent;
+  border: solid 1px black !important;
+  font-size: 17px;
+  font-weight: bold;
+  color: black !important;
+  text-align: center;
+  width: 50%;
+  outline: none;
+}
+
+.input-pin::placeholder {
+  color: black;
+  transition: color 0.15s ease-in-out;
+}
+
+.input-pin:hover {
+  background-color: gray !important;
+  color: white !important;
+  border: solid 1px gray !important;
+}
+
+.input-pin:hover::placeholder {
+  color: white !important;
+}
+
+.input-pin:focus::placeholder {
+  color: transparent !important;
+}
+
+/* Medium devices (tablets, 768px and below) */
+@media (max-width: 768px) {
+  .container {
+    padding-bottom: 0;
+  }
+
+  .pin-container {
+    margin-top: 15%;
+  }
+
+  .checklist-container {
+    margin-top: 0;
+    padding-bottom: 15%;
+  }
+
+  .input-pin {
+    font-size: 50px;
+    width: 70%;
+  }
+}
+
+/* Large devices (desktops, 992px and below) */
+@media (min-width: 769px) and (max-width: 992px) {
+  .container {
+  }
+
+  .pin-container {
+    margin-top: 16.5vh;
+  }
+
+  .checklist-container {
+    margin-top: 0;
+  }
+
+  .input-pin {
+    font-size: 50px;
+    width: 60%;
+    transition: transform $transition-duration ease-in-out;
+  }
+
+  .input-pin:hover {
+    transform: scale($scale-factor);
+  }
+}
+
+/* Extra large devices (large desktops, 993px and above) */
+@media (min-width: 993px) {
+  .container {
+  }
+
+  .pin-container {
+    margin-top: 13vh;
+  }
+
+  .checklist-container {
+    margin-top: 0;
+  }
+
+  .input-pin {
+    font-size: 50px;
+    width: 60%;
+    transition: transform $transition-duration ease-in-out;
+  }
+
+  .input-pin:hover {
+    transform: scale($scale-factor);
+  }
+}
