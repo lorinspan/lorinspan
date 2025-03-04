@@ -34,8 +34,8 @@ h3 {
 
 .checklist-item {
   display: flex;
-  align-items: flex-start;
-  gap: 10px;
+  align-items: center;
+  gap: 15px; // Mai mult spațiu între elemente
   cursor: pointer;
 }
 
@@ -47,8 +47,8 @@ h3 {
 
 .checklist-text {
   text-align: left;
-  display: block;
   cursor: pointer;
+  flex-grow: 1; // Permite textului să ocupe spațiu între checkbox și butoane
 }
 
 .input-pin {
@@ -84,9 +84,51 @@ h3 {
   color: transparent !important;
 }
 
+/* Stiluri pentru butoanele plus și minus */
+.plus-button, .minus-button {
+  width: 20px;
+  height: 20px;
+  border: none;
+  border-radius: 3px;
+  font-size: 18px;
+  font-weight: bold;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: transform 0.15s ease-in-out, background-color 0.15s ease-in-out;
+  background-color: #ccc; // Incolor implicit
+  color: white;
+}
+
+.plus-button.active {
+  background-color: #28a745; // Verde când este activ
+}
+
+.minus-button.active {
+  background-color: #dc3545; // Roșu când este activ
+}
+
+.plus-button.inactive, .minus-button.inactive {
+  background-color: #ccc; // Incolor când este inactiv
+}
+
+.hidden {
+  visibility: hidden; // Ascunde butoanele când checkbox-ul nu este bifat
+}
+
+/* Hover pentru efecte vizuale mai bune */
+.plus-button:hover, .minus-button:hover {
+  transform: scale(1.1);
+}
+
+
 /* Medium devices (tablets, 768px and below) */
 @media (max-width: 768px) {
-  .container {
+  .plus-button, .minus-button {
+  }
+
+    .container {
     padding-bottom: 0;
   }
 
@@ -103,6 +145,13 @@ h3 {
   .input-pin {
     font-size: 50px;
     width: 70%;
+  }
+
+  /* Redimensionare butoane pentru ecrane mai mici */
+  .plus-button, .minus-button {
+    width: 25px;
+    height: 25px;
+    font-size: 22px;
   }
 }
 

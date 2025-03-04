@@ -1,5 +1,4 @@
 <div class="container">
-
   <div *ngIf="!isUnlocked" class="pin-container">
     <input type="password"
            inputmode="numeric"
@@ -15,10 +14,24 @@
     <h3>Lista verificari apartament</h3>
     <div class="checklist">
       <div *ngFor="let item of checklist$ | async" class="checklist-item">
-        <input type="checkbox" [(ngModel)]="item.checked" (change)="updateCheckbox(item)">
+        <input type="checkbox" [(ngModel)]="item.checked" (change)="onCheckboxChange(item)">
+
         <span class="checklist-text" (click)="toggleCheckbox(item)">{{ item.text }}</span>
+
+        <!-- Buton plus (verde) -->
+        <button class="plus-button"
+                [class.active]="item.checked && item.response === 'positive'"
+                [class.inactive]="item.checked && item.response !== 'positive'"
+                [class.hidden]="!item.checked"
+                (click)="setResponse(item, 'positive')">+</button>
+
+        <!-- Buton minus (roșu) -->
+        <button class="minus-button"
+                [class.active]="item.checked && item.response === 'negative'"
+                [class.inactive]="item.checked && item.response !== 'negative'"
+                [class.hidden]="!item.checked"
+                (click)="setResponse(item, 'negative')">−</button>
       </div>
     </div>
   </div>
-
 </div>

@@ -54,11 +54,29 @@ export class PersonalComponent implements OnInit {
     this.updateCheckbox(item);
   }
 
+  onCheckboxChange(item: any) {
+    if (!item.checked) {
+      item.response = null; // Dacă este debifat, eliminăm răspunsul pozitiv/negativ
+    }
+    this.updateCheckbox(item);
+  }
+
+  setResponse(item: any, response: string) {
+    if (item.checked) {
+      item.response = response; // Salvăm răspunsul doar dacă checkbox-ul este bifat
+      this.updateCheckbox(item);
+    }
+  }
 
   updateCheckbox(item: any) {
     const checklistItemRef = doc(this.firestore, `checklist/${item.id}`);
-    updateDoc(checklistItemRef, { checked: item.checked })
+    updateDoc(checklistItemRef, {
+      checked: item.checked,
+      response: item.checked ? item.response : null // Resetăm răspunsul când checkbox-ul e debifat
+    })
       .then(() => console.log(`Updated: ${item.text}`))
       .catch(error => console.error('Error updating document: ', error));
   }
+
+
 }
