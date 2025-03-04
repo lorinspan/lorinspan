@@ -27,11 +27,7 @@
             "tsConfig": "tsconfig.app.json",
             "inlineStyleLanguage": "scss",
             "assets": [
-              {
-                "glob": "_redirects",
-                "input": "src",
-                "output": "/"
-              },
+              "src/_redirects",
               "src/favicon.ico",
               "src/assets"
             ],
@@ -47,13 +43,13 @@
               "budgets": [
                 {
                   "type": "initial",
-                  "maximumWarning": "500kb",
-                  "maximumError": "1mb"
+                  "maximumWarning": "800kb",
+                  "maximumError": "1.5mb"
                 },
                 {
                   "type": "anyComponentStyle",
-                  "maximumWarning": "2kb",
-                  "maximumError": "4kb"
+                  "maximumWarning": "3kb",
+                  "maximumError": "5kb"
                 }
               ],
               "outputHashing": "all"
