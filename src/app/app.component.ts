@@ -1,8 +1,12 @@
-import { Component, OnInit, HostListener } from '@angular/core';
-import { Router, NavigationEnd } from '@angular/router';
+import { Component, OnInit } from '@angular/core';
+import {Router, NavigationEnd, RouterModule} from '@angular/router';
+import {CommonModule} from "@angular/common";
+import {NavComponent} from "./navigation/nav.component";
 
 @Component({
   selector: 'app-root',
+  standalone: true,
+  imports: [CommonModule, RouterModule, NavComponent],
   templateUrl: './app.component.html',
   styleUrls: ['./app.component.scss']
 })

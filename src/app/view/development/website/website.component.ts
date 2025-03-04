@@ -4,9 +4,12 @@ import {ActivatedRoute, Router} from "@angular/router";
 import {PicturesService} from "../../../services/pictures-service";
 import {Presentation, Website} from "../../../model/website";
 import {WebsitesService} from "../../../services/websites-service";
+import {CommonModule} from "@angular/common";
 
 @Component({
   selector: 'app-website',
+  standalone: true,
+  imports: [CommonModule],
   templateUrl: './website.component.html',
   styleUrls: ['./website.component.scss']
 })

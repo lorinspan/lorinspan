@@ -2,9 +2,12 @@ import { Component, HostListener, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { Picture } from "../../../model/picture";
 import { PicturesService } from "../../../services/pictures-service";
+import {CommonModule} from "@angular/common";
 
 @Component({
   selector: 'app-photo',
+  standalone: true,
+  imports: [CommonModule],
   templateUrl: './photo.component.html',
   styleUrls: ['./photo.component.scss']
 })

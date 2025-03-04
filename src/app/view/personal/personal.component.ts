@@ -1,8 +1,13 @@
-import {Component, OnInit} from '@angular/core';
-import {LoadingService} from "../../services/loading-service";
+import { Component, OnInit } from '@angular/core';
+import { Firestore, collection, collectionData, getDocs, doc, updateDoc } from '@angular/fire/firestore';
+import { Observable } from 'rxjs';
+import { CommonModule } from "@angular/common";
+import { FormsModule } from "@angular/forms";
 
 @Component({
   selector: 'app-personal',
+  standalone: true,
+  imports: [CommonModule, FormsModule],
   templateUrl: './personal.component.html',
   styleUrls: ['./personal.component.scss']
 })
@@ -10,44 +15,44 @@ export class PersonalComponent implements OnInit {
   pin: string = '';
   correctPin: string = '2910';
   isUnlocked: boolean = false;
+  checklist$!: Observable<any[]>;
 
-  checklist = [
-    { text: 'Miros geam baie (posibil asezare geam la ghena interioara)', checked: true },
-    { text: 'Starea scarii (jeg, lucruri lasate pe scara, interfon functional). Verificare geamuri vecini deasupra și dedesubt', checked: true },
-    { text: 'Verificat usa de intrare (inchidere, urme de lovituri)', checked: true },
-    { text: 'Lista de intretinere - restantieri, aproximativ plata lunara intretinere', checked: true },
-    { text: 'Infiltratii si/sau mucegai (miros suspect, parfum puternic)', checked: true },
-    { text: 'Verificare risc seismic (bulina bloc)', checked: true },
-    { text: 'Instalatie electrica verificata (prize, panou, etc)', checked: true },
-    { text: 'Pornit apa calda (viteza, presiune), verificat calorifere', checked: true },
-    { text: 'Instalatii, tevi, scurgeri verificate (miros din scurgeri)', checked: true },
-    { text: 'Calitatea aerului in zona si apartament cu geamul deschis', checked: true },
-    { text: 'Orientare - est... se vede vecinul pe geam?', checked: true },
-    { text: 'Verificat grosime pereti, stare pereti', checked: true },
-    { text: 'Locuri de parcare? Achiziționare, închiriere, licitație primărie', checked: true },
-    { text: 'Boschetari / dubiosi in zona', checked: true },
-    { text: 'Apartament langa lift? Stare lift (zgomot, etc)', checked: true },
-    { text: 'Verificat acte (an constructie, releveu, metri utili)', checked: true },
-    { text: 'Verificat termopane / ferestre (închidere, calitate)', checked: true },
-    { text: 'Unde sunt apometrele, repartitoarele, de unde se inchide apa, gazul?', checked: true },
-    { text: 'Ce izolatie are apartamentul?', checked: true },
-    { text: 'Ce tip de parchet e? Trebuie schimbat?', checked: true },
-    { text: 'Boxa / bunker disponibil? Poate fi vizitată? Inclus în releveu?', checked: true },
-    { text: 'Ce operator de cablu, internet există în bloc?', checked: true },
-    { text: 'Proiect gaze la zi? Posibilitate centrală?', checked: true },
-    { text: 'Cadastrul este la zi? Include modificări?', checked: true },
-    { text: 'Izolare fonică? Se aude din scară în apartament?', checked: true },
-    { text: 'Semnal telefon în apartament?', checked: true },
-    { text: 'Contract: se specifică detalii (mobilier, electrocasnice, etc.)', checked: true }
-  ];
+  constructor(private firestore: Firestore) { }
 
-  constructor( ) {}
+  ngOnInit(): void {
+
+    // Fetch all checklist items from Firestore
+    const checklistCollection = collection(this.firestore, 'checklist');
+    getDocs(checklistCollection).then(snapshot => {
+      if (snapshot.empty) {
+      } else {
+        snapshot.forEach(doc => {
+        });
+      }
+    }).catch(error => {
+    });
+
+    // Subscribe to real-time updates
+    this.checklist$ = collectionData(checklistCollection, { idField: 'id' });
+  }
 
   onPinChange() {
     if (this.pin === this.correctPin) {
       this.isUnlocked = true;
+
+      // Subscribe to Firestore updates
+      const checklistCollection = collection(this.firestore, 'checklist');
+      this.checklist$ = collectionData(checklistCollection, { idField: 'id' });
+
+      this.checklist$.subscribe(data => {
+      });
     }
   }
 
-  ngOnInit(): void {}
+  updateCheckbox(item: any) {
+    const checklistItemRef = doc(this.firestore, `checklist/${item.id}`);
+    updateDoc(checklistItemRef, { checked: item.checked })
+      .then(() => console.log(`Updated: ${item.text}`))
+      .catch(error => console.error('Error updating document: ', error));
+  }
 }

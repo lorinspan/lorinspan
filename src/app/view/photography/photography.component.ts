@@ -2,9 +2,13 @@ import { Component, OnInit, HostListener } from '@angular/core';
 import { Router } from '@angular/router';
 import { CATEGORIES, PicturesService } from '../../services/pictures-service';
 import {CategoryService} from "../../services/category-service";
+import {CommonModule} from "@angular/common";
+import {LazyLoadImageModule} from "ng-lazyload-image";
 
 @Component({
   selector: 'app-photography',
+  standalone: true,
+  imports: [CommonModule, LazyLoadImageModule],
   templateUrl: './photography.component.html',
   styleUrls: ['./photography.component.scss']
 })

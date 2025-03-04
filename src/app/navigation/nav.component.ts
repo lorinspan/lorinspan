@@ -1,10 +1,13 @@
 import {AfterViewInit, ChangeDetectorRef, Component, OnInit} from '@angular/core';
 import {CategoryService} from "../services/category-service";
 import {CATEGORIES} from "../services/pictures-service";
-import {ActivatedRoute, Router} from "@angular/router";
+import {ActivatedRoute, Router, RouterLink} from "@angular/router";
+import {CommonModule} from "@angular/common";
 
 @Component({
   selector: 'navigation',
+  standalone: true,
+  imports: [CommonModule, RouterLink],
   templateUrl: './nav.component.html',
   styleUrls: ['./nav.component.scss']
 })

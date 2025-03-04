@@ -1,8 +1,11 @@
 import {AfterViewInit, Component, OnInit} from '@angular/core';
 import {LoadingService} from "../../services/loading-service";
+import {CommonModule} from "@angular/common";
 
 @Component({
   selector: 'app-about-me',
+  standalone: true,
+  imports: [CommonModule],
   templateUrl: './about-me.component.html',
   styleUrls: ['./about-me.component.scss']
 })
