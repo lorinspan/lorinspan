@@ -1,83 +1,132 @@
+/* Definire variabile pentru consistență */
+$primary-color: #2563eb;
+$bg-color: #f8fafc;
+$text-color: #1e293b;
+$border-radius: 12px;
+$shadow: 0 4px 6px -1px rgb(0 0 0 / 0.1), 0 2px 4px -2px rgb(0 0 0 / 0.1);
+
 .container {
-  justify-content: center;
-  margin: 5% 5% 0 5%;
-  position: relative; /* Add relative positioning to the container */
-  //background-color: palegreen;
+  max-width: 600px;
+  margin: 2rem auto;
+  padding: 0 1rem;
+  font-family: 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+  color: $text-color;
+  background-color: $bg-color;
+  min-height: 100vh;
 }
 
-navigation {
-  height: 100%;
+h2 {
+  text-align: center;
+  font-size: 1.5rem;
+  margin-bottom: 2rem;
+  color: #0f172a;
 }
 
-.picture {
-  height: 100%;
-  width: 75%;
-}
+.card {
+  background: #ffffff;
+  padding: 2rem;
+  border-radius: $border-radius;
+  box-shadow: $shadow;
+  border: 1px solid #e2e8f0;
+  margin-bottom: 1.5rem;
+  transition: all 0.3s ease;
 
-.scroll-to-top-btn {
-  position: fixed;
-  display: none;
-  cursor: pointer;
-  z-index: 99;
-  bottom: 1%;
-  right: 1%;
-}
-
-/* Medium/Small devices (tablets/phones, 768px and below) */
-@media (max-width: 768px) {
-  .container {
-    display: grid;
-  }
-
-  .scroll-to-top-btn {
-    width: 15.5%;
-  }
-
-}
-
-/* Large devices (desktops, 992px and below) */
-@media (min-width: 769px) and (max-width: 992px) {
-  .container {
-    display: flex;
-  }
-
-  .scroll-to-top-btn {
-    width: 5%;
-  }
-
-  navigation {
-    width: 18.5%;
-    position: absolute; /* Position navigation absolutely */
-    left: 0; /* Align navigation to the left */
-    top: 0; /* Align navigation to the top */
-  }
-
-  router-outlet {
-    padding-left: 20%; /* Add left padding equivalent to navigation width */
-    //background-color: cadetblue;
+  p {
+    font-size: 1.125rem;
+    line-height: 1.6;
+    margin-bottom: 2rem;
+    font-weight: 500;
   }
 }
 
-/* Extra large devices (large desktops, 993px and above) */
-@media (min-width: 993px) {
-  .container {
-    display: flex;
+.button-group {
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+
+  button {
+    width: 100%;
+    padding: 1rem;
+    font-size: 1rem;
+    font-weight: 600;
+    color: #ffffff;
+    background-color: $primary-color;
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+    transition: background-color 0.2s ease;
+
+    &:hover {
+      background-color: #1d4ed8;
+    }
+
+    &:active {
+      transform: scale(0.98);
+    }
+  }
+}
+
+.result-box {
+  margin-top: 1rem;
+  padding: 1.25rem;
+  background-color: #f0fdf4;
+  border-left: 4px solid #22c55e;
+  border-radius: 4px;
+  color: #166534;
+  font-weight: 600;
+}
+
+.controls {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 1rem;
+  margin-top: 2rem;
+
+  button {
+    padding: 0.75rem;
+    font-size: 0.875rem;
+    font-weight: 500;
+    border-radius: 8px;
+    border: 1px solid #cbd5e1;
+    background: #ffffff;
+    color: #64748b;
+    cursor: pointer;
+
+    &:disabled {
+      opacity: 0.5;
+      cursor: not-allowed;
+    }
+
+    &:not(:disabled):hover {
+      background: #f1f5f9;
+      color: #1e293b;
+    }
+
+    /* Stil specific pentru Reset */
+    &:last-child {
+      border-color: #fecaca;
+      color: #dc2626;
+
+      &:hover {
+        background: #fef2f2;
+      }
+    }
+  }
+}
+
+/* Ajustări pentru Desktop (peste 768px) */
+@media (min-width: 768px) {
+  .button-group {
+    flex-direction: row;
+    justify-content: center;
+
+    button {
+      flex: 1;
+      max-width: 200px;
+    }
   }
 
-  .scroll-to-top-btn {
-    width: 3.5%;
-  }
-
-  navigation {
-    width: 13.5%; /* Set width to 13.5% */
-    position: absolute; /* Position navigation absolutely */
-    left: 0; /* Align navigation to the left */
-    top: 0; /* Align navigation to the top */
-    //background-color: yellow;
-  }
-
-  router-outlet {
-    padding-left: 15%; /* Add left padding equivalent to navigation width */
-    //background-color: cadetblue;
+  .card {
+    padding: 3rem;
   }
 }

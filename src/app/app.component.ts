@@ -1,65 +1,33 @@
 import { Component, OnInit } from '@angular/core';
-import {Router, NavigationEnd, RouterModule} from '@angular/router';
 import {CommonModule} from "@angular/common";
-import {NavComponent} from "./navigation/nav.component";
+import {DecisionNode} from "./Decision";
+import {IPMN_TREE} from "./IPMN_TREE";
 
 @Component({
   selector: 'app-root',
   standalone: true,
-  imports: [CommonModule, RouterModule, NavComponent],
+  imports: [CommonModule],
   templateUrl: './app.component.html',
   styleUrls: ['./app.component.scss']
 })
-export class AppComponent implements OnInit {
-  isPageScrolled: boolean = false;
-  hovering: boolean = false; // Property to track hover state
-  hideScrollToTopBtn: boolean = false; // Flag to hide scroll-to-top button
-  showNavigation: boolean = true;
+export class AppComponent {
+  currentNode: DecisionNode = IPMN_TREE['START'];
+  history: string[] = [];
 
-  constructor(private router: Router) {
-    // Subscribe to router events to hide navigation on specific routes
-    this.router.events.subscribe(event => {
-      if (event instanceof NavigationEnd) {
-        this.showNavigation = !event.url.includes('/elena'); // Hide navigation on /elena route
-      }
-    });
+  selectOption(nextNodeId: string): void {
+    this.history.push(this.currentNode.id);
+    this.currentNode = IPMN_TREE[nextNodeId];
   }
 
-  ngOnInit() {
-    window.addEventListener('scroll', this.scrollHandler, true);
-    this.scrollHandler(); // Initial check on page load
-
-    // Subscribe to route changes
-    this.router.events.subscribe(event => {
-      if (event instanceof NavigationEnd) {
-        // Check if the current route matches the pattern for /photo/{any id}
-        if (this.router.url.startsWith('/photo/')) {
-          this.hideScrollToTopBtn = true; // Hide the scroll-to-top button
-        } else {
-          this.hideScrollToTopBtn = false; // Show the scroll-to-top button for other routes
-        }
-      }
-    });
-  }
-
-  ngOnDestroy() {
-    window.removeEventListener('scroll', this.scrollHandler, true);
-  }
-
-  scrollHandler = (): void => {
-    if (window.pageYOffset > 100) {
-      this.isPageScrolled = true;
-    } else {
-      this.isPageScrolled = false;
+  goBack(): void {
+    if (this.history.length > 0) {
+      const lastId = this.history.pop()!;
+      this.currentNode = IPMN_TREE[lastId];
     }
   }
 
-  scrollToTop(): void {
-    window.scrollTo({ top: 0, behavior: 'smooth' });
-  }
-
-  getScrollToTopImage(): string {
-    // Return different image source based on hover state
-    return this.hovering ? 'assets/icons/arrow-up-hover.png' : 'assets/icons/arrow-up.png';
+  reset(): void {
+    this.history = [];
+    this.currentNode = IPMN_TREE['START'];
   }
 }

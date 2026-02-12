@@ -1,0 +1,7 @@
+<div class="container">
+  <navigation *ngIf="showNavigation"></navigation>
+  <router-outlet></router-outlet>
+</div>
+<img [src]="getScrollToTopImage()" *ngIf="!hideScrollToTopBtn" alt="arrow-up" id="scrollToTopBtn" class="scroll-to-top-btn"
+     (click)="scrollToTop()" [style.display]="isPageScrolled ? 'block' : 'none'"
+     (mouseenter)="hovering = true" (mouseleave)="hovering = false">

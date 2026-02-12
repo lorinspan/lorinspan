@@ -1,7 +1,23 @@
 <div class="container">
-  <navigation *ngIf="showNavigation"></navigation>
-  <router-outlet></router-outlet>
+  <h2>BD-IPMN Management Algorithm</h2>
+
+  <div class="card">
+    <p>{{ currentNode.text }}</p>
+
+    <div *ngIf="currentNode.options" class="button-group">
+      <button *ngFor="let opt of currentNode.options"
+              (click)="selectOption(opt.nextNodeId)">
+        {{ opt.label }}
+      </button>
+    </div>
+
+    <div *ngIf="currentNode.result" class="result-box">
+      <strong>Recommendation:</strong> {{ currentNode.text }}
+    </div>
+  </div>
+
+  <div class="controls">
+    <button (click)="goBack()" [disabled]="history.length === 0">Back</button>
+    <button (click)="reset()">Reset</button>
+  </div>
 </div>
-<img [src]="getScrollToTopImage()" *ngIf="!hideScrollToTopBtn" alt="arrow-up" id="scrollToTopBtn" class="scroll-to-top-btn"
-     (click)="scrollToTop()" [style.display]="isPageScrolled ? 'block' : 'none'"
-     (mouseenter)="hovering = true" (mouseleave)="hovering = false">

@@ -1,0 +1,83 @@
+.container {
+  justify-content: center;
+  margin: 5% 5% 0 5%;
+  position: relative; /* Add relative positioning to the container */
+  //background-color: palegreen;
+}
+
+navigation {
+  height: 100%;
+}
+
+.picture {
+  height: 100%;
+  width: 75%;
+}
+
+.scroll-to-top-btn {
+  position: fixed;
+  display: none;
+  cursor: pointer;
+  z-index: 99;
+  bottom: 1%;
+  right: 1%;
+}
+
+/* Medium/Small devices (tablets/phones, 768px and below) */
+@media (max-width: 768px) {
+  .container {
+    display: grid;
+  }
+
+  .scroll-to-top-btn {
+    width: 15.5%;
+  }
+
+}
+
+/* Large devices (desktops, 992px and below) */
+@media (min-width: 769px) and (max-width: 992px) {
+  .container {
+    display: flex;
+  }
+
+  .scroll-to-top-btn {
+    width: 5%;
+  }
+
+  navigation {
+    width: 18.5%;
+    position: absolute; /* Position navigation absolutely */
+    left: 0; /* Align navigation to the left */
+    top: 0; /* Align navigation to the top */
+  }
+
+  router-outlet {
+    padding-left: 20%; /* Add left padding equivalent to navigation width */
+    //background-color: cadetblue;
+  }
+}
+
+/* Extra large devices (large desktops, 993px and above) */
+@media (min-width: 993px) {
+  .container {
+    display: flex;
+  }
+
+  .scroll-to-top-btn {
+    width: 3.5%;
+  }
+
+  navigation {
+    width: 13.5%; /* Set width to 13.5% */
+    position: absolute; /* Position navigation absolutely */
+    left: 0; /* Align navigation to the left */
+    top: 0; /* Align navigation to the top */
+    //background-color: yellow;
+  }
+
+  router-outlet {
+    padding-left: 15%; /* Add left padding equivalent to navigation width */
+    //background-color: cadetblue;
+  }
+}
