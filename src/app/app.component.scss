@@ -87,6 +87,11 @@ input, textarea, select { font-family: inherit; }
     line-height: 1.5;
     margin-bottom: 2.5rem;
     color: $text-main;
+
+    /* --- LINII NOI ADAUGATE --- */
+    white-space: pre-wrap;      /* 1. Păstrează Enter-urile și spațiile */
+    text-align: left;           /* 2. Aliniere la stânga pentru ca listele cu puncte să arate bine */
+    padding: 0 1rem;            /* 3. Puțin spațiu lateral să nu fie lipit de margine */
   }
 
   /* Rezultat Final (Badge) */
