@@ -17,7 +17,7 @@ $shadow-soft: 0 4px 6px -1px rgba(0, 0, 0, 0.05), 0 2px 4px -1px rgba(0, 0, 0, 0
 $shadow-hover: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
 
 /* =========================================
-   GLOBAL LAYOUT
+   GLOBAL RESET
    ========================================= */
 :host {
   display: block;
@@ -26,34 +26,38 @@ $shadow-hover: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0,
   font-family: 'Inter', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
   color: $text-main;
   padding-bottom: 5rem;
+  box-sizing: border-box;
+}
+
+*, *::before, *::after {
+  box-sizing: border-box;
 }
 
 .container {
   width: 100%;
-  max-width: 800px; /* Lățime optimă pentru citit */
+  max-width: 900px;
   margin: 0 auto;
-  padding: 1.5rem;
-  box-sizing: border-box;
+  padding: 1rem; /* Padding mic pe mobil */
 }
 
 h2, h3 { margin: 0; font-weight: 700; color: $text-main; }
-button { font-family: inherit; transition: all 0.2s ease; }
+button { font-family: inherit; transition: all 0.2s ease; cursor: pointer; }
 input, textarea, select { font-family: inherit; }
 
 /* =========================================
-   1. USER SECTION (Algorithm)
+   1. USER SECTION (MOBILE FIRST)
    ========================================= */
 .user-section {
   display: flex;
   justify-content: center;
-  margin-top: 2rem;
-  margin-bottom: 3rem;
+  margin-top: 1rem;
+  margin-bottom: 2rem;
 }
 
 .main-card {
   background: $bg-card;
   width: 100%;
-  padding: 2.5rem;
+  padding: 1.5rem; /* Padding redus pt mobil */
   border-radius: $radius;
   box-shadow: $shadow-soft;
   border: 1px solid white;
@@ -61,7 +65,6 @@ input, textarea, select { font-family: inherit; }
   position: relative;
   overflow: hidden;
 
-  /* Linie decorativă sus */
   &::before {
     content: '';
     position: absolute;
@@ -71,75 +74,64 @@ input, textarea, select { font-family: inherit; }
   }
 
   h2 {
-    font-size: 1.5rem;
+    font-size: 1.2rem; /* Titlu mai mic pe mobil */
     color: $primary;
-    margin-bottom: 2rem;
+    margin-bottom: 1.5rem;
     text-transform: uppercase;
     letter-spacing: 1px;
-    font-size: 1rem;
-    font-weight: 800;
-    opacity: 0.8;
+    opacity: 0.9;
   }
 
   .question-text {
-    font-size: 1.35rem;
+    font-size: 1.15rem; /* Text lizibil dar nu urias */
     font-weight: 600;
-    line-height: 1.5;
-    margin-bottom: 2.5rem;
+    line-height: 1.4;
+    margin-bottom: 2rem;
     color: $text-main;
-
-    /* --- LINII NOI ADAUGATE --- */
-    white-space: pre-wrap;      /* 1. Păstrează Enter-urile și spațiile */
-    text-align: left;           /* 2. Aliniere la stânga pentru ca listele cu puncte să arate bine */
-    padding: 0 1rem;            /* 3. Puțin spațiu lateral să nu fie lipit de margine */
+    white-space: pre-wrap;
+    text-align: left;
   }
 
-  /* Rezultat Final (Badge) */
   .badge-result {
     display: inline-block;
     background: #ecfdf5;
     color: $success;
     border: 1px solid #a7f3d0;
-    padding: 0.5rem 1.5rem;
+    padding: 0.5rem 1rem;
     border-radius: 50px;
     font-weight: 700;
-    font-size: 0.9rem;
+    font-size: 0.85rem;
     text-transform: uppercase;
-    letter-spacing: 1px;
     margin-bottom: 1.5rem;
+    word-break: break-word; /* Previne ieșirea din ecran */
   }
 }
 
 .button-group {
   display: flex;
-  flex-direction: column;
-  gap: 1rem;
-  margin-bottom: 2.5rem;
+  flex-direction: column; /* Stacked vertical pe mobil */
+  gap: 0.8rem;
+  margin-bottom: 2rem;
+  width: 100%;
 
   .btn-opt {
     background: $primary;
     color: white;
     border: none;
-    padding: 1rem 1.5rem;
-    font-size: 1.1rem;
+    padding: 1rem;
+    font-size: 1rem;
     font-weight: 600;
     border-radius: 12px;
-    cursor: pointer;
+    width: 100%; /* Full width pe mobil */
     box-shadow: 0 4px 6px rgba(37, 99, 235, 0.2);
 
-    &:hover {
-      background: $primary-dark;
-      transform: translateY(-2px);
-      box-shadow: 0 6px 10px rgba(37, 99, 235, 0.3);
-    }
-
-    &:active { transform: translateY(0); }
+    &:active { transform: scale(0.98); }
   }
 }
 
 .controls {
   display: flex;
-  gap: 1rem;
+  gap: 0.8rem;
   padding-top: 1.5rem;
   border-top: 1px solid $border;
 
@@ -149,7 +141,6 @@ input, textarea, select { font-family: inherit; }
     border-radius: 8px;
     font-weight: 600;
     font-size: 0.9rem;
-    cursor: pointer;
     background: transparent;
     border: 1px solid transparent;
   }
@@ -157,14 +148,10 @@ input, textarea, select { font-family: inherit; }
   .btn-back {
     color: $text-muted;
     border-color: $border;
-    &:hover:not(:disabled) { background: $bg-app; color: $text-main; border-color: $text-muted; }
-    &:disabled { opacity: 0.3; cursor: not-allowed; }
   }
-
   .btn-reset {
     color: $danger;
     background: #fef2f2;
-    &:hover { background: #fee2e2; }
   }
 }
 
@@ -175,41 +162,33 @@ input, textarea, select { font-family: inherit; }
   border: 0;
   height: 1px;
   background: linear-gradient(to right, transparent, $border, transparent);
-  margin: 3rem 0;
+  margin: 2rem 0;
 }
 
 .admin-access {
   text-align: center;
   margin-bottom: 1rem;
-
   .btn-minimal {
     background: none;
     border: none;
     color: #94a3b8;
     font-size: 0.85rem;
-    cursor: pointer;
     text-decoration: underline;
-    &:hover { color: $primary; }
   }
 }
 
 .login-section {
+  width: 100%;
   max-width: 400px;
   margin: 0 auto;
   background: white;
-  padding: 2.5rem;
+  padding: 1.5rem;
   border-radius: $radius;
   box-shadow: $shadow-hover;
   text-align: center;
 
-  h3 { margin-bottom: 1.5rem; color: $text-main; }
-
-  input {
-    width: 100%;
-    margin-bottom: 1rem;
-    box-sizing: border-box;
-  }
-
+  h3 { margin-bottom: 1rem; }
+  input { width: 100%; margin-bottom: 1rem; padding: 0.8rem; border: 1px solid $border; border-radius: 8px;}
   .btn-login {
     width: 100%;
     background: $text-main;
@@ -218,144 +197,144 @@ input, textarea, select { font-family: inherit; }
     padding: 1rem;
     border-radius: 8px;
     font-weight: 600;
-    cursor: pointer;
-    &:hover { background: black; }
   }
 }
 
 /* =========================================
-   2. ADMIN EDITOR (COMPLEX)
+   2. ADMIN EDITOR (MOBILE OPTIMIZED)
    ========================================= */
 .admin-panel {
   background: $bg-card;
   border-radius: $radius;
   box-shadow: $shadow-hover;
-  overflow: hidden; /* Important pentru border-radius */
+  overflow: hidden;
   border: 1px solid $border;
 }
 
-/* Sticky Header */
+/* Header Admin - REPARAT PENTRU MOBIL */
 .header-admin {
-  background: #1e293b; /* Dark Slate */
+  background: #1e293b;
   color: white;
-  padding: 1rem 1.5rem;
-  position: sticky;
-  top: 0;
-  z-index: 100;
+  padding: 1rem;
+  /* Pe mobil NU folosim sticky ca sa nu ocupe tot ecranul */
+  position: relative;
   display: flex;
-  justify-content: space-between;
-  align-items: center;
-  flex-wrap: wrap;
+  flex-direction: column; /* Elemente unul sub altul pe mobil */
   gap: 1rem;
-  box-shadow: 0 4px 10px rgba(0,0,0,0.1);
 
   .title-group {
     display: flex;
+    justify-content: space-between;
     align-items: center;
-    gap: 10px;
+    width: 100%;
 
-    h2 { color: white; font-size: 1.1rem; }
+    h2 { font-size: 1rem; }
     .status-badge {
       background: $success;
       color: white;
-      font-size: 0.65rem;
-      padding: 3px 8px;
+      font-size: 0.6rem;
+      padding: 3px 6px;
       border-radius: 4px;
-      font-weight: 700;
       text-transform: uppercase;
     }
   }
 
   .admin-actions {
-    display: flex;
+    display: grid; /* Grid pentru butoane egale */
+    grid-template-columns: 1fr 1fr; /* 2 coloane */
     gap: 0.5rem;
-    flex-wrap: wrap;
+    width: 100%;
 
     button {
       border: none;
-      padding: 0.6rem 1rem;
+      padding: 0.8rem;
       border-radius: 6px;
-      font-size: 0.85rem;
+      font-size: 0.8rem;
       font-weight: 600;
-      cursor: pointer;
+      text-align: center;
     }
 
-    .btn-add-q { background: $primary; color: white; &:hover { background: lighten($primary, 10%); } }
-    .btn-add-r { background: $warning; color: white; &:hover { background: lighten($warning, 10%); } }
+    .btn-add-q { background: $primary; color: white; }
+    .btn-add-r { background: $warning; color: white; }
+
+    /* Butonul Save pe tot rândul pentru importanță */
     .btn-save {
       background: $success;
       color: white;
-      border: 1px solid rgba(255,255,255,0.4);
-      &:hover { background: lighten($success, 5%); }
+      grid-column: 1 / -1; /* Se intinde pe ambele coloane */
+      font-size: 0.9rem;
+      padding: 1rem;
     }
-    .btn-logout { background: rgba(255,255,255,0.1); color: #cbd5e1; }
+
+    .btn-logout {
+      background: rgba(255,255,255,0.1);
+      color: #cbd5e1;
+      grid-column: 1 / -1;
+    }
   }
 }
 
 .node-list {
-  background: $bg-app; /* Gri deschis pentru contrast */
-  padding: 1.5rem;
+  background: $bg-app;
+  padding: 1rem;
 }
 
-/* --- Node Editor Card --- */
+/* Node Editor Card */
 .node-editor {
   background: white;
   border: 1px solid $border;
   border-radius: 12px;
-  padding: 1.5rem;
-  margin-bottom: 2rem;
+  padding: 1rem;
+  margin-bottom: 1.5rem;
   box-shadow: $shadow-soft;
-
-  /* Border Stânga Colorat */
-  border-left: 6px solid $primary; /* Default: Question Blue */
+  border-left: 5px solid $primary;
 
   &.is-result { border-left-color: $warning; }
   &.is-start { border-left-color: #0f172a; background-color: #f8fafc; }
 
-  /* Header Intern al Nodului */
+  /* Header Card Intern */
   .node-header-row {
     display: flex;
-    justify-content: space-between;
-    align-items: center;
-    margin-bottom: 1.2rem;
+    flex-direction: column; /* Stacked pe mobil */
+    gap: 0.8rem;
+    margin-bottom: 1rem;
     padding-bottom: 0.8rem;
     border-bottom: 1px solid $border;
 
     .node-id-badge {
       font-family: monospace;
-      font-size: 0.8rem;
+      font-size: 0.75rem;
       background: #e2e8f0;
-      color: $text-muted;
-      padding: 4px 8px;
-      border-radius: 6px;
+      padding: 4px;
+      border-radius: 4px;
+      text-align: center;
+      word-break: break-all;
     }
 
     .node-tools {
       display: flex;
       gap: 0.5rem;
+      justify-content: space-between;
 
       button {
+        flex: 1;
         font-size: 0.75rem;
-        padding: 6px 12px;
+        padding: 8px;
         background: white;
         border: 1px solid $border;
         border-radius: 6px;
-        cursor: pointer;
-        &:hover { background: $bg-app; }
       }
       .btn-delete-node { color: $danger; border-color: rgba($danger, 0.3); }
     }
   }
 
-  /* Inputs Globale */
   .input-label {
     display: block;
-    font-size: 0.75rem;
+    font-size: 0.7rem;
     text-transform: uppercase;
     font-weight: 700;
     color: $text-muted;
-    margin-bottom: 0.5rem;
-    letter-spacing: 0.5px;
+    margin-bottom: 0.4rem;
   }
 
   .form-control {
@@ -365,9 +344,7 @@ input, textarea, select { font-family: inherit; }
     border-radius: 8px;
     font-size: 0.95rem;
     background: #fff;
-    margin-bottom: 1.2rem;
-    box-sizing: border-box;
-    transition: all 0.2s;
+    margin-bottom: 1rem;
 
     &:focus {
       outline: none;
@@ -378,95 +355,130 @@ input, textarea, select { font-family: inherit; }
 
   .main-text { min-height: 80px; resize: vertical; }
 
-  /* Options Area (Gri Box) */
+  /* Options Area */
   .options-edit-area {
     background: #f8fafc;
-    padding: 1.2rem;
+    padding: 0.8rem;
     border-radius: 8px;
     border: 1px dashed #cbd5e1;
   }
 
-  /* Buton Adaugă Răspuns */
   .btn-add-opt {
     width: 100%;
-    padding: 10px;
+    padding: 12px;
     border: 2px dashed $primary;
     background: rgba(37, 99, 235, 0.05);
     color: $primary;
     font-weight: 600;
     border-radius: 8px;
-    cursor: pointer;
-    &:hover { background: rgba(37, 99, 235, 0.1); }
+    margin-top: 0.5rem;
   }
 }
 
-/* --- Rândurile de Opțiuni (Complex Grid) --- */
+/* Option Row - REPARAT PENTRU MOBIL */
 .opt-row {
   display: flex;
-  flex-direction: column; /* Mobile First */
+  flex-direction: column; /* Strict vertical pe mobil */
   gap: 0.8rem;
   background: white;
-  padding: 1rem;
+  padding: 0.8rem;
   border-radius: 8px;
   border: 1px solid $border;
-  margin-bottom: 1rem;
-  box-shadow: 0 2px 4px rgba(0,0,0,0.02);
+  margin-bottom: 0.8rem;
+  position: relative; /* Pentru a poziționa X-ul absolut dacă vrem */
 
   .opt-input-group {
-    flex: 1;
-    .small-label { font-size: 0.7rem; color: $text-muted; margin-bottom: 4px; display: block; }
-    /* Scoatem margin-bottom de la inputurile interne pentru a fi compact */
+    width: 100%;
+    .small-label { font-size: 0.7rem; color: $text-muted; margin-bottom: 2px; display: block; }
     .form-control { margin-bottom: 0; }
   }
 
-  /* Target Select */
   .link-select {
-    color: $primary-dark;
-    font-weight: 500;
     background-color: #f0f9ff;
     border-color: #bae6fd;
+    font-weight: 500;
   }
 
-  /* Delete 'X' Button */
+  /* Butonul X pe mobil - Mare și roșu jos */
   .btn-remove-opt {
     background: #fef2f2;
     color: $danger;
     border: 1px solid #fecaca;
-    width: 36px;
-    height: 36px;
+    width: 100%; /* Full width pt a fi usor de apasat */
+    padding: 0.6rem;
     border-radius: 6px;
     display: flex;
     align-items: center;
     justify-content: center;
-    cursor: pointer;
-    align-self: flex-end; /* Mobile: dreapta jos */
-
-    &:hover { background: $danger; color: white; border-color: $danger; }
+    font-weight: bold;
+    margin-top: 0.2rem;
   }
 }
 
 /* =========================================
-   MEDIA QUERIES (DESKTOP)
+   MEDIA QUERIES (DESKTOP / TABLET)
    ========================================= */
 @media (min-width: 768px) {
-  /* User Section: Butoane pe 2 coloane */
+
+  /* Container & Carduri mai largi */
+  .container { padding: 2rem; }
+  .main-card { padding: 3rem; }
+  .main-card h2 { font-size: 1.5rem; }
+  .user-section { margin-top: 3rem; }
+
+  /* User Buttons Side-by-Side */
   .button-group {
     flex-direction: row;
     flex-wrap: wrap;
-    .btn-opt { flex: 1; min-width: 45%; }
+    .btn-opt { flex: 1; min-width: 40%; }
   }
 
-  /* Admin: Opțiunile pe un singur rând */
-  .opt-row {
+  /* Admin Header Sticky și orizontal */
+  .header-admin {
+    position: sticky;
+    top: 0;
     flex-direction: row;
-    align-items: flex-end; /* Aliniem la bază pentru inputuri */
+    justify-content: space-between;
+    padding: 1rem 1.5rem;
+    z-index: 100;
 
-    .btn-remove-opt {
-      margin-left: 0.5rem;
-      /* Aliniere cu inputurile (compensare label height) */
-      margin-bottom: 1px;
+    .admin-actions {
+      display: flex; /* Flex normal pe desktop */
+      width: auto;
+      gap: 0.5rem;
+
+      button { padding: 0.6rem 1rem; }
+      .btn-save { grid-column: auto; padding: 0.6rem 1rem;}
+      .btn-logout { grid-column: auto; }
     }
   }
 
-  .main-card { padding: 3rem; }
+  /* Node Editor */
+  .node-editor { padding: 1.5rem; }
+
+  .node-header-row {
+    flex-direction: row; /* Orizontal */
+    justify-content: space-between;
+
+    .node-tools {
+      gap: 0.5rem;
+      button { flex: initial; width: auto; font-size: 0.8rem; }
+    }
+  }
+
+  /* Opt Row Orizontal */
+  .opt-row {
+    flex-direction: row;
+    align-items: flex-end;
+
+    .btn-remove-opt {
+      width: 40px; /* Mic și pătrat pe desktop */
+      height: 40px;
+      margin-top: 0;
+      margin-left: 0.5rem;
+      padding: 0;
+      /* Aliniere cu inputurile */
+      margin-bottom: 2px;
+    }
+  }
 }
