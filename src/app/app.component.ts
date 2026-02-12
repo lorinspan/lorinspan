@@ -144,7 +144,7 @@ export class AppComponent implements OnInit {
 
   // --- FIREBASE & AUTH ---
   login() {
-    if (this.username === 'florin-ochea' && this.password === 'CasaMierlei3') {
+    if (this.username === 'admin' && this.password === 'bd-ipmn') {
       this.isLoggedIn = true;
       this.showLoginForm = false;
     } else {
