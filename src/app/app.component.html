@@ -1,23 +1,118 @@
 <div class="container">
-  <h2>BD-IPMN Management Algorithm</h2>
+  <div class="user-section">
+    <div *ngIf="currentNode; else loading" class="card main-card">
+      <h2>Algoritm BD-IPMN</h2>
 
-  <div class="card">
-    <p>{{ currentNode.text }}</p>
+      <div *ngIf="currentNode.result" class="result-display">
+        <div class="badge-result">{{ currentNode.result }}</div>
+      </div>
 
-    <div *ngIf="currentNode.options" class="button-group">
-      <button *ngFor="let opt of currentNode.options"
-              (click)="selectOption(opt.nextNodeId)">
-        {{ opt.label }}
+      <p class="question-text">{{ currentNode.text }}</p>
+
+      <div *ngIf="currentNode.options" class="button-group">
+        <button *ngFor="let opt of currentNode.options"
+                (click)="selectOption(opt.nextNodeId)"
+                class="btn-opt">
+          {{ opt.label }}
+        </button>
+      </div>
+
+      <div class="controls">
+        <button (click)="goBack()" [disabled]="history.length === 0" class="btn-back">Înapoi</button>
+        <button (click)="reset()" class="btn-reset">Resetare</button>
+      </div>
+    </div>
+
+    <ng-template #loading>
+      <div class="loading">Se încarcă algoritmul...</div>
+    </ng-template>
+  </div>
+
+  <hr class="separator">
+
+  <div class="admin-wrapper">
+    <div class="admin-access" *ngIf="!isLoggedIn">
+      <button (click)="showLoginForm = !showLoginForm" class="btn-minimal">
+        {{ showLoginForm ? 'Închide' : 'Admin Login' }}
       </button>
     </div>
 
-    <div *ngIf="currentNode.result" class="result-box">
-      <strong>Recommendation:</strong> {{ currentNode.text }}
+    <div class="login-section" *ngIf="!isLoggedIn && showLoginForm">
+      <h3>Acces Personal Medical</h3>
+      <input [(ngModel)]="username" placeholder="Utilizator" class="form-control">
+      <input type="password" [(ngModel)]="password" placeholder="Parola" class="form-control">
+      <button (click)="login()" class="btn-login">Autentificare</button>
     </div>
-  </div>
 
-  <div class="controls">
-    <button (click)="goBack()" [disabled]="history.length === 0">Back</button>
-    <button (click)="reset()">Reset</button>
+    <div class="admin-panel" *ngIf="isLoggedIn">
+      <div class="header-admin">
+        <div class="title-group">
+          <h2>Mod Editor</h2>
+          <span class="status-badge">Live Firebase</span>
+        </div>
+
+        <div class="admin-actions">
+          <button (click)="addNewNode('QUESTION')" class="btn-add-q">+ Întrebare</button>
+          <button (click)="addNewNode('RESULT')" class="btn-add-r">+ Rezultat</button>
+          <button (click)="saveToFirebase()" class="btn-save">SALVEAZĂ TOT</button>
+          <button (click)="isLoggedIn = false" class="btn-logout">Ieșire</button>
+        </div>
+      </div>
+
+      <div class="node-list">
+        <div class="node-editor" *ngFor="let node of treeArray; let i = index"
+             [class.is-start]="node.id === 'START'"
+             [class.is-result]="!node.options">
+
+          <div class="node-header-row">
+            <span class="node-id-badge">Pasul #{{i+1}} ({{node.id}})</span>
+
+            <div class="node-tools">
+              <button class="btn-toggle-type" (click)="toggleNodeType(node)">
+                Schimbă în {{ node.options ? 'Rezultat Final' : 'Întrebare' }}
+              </button>
+              <button class="btn-delete-node" *ngIf="node.id !== 'START'" (click)="deleteNode(node.id)">
+                🗑️ Șterge
+              </button>
+            </div>
+          </div>
+
+          <label class="input-label">
+            {{ node.options ? 'Textul Întrebării:' : 'Textul Recomandării:' }}
+          </label>
+          <textarea [(ngModel)]="node.text" rows="2" class="form-control main-text"></textarea>
+
+          <div *ngIf="node.result" class="result-settings">
+            <label class="input-label">Categorie Rezultat (ex: SURGERY, SURVEILLANCE):</label>
+            <input [(ngModel)]="node.result" class="form-control category-input">
+          </div>
+
+          <div class="options-edit-area" *ngIf="node.options">
+            <label class="input-label">Butoane de răspuns:</label>
+
+            <div *ngFor="let opt of node.options; let idx = index" class="opt-row">
+              <div class="opt-input-group">
+                <span class="small-label">Etichetă Buton:</span>
+                <input [(ngModel)]="opt.label" placeholder="DA / NU / < 10mm" class="form-control">
+              </div>
+
+              <div class="opt-input-group">
+                <span class="small-label">Duce la pasul:</span>
+                <select [(ngModel)]="opt.nextNodeId" class="form-control link-select">
+                  <option *ngFor="let target of treeArray" [value]="target.id">
+                    [{{ target.id }}] - {{ target.text | slice:0:30 }}...
+                  </option>
+                </select>
+              </div>
+
+              <button class="btn-remove-opt" (click)="removeOptionFromNode(node, idx)">❌</button>
+            </div>
+
+            <button class="btn-add-opt" (click)="addOptionToNode(node)">+ Adaugă Răspuns</button>
+          </div>
+
+        </div>
+      </div>
+    </div>
   </div>
 </div>

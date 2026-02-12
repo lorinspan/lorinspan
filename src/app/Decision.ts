@@ -1,9 +1,8 @@
 export interface DecisionNode {
   id: string;
   text: string;
-  options?: DecisionOption[];
-  result?: string;
-  isHighRisk?: boolean;
+  options?: DecisionOption[]; // Dacă are opțiuni, e întrebare
+  result?: string;            // Dacă are result, e final
 }
 
 export interface DecisionOption {

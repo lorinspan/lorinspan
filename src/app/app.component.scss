@@ -1,132 +1,467 @@
-/* Definire variabile pentru consistență */
-$primary-color: #2563eb;
-$bg-color: #f8fafc;
-$text-color: #1e293b;
-$border-radius: 12px;
-$shadow: 0 4px 6px -1px rgb(0 0 0 / 0.1), 0 2px 4px -2px rgb(0 0 0 / 0.1);
+/* =========================================
+   VARIABLES & THEME
+   ========================================= */
+$primary: #2563eb;       /* Royal Blue */
+$primary-dark: #1e40af;
+$success: #10b981;       /* Emerald */
+$warning: #f59e0b;       /* Amber */
+$danger: #ef4444;        /* Red */
+$bg-app: #f1f5f9;        /* Slate 100 */
+$bg-card: #ffffff;
+$text-main: #0f172a;     /* Slate 900 */
+$text-muted: #64748b;    /* Slate 500 */
+$border: #e2e8f0;
+
+$radius: 16px;
+$shadow-soft: 0 4px 6px -1px rgba(0, 0, 0, 0.05), 0 2px 4px -1px rgba(0, 0, 0, 0.03);
+$shadow-hover: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
+
+/* =========================================
+   GLOBAL LAYOUT
+   ========================================= */
+:host {
+  display: block;
+  min-height: 100vh;
+  background-color: $bg-app;
+  font-family: 'Inter', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+  color: $text-main;
+  padding-bottom: 5rem;
+}
 
 .container {
-  max-width: 600px;
-  margin: 2rem auto;
-  padding: 0 1rem;
-  font-family: 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
-  color: $text-color;
-  background-color: $bg-color;
-  min-height: 100vh;
+  width: 100%;
+  max-width: 800px; /* Lățime optimă pentru citit */
+  margin: 0 auto;
+  padding: 1.5rem;
+  box-sizing: border-box;
 }
 
-h2 {
+h2, h3 { margin: 0; font-weight: 700; color: $text-main; }
+button { font-family: inherit; transition: all 0.2s ease; }
+input, textarea, select { font-family: inherit; }
+
+/* =========================================
+   1. USER SECTION (Algorithm)
+   ========================================= */
+.user-section {
+  display: flex;
+  justify-content: center;
+  margin-top: 2rem;
+  margin-bottom: 3rem;
+}
+
+.main-card {
+  background: $bg-card;
+  width: 100%;
+  padding: 2.5rem;
+  border-radius: $radius;
+  box-shadow: $shadow-soft;
+  border: 1px solid white;
   text-align: center;
-  font-size: 1.5rem;
-  margin-bottom: 2rem;
-  color: #0f172a;
-}
+  position: relative;
+  overflow: hidden;
 
-.card {
-  background: #ffffff;
-  padding: 2rem;
-  border-radius: $border-radius;
-  box-shadow: $shadow;
-  border: 1px solid #e2e8f0;
-  margin-bottom: 1.5rem;
-  transition: all 0.3s ease;
+  /* Linie decorativă sus */
+  &::before {
+    content: '';
+    position: absolute;
+    top: 0; left: 0; right: 0;
+    height: 6px;
+    background: linear-gradient(90deg, $primary, $success);
+  }
 
-  p {
-    font-size: 1.125rem;
-    line-height: 1.6;
+  h2 {
+    font-size: 1.5rem;
+    color: $primary;
     margin-bottom: 2rem;
-    font-weight: 500;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    font-size: 1rem;
+    font-weight: 800;
+    opacity: 0.8;
+  }
+
+  .question-text {
+    font-size: 1.35rem;
+    font-weight: 600;
+    line-height: 1.5;
+    margin-bottom: 2.5rem;
+    color: $text-main;
+  }
+
+  /* Rezultat Final (Badge) */
+  .badge-result {
+    display: inline-block;
+    background: #ecfdf5;
+    color: $success;
+    border: 1px solid #a7f3d0;
+    padding: 0.5rem 1.5rem;
+    border-radius: 50px;
+    font-weight: 700;
+    font-size: 0.9rem;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    margin-bottom: 1.5rem;
   }
 }
 
 .button-group {
   display: flex;
   flex-direction: column;
-  gap: 0.75rem;
+  gap: 1rem;
+  margin-bottom: 2.5rem;
 
-  button {
-    width: 100%;
-    padding: 1rem;
-    font-size: 1rem;
-    font-weight: 600;
-    color: #ffffff;
-    background-color: $primary-color;
+  .btn-opt {
+    background: $primary;
+    color: white;
     border: none;
-    border-radius: 8px;
+    padding: 1rem 1.5rem;
+    font-size: 1.1rem;
+    font-weight: 600;
+    border-radius: 12px;
     cursor: pointer;
-    transition: background-color 0.2s ease;
+    box-shadow: 0 4px 6px rgba(37, 99, 235, 0.2);
 
     &:hover {
-      background-color: #1d4ed8;
+      background: $primary-dark;
+      transform: translateY(-2px);
+      box-shadow: 0 6px 10px rgba(37, 99, 235, 0.3);
     }
 
-    &:active {
-      transform: scale(0.98);
-    }
+    &:active { transform: translateY(0); }
   }
-}
-
-.result-box {
-  margin-top: 1rem;
-  padding: 1.25rem;
-  background-color: #f0fdf4;
-  border-left: 4px solid #22c55e;
-  border-radius: 4px;
-  color: #166534;
-  font-weight: 600;
 }
 
 .controls {
-  display: grid;
-  grid-template-columns: 1fr 1fr;
+  display: flex;
   gap: 1rem;
-  margin-top: 2rem;
+  padding-top: 1.5rem;
+  border-top: 1px solid $border;
 
   button {
-    padding: 0.75rem;
-    font-size: 0.875rem;
-    font-weight: 500;
+    flex: 1;
+    padding: 0.8rem;
     border-radius: 8px;
-    border: 1px solid #cbd5e1;
-    background: #ffffff;
-    color: #64748b;
+    font-weight: 600;
+    font-size: 0.9rem;
     cursor: pointer;
+    background: transparent;
+    border: 1px solid transparent;
+  }
 
-    &:disabled {
-      opacity: 0.5;
-      cursor: not-allowed;
-    }
+  .btn-back {
+    color: $text-muted;
+    border-color: $border;
+    &:hover:not(:disabled) { background: $bg-app; color: $text-main; border-color: $text-muted; }
+    &:disabled { opacity: 0.3; cursor: not-allowed; }
+  }
 
-    &:not(:disabled):hover {
-      background: #f1f5f9;
-      color: #1e293b;
-    }
-
-    /* Stil specific pentru Reset */
-    &:last-child {
-      border-color: #fecaca;
-      color: #dc2626;
-
-      &:hover {
-        background: #fef2f2;
-      }
-    }
+  .btn-reset {
+    color: $danger;
+    background: #fef2f2;
+    &:hover { background: #fee2e2; }
   }
 }
 
-/* Ajustări pentru Desktop (peste 768px) */
-@media (min-width: 768px) {
-  .button-group {
-    flex-direction: row;
-    justify-content: center;
+/* =========================================
+   SEPARATOR & LOGIN
+   ========================================= */
+.separator {
+  border: 0;
+  height: 1px;
+  background: linear-gradient(to right, transparent, $border, transparent);
+  margin: 3rem 0;
+}
 
-    button {
-      flex: 1;
-      max-width: 200px;
+.admin-access {
+  text-align: center;
+  margin-bottom: 1rem;
+
+  .btn-minimal {
+    background: none;
+    border: none;
+    color: #94a3b8;
+    font-size: 0.85rem;
+    cursor: pointer;
+    text-decoration: underline;
+    &:hover { color: $primary; }
+  }
+}
+
+.login-section {
+  max-width: 400px;
+  margin: 0 auto;
+  background: white;
+  padding: 2.5rem;
+  border-radius: $radius;
+  box-shadow: $shadow-hover;
+  text-align: center;
+
+  h3 { margin-bottom: 1.5rem; color: $text-main; }
+
+  input {
+    width: 100%;
+    margin-bottom: 1rem;
+    box-sizing: border-box;
+  }
+
+  .btn-login {
+    width: 100%;
+    background: $text-main;
+    color: white;
+    border: none;
+    padding: 1rem;
+    border-radius: 8px;
+    font-weight: 600;
+    cursor: pointer;
+    &:hover { background: black; }
+  }
+}
+
+/* =========================================
+   2. ADMIN EDITOR (COMPLEX)
+   ========================================= */
+.admin-panel {
+  background: $bg-card;
+  border-radius: $radius;
+  box-shadow: $shadow-hover;
+  overflow: hidden; /* Important pentru border-radius */
+  border: 1px solid $border;
+}
+
+/* Sticky Header */
+.header-admin {
+  background: #1e293b; /* Dark Slate */
+  color: white;
+  padding: 1rem 1.5rem;
+  position: sticky;
+  top: 0;
+  z-index: 100;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 1rem;
+  box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+
+  .title-group {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+
+    h2 { color: white; font-size: 1.1rem; }
+    .status-badge {
+      background: $success;
+      color: white;
+      font-size: 0.65rem;
+      padding: 3px 8px;
+      border-radius: 4px;
+      font-weight: 700;
+      text-transform: uppercase;
     }
   }
 
-  .card {
-    padding: 3rem;
+  .admin-actions {
+    display: flex;
+    gap: 0.5rem;
+    flex-wrap: wrap;
+
+    button {
+      border: none;
+      padding: 0.6rem 1rem;
+      border-radius: 6px;
+      font-size: 0.85rem;
+      font-weight: 600;
+      cursor: pointer;
+    }
+
+    .btn-add-q { background: $primary; color: white; &:hover { background: lighten($primary, 10%); } }
+    .btn-add-r { background: $warning; color: white; &:hover { background: lighten($warning, 10%); } }
+    .btn-save {
+      background: $success;
+      color: white;
+      border: 1px solid rgba(255,255,255,0.4);
+      &:hover { background: lighten($success, 5%); }
+    }
+    .btn-logout { background: rgba(255,255,255,0.1); color: #cbd5e1; }
   }
+}
+
+.node-list {
+  background: $bg-app; /* Gri deschis pentru contrast */
+  padding: 1.5rem;
+}
+
+/* --- Node Editor Card --- */
+.node-editor {
+  background: white;
+  border: 1px solid $border;
+  border-radius: 12px;
+  padding: 1.5rem;
+  margin-bottom: 2rem;
+  box-shadow: $shadow-soft;
+
+  /* Border Stânga Colorat */
+  border-left: 6px solid $primary; /* Default: Question Blue */
+
+  &.is-result { border-left-color: $warning; }
+  &.is-start { border-left-color: #0f172a; background-color: #f8fafc; }
+
+  /* Header Intern al Nodului */
+  .node-header-row {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 1.2rem;
+    padding-bottom: 0.8rem;
+    border-bottom: 1px solid $border;
+
+    .node-id-badge {
+      font-family: monospace;
+      font-size: 0.8rem;
+      background: #e2e8f0;
+      color: $text-muted;
+      padding: 4px 8px;
+      border-radius: 6px;
+    }
+
+    .node-tools {
+      display: flex;
+      gap: 0.5rem;
+
+      button {
+        font-size: 0.75rem;
+        padding: 6px 12px;
+        background: white;
+        border: 1px solid $border;
+        border-radius: 6px;
+        cursor: pointer;
+        &:hover { background: $bg-app; }
+      }
+      .btn-delete-node { color: $danger; border-color: rgba($danger, 0.3); }
+    }
+  }
+
+  /* Inputs Globale */
+  .input-label {
+    display: block;
+    font-size: 0.75rem;
+    text-transform: uppercase;
+    font-weight: 700;
+    color: $text-muted;
+    margin-bottom: 0.5rem;
+    letter-spacing: 0.5px;
+  }
+
+  .form-control {
+    width: 100%;
+    padding: 0.8rem;
+    border: 1px solid $border;
+    border-radius: 8px;
+    font-size: 0.95rem;
+    background: #fff;
+    margin-bottom: 1.2rem;
+    box-sizing: border-box;
+    transition: all 0.2s;
+
+    &:focus {
+      outline: none;
+      border-color: $primary;
+      box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.1);
+    }
+  }
+
+  .main-text { min-height: 80px; resize: vertical; }
+
+  /* Options Area (Gri Box) */
+  .options-edit-area {
+    background: #f8fafc;
+    padding: 1.2rem;
+    border-radius: 8px;
+    border: 1px dashed #cbd5e1;
+  }
+
+  /* Buton Adaugă Răspuns */
+  .btn-add-opt {
+    width: 100%;
+    padding: 10px;
+    border: 2px dashed $primary;
+    background: rgba(37, 99, 235, 0.05);
+    color: $primary;
+    font-weight: 600;
+    border-radius: 8px;
+    cursor: pointer;
+    &:hover { background: rgba(37, 99, 235, 0.1); }
+  }
+}
+
+/* --- Rândurile de Opțiuni (Complex Grid) --- */
+.opt-row {
+  display: flex;
+  flex-direction: column; /* Mobile First */
+  gap: 0.8rem;
+  background: white;
+  padding: 1rem;
+  border-radius: 8px;
+  border: 1px solid $border;
+  margin-bottom: 1rem;
+  box-shadow: 0 2px 4px rgba(0,0,0,0.02);
+
+  .opt-input-group {
+    flex: 1;
+    .small-label { font-size: 0.7rem; color: $text-muted; margin-bottom: 4px; display: block; }
+    /* Scoatem margin-bottom de la inputurile interne pentru a fi compact */
+    .form-control { margin-bottom: 0; }
+  }
+
+  /* Target Select */
+  .link-select {
+    color: $primary-dark;
+    font-weight: 500;
+    background-color: #f0f9ff;
+    border-color: #bae6fd;
+  }
+
+  /* Delete 'X' Button */
+  .btn-remove-opt {
+    background: #fef2f2;
+    color: $danger;
+    border: 1px solid #fecaca;
+    width: 36px;
+    height: 36px;
+    border-radius: 6px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    align-self: flex-end; /* Mobile: dreapta jos */
+
+    &:hover { background: $danger; color: white; border-color: $danger; }
+  }
+}
+
+/* =========================================
+   MEDIA QUERIES (DESKTOP)
+   ========================================= */
+@media (min-width: 768px) {
+  /* User Section: Butoane pe 2 coloane */
+  .button-group {
+    flex-direction: row;
+    flex-wrap: wrap;
+    .btn-opt { flex: 1; min-width: 45%; }
+  }
+
+  /* Admin: Opțiunile pe un singur rând */
+  .opt-row {
+    flex-direction: row;
+    align-items: flex-end; /* Aliniem la bază pentru inputuri */
+
+    .btn-remove-opt {
+      margin-left: 0.5rem;
+      /* Aliniere cu inputurile (compensare label height) */
+      margin-bottom: 1px;
+    }
+  }
+
+  .main-card { padding: 3rem; }
 }
